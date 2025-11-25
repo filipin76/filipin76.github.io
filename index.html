@@ -2,509 +2,741 @@
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <title>Hydration</title>
+    <meta name="theme-color" content="#ffffff">
+    <title>Hydration Ultimate</title>
     <style>
+        /* --- Zmienne CSS (Tryb Jasny/Ciemny) --- */
         :root {
-            --bg-gradient: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
-            --glass-bg: rgba(255, 255, 255, 0.75);
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --text-main: #1d1d1f;
-            --text-sec: #86868b;
-            --accent-water: #0a84ff;
-            --accent-sweet: #ff375f;
-            --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.15);
+            --primary: #007AFF;
+            --primary-dark: #005ecb;
+            --sweet: #FF2D55;
+            --bg-color: #F2F2F7;
+            --text-main: #000000;
+            --text-sec: #8E8E93;
+            --glass-bg: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.4);
+            --wave-color: rgba(0, 122, 255, 0.2);
+            --wave-top: rgba(0, 122, 255, 0.4);
+            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
+            --card-radius: 24px;
         }
 
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-color: #000000;
+                --text-main: #FFFFFF;
+                --text-sec: #98989D;
+                --glass-bg: rgba(28, 28, 30, 0.65);
+                --glass-border: rgba(255, 255, 255, 0.1);
+                --wave-color: rgba(10, 132, 255, 0.2);
+                --wave-top: rgba(10, 132, 255, 0.4);
+                --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            }
+        }
+
+        /* --- Style Podstawowe --- */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
-            background-color: #f2f2f7;
-            /* Pływające tło "Liquid" */
-            background-image: 
-                radial-gradient(at 80% 0%, hsla(189,100%,56%,0.2) 0px, transparent 50%),
-                radial-gradient(at 0% 50%, hsla(340,100%,76%,0.2) 0px, transparent 50%),
-                radial-gradient(at 80% 50%, hsla(270,100%,96%,0.2) 0px, transparent 50%),
-                radial-gradient(at 0% 100%, hsla(240,100%,70%,0.2) 0px, transparent 50%);
-            background-attachment: fixed;
-            background-size: cover;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
             margin: 0;
-            padding: 20px 20px 80px 20px; /* Padding bottom na scroll */
+            padding: 0;
+            background-color: var(--bg-color);
             color: var(--text-main);
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* Minimalistyczny Header */
-        header {
-            text-align: center;
-            margin-top: 40px;
-            margin-bottom: 30px;
-        }
-        
-        h1 {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-sec);
-            margin: 0;
-            font-weight: 600;
-        }
-
-        .main-count {
-            font-size: 64px;
-            font-weight: 200; /* Ultra cienki font jak w iOS */
-            letter-spacing: -2px;
-            margin: 5px 0;
-        }
-        .unit { font-size: 24px; color: var(--text-sec); font-weight: 400; }
-
-        /* Karty Glassmorphism */
-        .card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
-            border-radius: 28px;
-            border: 1px solid var(--glass-border);
-            padding: 20px;
-            margin-bottom: 25px;
-            box-shadow: var(--shadow-soft);
-        }
-
-        /* Wykres */
-        .chart-wrapper {
+            height: 100vh;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-tap-highlight-color: transparent;
             position: relative;
-            height: 200px;
-            width: 100%;
         }
-        canvas {
+
+        /* Tło Falujące */
+        #waveCanvas {
+            position: fixed;
+            bottom: 0;
+            left: 0;
             width: 100%;
             height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            transition: transform 1s ease-in-out;
         }
 
-        /* Grid Przycisków */
-        .controls-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
+        /* Konfetti */
+        #confettiCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            pointer-events: none;
         }
 
-        .control-column {
+        /* Kontener Główny */
+        .container {
+            position: relative;
+            z-index: 10;
+            padding: 60px 20px 100px 20px; /* Padding pod iPhone Notch i Scroll */
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Nagłówek i Ustawienia */
+        .top-bar {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .streak-badge {
+            background: linear-gradient(135deg, #FF9500, #FFCC00);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+            box-shadow: 0 2px 10px rgba(255, 149, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 5px;
         }
 
-        .icon-circle {
-            width: 60px;
-            height: 60px;
+        .settings-btn {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
-            margin-bottom: 10px;
-            background: rgba(255,255,255,0.8);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-        }
-
-        /* Nowoczesne przyciski */
-        button.add-btn {
-            width: 100%;
-            padding: 15px 0;
-            border: none;
-            border-radius: 18px;
-            font-size: 16px;
-            font-weight: 600;
+            font-size: 20px;
             cursor: pointer;
-            transition: all 0.2s;
-            color: #fff;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            backdrop-filter: blur(20px);
         }
 
-        button.add-btn:active { transform: scale(0.96); opacity: 0.9; }
-        
-        .btn-water { background: var(--accent-water); }
-        .btn-sweet { background: var(--accent-sweet); }
-        
-        .sub-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-sec);
-            font-size: 13px;
-            padding: 8px;
-            font-weight: 500;
-        }
-        
-        .custom-input {
-            width: 80%;
-            padding: 10px;
+        /* Główny Licznik */
+        .header {
             text-align: center;
-            border: none;
-            background: rgba(255,255,255,0.5);
-            border-radius: 12px;
-            font-size: 14px;
-            color: var(--text-main);
+            margin-bottom: 30px;
+        }
+        .main-count {
+            font-size: 72px;
+            font-weight: 200;
+            letter-spacing: -3px;
+            line-height: 1;
+        }
+        .goal-text {
+            color: var(--text-sec);
+            font-size: 16px;
+            margin-top: 5px;
         }
 
-        /* Przycisk Zakończ Dzień */
-        .end-day-btn {
-            width: 100%;
-            background: #1d1d1f;
+        /* Glass Cards */
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--card-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+        }
+        
+        h2 { font-size: 18px; margin: 0 0 15px 0; font-weight: 600; }
+
+        /* Wykresy (Canvas) */
+        canvas.chart { width: 100%; height: 160px; }
+
+        /* Przyciski Sterowania */
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .btn-large {
+            border: none;
+            padding: 16px;
+            border-radius: 18px;
             color: white;
-            padding: 18px;
-            border-radius: 20px;
             font-size: 16px;
             font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.1s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        .btn-large:active { transform: scale(0.95); }
+        .btn-water { background: var(--primary); }
+        .btn-sweet { background: var(--sweet); }
+        
+        .btn-small-row {
+            display: flex;
+            gap: 8px;
+        }
+        .btn-small {
+            flex: 1;
+            padding: 10px;
             border: none;
-            margin-top: 10px;
+            border-radius: 12px;
+            background: rgba(128,128,128,0.15);
+            color: var(--text-main);
+            font-weight: 500;
             cursor: pointer;
         }
 
-        /* Historia */
-        .history-list {
+        /* Historia z usuwaniem */
+        .log-list {
             list-style: none;
             padding: 0;
             margin: 0;
+            max-height: 200px;
+            overflow-y: auto;
         }
-        .history-item {
+        .log-item {
             display: flex;
             justify-content: space-between;
-            padding: 15px 0;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            font-size: 14px;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(128,128,128,0.1);
         }
-        .history-item:last-child { border-bottom: none; }
-        .date { color: var(--text-sec); }
-        .val { font-weight: 600; }
+        .log-delete {
+            color: #FF3B30;
+            background: none;
+            border: none;
+            font-size: 18px;
+            padding: 0 10px;
+            cursor: pointer;
+        }
 
-        /* Animacja wejścia */
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* Przycisk Zakończ Dzień */
+        .end-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--text-main);
+            color: var(--bg-color);
+            border: none;
+            border-radius: 20px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
         }
-        .container { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+
+        /* Modal Ustawień */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-content {
+            background: var(--bg-color);
+            padding: 30px;
+            border-radius: 24px;
+            width: 80%;
+            max-width: 300px;
+            text-align: center;
+        }
+        .modal input {
+            width: 100%;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 12px;
+            border: 1px solid #ccc;
+            font-size: 18px;
+            text-align: center;
+        }
 
     </style>
 </head>
 <body>
 
+    <canvas id="waveCanvas"></canvas>
+    <canvas id="confettiCanvas"></canvas>
+
     <div class="container">
         
-        <header>
-            <h1>Dzisiejsze spożycie</h1>
-            <div class="main-count">
-                <span id="total_ml">0</span><span class="unit">ml</span>
-            </div>
-            <div style="font-size: 13px; color: #86868b; margin-top: -5px;" id="prediction_text">
-                Prognoza: 0 ml
-            </div>
-        </header>
+        <div class="top-bar">
+            <div class="streak-badge" id="streak_badge">🔥 0 dni</div>
+            <button class="settings-btn" onclick="openSettings()">⚙️</button>
+        </div>
 
-        <div class="card">
-            <div class="chart-wrapper">
-                <canvas id="hydrationChart"></canvas>
+        <div class="header">
+            <div class="main-count" id="display_total">0</div>
+            <div class="goal-text">Cel: <span id="display_goal">2500</span> ml</div>
+            <div style="font-size: 13px; color: var(--text-sec); margin-top: 8px;" id="prediction">
+                Prognoza: Obliczam...
             </div>
         </div>
 
         <div class="card">
-            <div class="controls-grid">
-                
-                <div class="control-column">
-                    <div class="icon-circle" style="color: var(--accent-water);">💧</div>
-                    <button class="add-btn btn-water" onclick="addDrink(200, 'water')">+ 200</button>
-                    <button class="add-btn btn-water" onclick="addDrink(300, 'water')">+ 300</button>
-                    <button class="add-btn btn-water" onclick="addDrink(500, 'water')">+ 500</button>
-                    <button class="sub-btn" onclick="addDrink(-100, 'water')">- 100 ml</button>
-                    <input type="number" id="custom_water" class="custom-input" placeholder="Własna ilość">
-                    <button class="sub-btn" onclick="addCustom('water')" style="color: var(--accent-water)">Dodaj</button>
-                </div>
-
-                <div class="control-column">
-                    <div class="icon-circle" style="color: var(--accent-sweet);">🥤</div>
-                    <button class="add-btn btn-sweet" onclick="addDrink(200, 'sweet')">+ 200</button>
-                    <button class="add-btn btn-sweet" onclick="addDrink(300, 'sweet')">+ 300</button>
-                    <button class="add-btn btn-sweet" onclick="addDrink(500, 'sweet')">+ 500</button>
-                    <button class="sub-btn" onclick="addDrink(-100, 'sweet')">- 100 ml</button>
-                    <input type="number" id="custom_sweet" class="custom-input" placeholder="Własna ilość">
-                    <button class="sub-btn" onclick="addCustom('sweet')" style="color: var(--accent-sweet)">Dodaj</button>
-                </div>
-
+            <h2>📊 Dziś i Tydzień</h2>
+            <div style="position: relative; height: 160px; width: 100%;">
+                <canvas id="mainChart" class="chart"></canvas>
             </div>
         </div>
 
-        <button class="end-day-btn" onclick="endDay()">Zakończ Dzień i Zapisz 🌙</button>
-
-        <div class="card" style="margin-top: 25px;">
-            <h1 style="text-align: left; margin-bottom: 15px;">Ostatnie 3 dni</h1>
-            <ul class="history-list" id="history_container">
-                <li class="history-item" style="justify-content: center; color: #999;">Brak danych</li>
-            </ul>
+        <div class="card controls">
+            <div class="control-group">
+                <div style="text-align: center; font-size: 30px;">💧</div>
+                <button class="btn-large btn-water" onclick="addDrink(250, 'water')">+ 250 ml</button>
+                <div class="btn-small-row">
+                    <button class="btn-small" onclick="addDrink(500, 'water')">+500</button>
+                    <button class="btn-small" onclick="openCustom('water')">Inna</button>
+                </div>
+            </div>
+            <div class="control-group">
+                <div style="text-align: center; font-size: 30px;">🥤</div>
+                <button class="btn-large btn-sweet" onclick="addDrink(250, 'sweet')">+ 250 ml</button>
+                <div class="btn-small-row">
+                    <button class="btn-small" onclick="addDrink(330, 'sweet')">+330</button>
+                    <button class="btn-small" onclick="openCustom('sweet')">Inna</button>
+                </div>
+            </div>
         </div>
 
+        <div class="card">
+            <h2>🕒 Dzisiejsze wpisy</h2>
+            <ul class="log-list" id="log_list">
+                </ul>
+        </div>
+
+        <button class="end-btn" onclick="endDay()">Zakończ Dzień i Zapisz 🌙</button>
+    </div>
+
+    <div id="settingsModal" class="modal">
+        <div class="modal-content">
+            <h3>Ustaw Cel Dzienny</h3>
+            <input type="number" id="settings_goal_input" placeholder="np. 2500">
+            <button class="btn-large btn-water" style="width:100%" onclick="saveSettings()">Zapisz</button>
+            <button class="btn-small" style="background:transparent; margin-top:10px" onclick="closeSettings()">Anuluj</button>
+        </div>
     </div>
 
     <script>
-        // --- Stan Aplikacji ---
-        const KEYS = { DATA: 'hydro_data_v3', HISTORY: 'hydro_history_v3' };
+        // --- KONFIGURACJA I STAN ---
+        const KEYS = { DATA: 'hydro_ult_data', HISTORY: 'hydro_ult_history', SETTINGS: 'hydro_ult_settings' };
         
         let state = {
             date: new Date().toLocaleDateString('pl-PL'),
             water: 0,
             sweet: 0,
-            log: [] // { hour: float, total: int } - punkty na wykresie
+            log: [] // { id: timestamp, time: string, type: string, ml: number, hourFloat: number }
         };
 
-        // --- Inicjalizacja ---
-        function init() {
-            // Wczytaj dzisiejsze dane
-            const stored = localStorage.getItem(KEYS.DATA);
-            if (stored) {
-                const parsed = JSON.parse(stored);
-                // Sprawdź czy to ten sam dzień, jeśli nie, to po prostu wczytaj, 
-                // użytkownik musi sam kliknąć "Zakończ dzień" zgodnie z prośbą, 
-                // ale dla wygody zmienimy datę jeśli to świeże otwarcie
+        let settings = {
+            dailyGoal: 2500,
+            streak: 0,
+            lastGoalMetDate: null
+        };
+
+        // --- INICJALIZACJA ---
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAll();
+            initWave();
+            loopWave();
+            updateUI();
+        });
+
+        function loadAll() {
+            // Ustawienia
+            const s = localStorage.getItem(KEYS.SETTINGS);
+            if (s) settings = JSON.parse(s);
+
+            // Dzisiejsze dane
+            const d = localStorage.getItem(KEYS.DATA);
+            if (d) {
+                const parsed = JSON.parse(d);
                 if (parsed.date === new Date().toLocaleDateString('pl-PL')) {
                     state = parsed;
                 } else {
-                    // Opcjonalnie: można tu wymusić auto-zakończenie, 
-                    // ale zrobimy to manualnie przyciskiem jak w instrukcji.
-                    // Aktualizujemy tylko datę wyświetlania jeśli stara sesja wisi
-                    // Ale trzymamy dane do momentu kliknięcia przycisku.
+                    // Stara sesja, nie zakończona ręcznie - nie resetujemy automatycznie, 
+                    // czekamy na usera, ale datę w UI pokażemy dzisiejszą przy resecie
                 }
-            } else {
-                // Nowy start o północy (0,0)
-                state.log.push({ hour: 0, total: 0 });
             }
-            
-            updateUI();
         }
 
-        // --- Logika Danych ---
+        // --- LOGIKA BIZNESOWA ---
+
+        function triggerHaptic() {
+            if (navigator.vibrate) navigator.vibrate(15);
+        }
+
         function addDrink(ml, type) {
-            if (ml < 0) {
-                if (type === 'water' && state.water + ml < 0) return;
-                if (type === 'sweet' && state.sweet + ml < 0) return;
-            }
+            triggerHaptic();
+            
+            const now = new Date();
+            const entry = {
+                id: Date.now(),
+                time: now.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' }),
+                type: type,
+                ml: ml,
+                hourFloat: now.getHours() + (now.getMinutes() / 60)
+            };
 
             if (type === 'water') state.water += ml;
             if (type === 'sweet') state.sweet += ml;
+            state.log.push(entry);
 
-            // Dodaj punkt do wykresu
-            const now = new Date();
-            const currentHour = now.getHours() + (now.getMinutes() / 60);
-            
-            state.log.push({
-                hour: currentHour,
-                total: state.water + state.sweet
-            });
-
-            // Sortuj log chronologicznie (na wypadek błędów)
-            state.log.sort((a, b) => a.hour - b.hour);
-
-            save();
+            checkGoalCompletion(state.water + state.sweet - ml); // Sprawdź czy przekroczono TERAZ
+            saveData();
             updateUI();
         }
 
-        function addCustom(type) {
-            const id = type === 'water' ? 'custom_water' : 'custom_sweet';
-            const val = parseInt(document.getElementById(id).value);
-            if (val > 0) {
-                addDrink(val, type);
-                document.getElementById(id).value = '';
+        function openCustom(type) {
+            let amount = prompt("Podaj ilość ml:", "200");
+            if (amount && !isNaN(amount)) {
+                addDrink(parseInt(amount), type);
+            }
+        }
+
+        function removeEntry(id) {
+            const index = state.log.findIndex(e => e.id === id);
+            if (index > -1) {
+                const item = state.log[index];
+                if (item.type === 'water') state.water -= item.ml;
+                if (item.type === 'sweet') state.sweet -= item.ml;
+                state.log.splice(index, 1);
+                saveData();
+                updateUI();
+            }
+        }
+
+        function checkGoalCompletion(previousTotal) {
+            const currentTotal = state.water + state.sweet;
+            if (previousTotal < settings.dailyGoal && currentTotal >= settings.dailyGoal) {
+                fireConfetti();
             }
         }
 
         function endDay() {
-            if (!confirm("Czy na pewno chcesz zakończyć dzień? Dane trafią do historii.")) return;
+            if(!confirm("Zakończyć dzień?")) return;
 
-            // 1. Zapisz do historii
+            const total = state.water + state.sweet;
+            const todayStr = state.date;
+
+            // Logika Streak
+            if (total >= settings.dailyGoal) {
+                // Jeśli ostatni sukces był wczoraj lub dzisiaj (aby nie resetować przy podwójnym kliknięciu)
+                const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
+                const yesterdayStr = yesterday.toLocaleDateString('pl-PL');
+                
+                if (settings.lastGoalMetDate === yesterdayStr) {
+                    settings.streak++;
+                } else if (settings.lastGoalMetDate !== todayStr) {
+                     // Jeśli przerwa była dłuższa niż 1 dzień, reset. 
+                     // Jeśli streak=0, to ustaw 1.
+                     settings.streak = 1; 
+                }
+                settings.lastGoalMetDate = todayStr;
+            } else {
+                settings.streak = 0;
+            }
+
+            // Zapisz do historii
             let history = JSON.parse(localStorage.getItem(KEYS.HISTORY)) || [];
-            
-            const summary = {
-                date: state.date, // Data z zapisanego stanu
-                total: state.water + state.sweet,
+            history.unshift({
+                date: todayStr,
+                total: total,
                 water: state.water,
-                sweet: state.sweet
-            };
-
-            // Dodaj na początek
-            history.unshift(summary);
-            // Zachowaj tylko 3
-            if (history.length > 3) history = history.slice(0, 3);
+                sweet: state.sweet,
+                goal: settings.dailyGoal
+            });
+            if(history.length > 7) history = history.slice(0, 7);
             localStorage.setItem(KEYS.HISTORY, JSON.stringify(history));
 
-            // 2. Resetuj stan na nowy dzień
+            // Reset Stanu
             state = {
                 date: new Date().toLocaleDateString('pl-PL'),
                 water: 0,
                 sweet: 0,
-                log: [{ hour: 0, total: 0 }]
+                log: []
             };
-            
-            save();
+
+            saveData();
+            saveSettings();
             updateUI();
         }
 
-        function save() {
-            localStorage.setItem(KEYS.DATA, JSON.stringify(state));
+        function saveData() { localStorage.setItem(KEYS.DATA, JSON.stringify(state)); }
+        function saveSettings() { 
+            const input = document.getElementById('settings_goal_input').value;
+            if(input) settings.dailyGoal = parseInt(input);
+            localStorage.setItem(KEYS.SETTINGS, JSON.stringify(settings));
+            closeSettings();
+            updateUI();
         }
 
-        // --- UI i Wykresy ---
+        // --- UI I RYSOWANIE ---
+
         function updateUI() {
             const total = state.water + state.sweet;
-            document.getElementById('total_ml').innerText = total;
-
-            renderHistory();
-            drawChart();
-        }
-
-        function renderHistory() {
-            const container = document.getElementById('history_container');
-            const history = JSON.parse(localStorage.getItem(KEYS.HISTORY)) || [];
             
-            if (history.length === 0) {
-                container.innerHTML = '<li class="history-item" style="justify-content: center; color: #999;">Brak historii</li>';
-                return;
-            }
+            // Teksty
+            document.getElementById('display_total').innerText = total;
+            document.getElementById('display_goal').innerText = settings.dailyGoal;
+            document.getElementById('streak_badge').innerText = `🔥 ${settings.streak} dni serii`;
 
-            container.innerHTML = history.map(day => `
-                <li class="history-item">
-                    <span class="date">${day.date}</span>
-                    <span class="val">
-                        <span style="color:var(--accent-water)">${day.water}</span> / 
-                        <span style="color:var(--accent-sweet)">${day.sweet}</span> 
-                        = ${day.total} ml
-                    </span>
-                </li>
-            `).join('');
-        }
-
-        // --- Silnik Wykresu (Canvas) ---
-        function drawChart() {
-            const canvas = document.getElementById('hydrationChart');
-            const ctx = canvas.getContext('2d');
-            const parent = canvas.parentElement;
-
-            // Retina scaling
-            const dpr = window.devicePixelRatio || 1;
-            canvas.width = parent.clientWidth * dpr;
-            canvas.height = parent.clientHeight * dpr;
-            ctx.scale(dpr, dpr);
-
-            const width = parent.clientWidth;
-            const height = parent.clientHeight;
-            const padding = { top: 20, right: 10, bottom: 20, left: 10 };
-
-            // Czyść
-            ctx.clearRect(0, 0, width, height);
-
-            // Oblicz skalę Y (minimum 2500ml lub więcej jeśli wypito więcej)
-            const currentTotal = state.water + state.sweet;
-            const maxY = Math.max(2500, currentTotal * 1.2);
-
-            // Funkcje pomocnicze mapowania
-            const mapX = (hour) => padding.left + (hour / 24) * (width - padding.left - padding.right);
-            const mapY = (ml) => height - padding.bottom - (ml / maxY) * (height - padding.top - padding.bottom);
-
-            // 1. Rysuj osie / linie pomocnicze
-            ctx.strokeStyle = 'rgba(0,0,0,0.05)';
-            ctx.lineWidth = 1;
-            
-            // Linie poziome co 500ml
-            for(let i=0; i<=maxY; i+=500) {
-                const y = mapY(i);
-                ctx.beginPath(); ctx.moveTo(padding.left, y); ctx.lineTo(width-padding.right, y); ctx.stroke();
-            }
-            
-            // Etykiety godzin (0, 6, 12, 18, 24)
-            ctx.fillStyle = '#86868b';
-            ctx.font = '10px sans-serif';
-            ctx.textAlign = 'center';
-            [0, 6, 12, 18, 24].forEach(h => {
-                ctx.fillText(h, mapX(h), height - 5);
+            // Lista Logów
+            const list = document.getElementById('log_list');
+            list.innerHTML = '';
+            [...state.log].reverse().forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'log-item';
+                li.innerHTML = `
+                    <span>${item.time} ${item.type === 'water' ? '💧' : '🥤'} <strong>${item.ml}ml</strong></span>
+                    <button class="log-delete" onclick="removeEntry(${item.id})">✕</button>
+                `;
+                list.appendChild(li);
             });
 
-            // 2. Rysuj Linię Ciągłą (Historia dzisiejsza)
-            if (state.log.length > 0) {
-                ctx.beginPath();
-                ctx.moveTo(mapX(state.log[0].hour), mapY(state.log[0].total));
-                
-                // Rysujemy schodkowo lub liniowo? Liniowo lepiej wygląda
-                for (let i = 1; i < state.log.length; i++) {
-                    ctx.lineTo(mapX(state.log[i].hour), mapY(state.log[i].total));
-                }
-                
-                // Dodaj aktualny punkt (teraz)
-                const now = new Date();
-                const nowHour = Math.min(24, now.getHours() + now.getMinutes()/60);
-                
-                // Tylko jeśli ostatni log nie jest z przyszłości (błędy zegara)
-                if (state.log[state.log.length-1].hour <= nowHour) {
-                    ctx.lineTo(mapX(nowHour), mapY(currentTotal));
-                }
+            // Prognoza
+            updatePrediction(total);
 
-                ctx.strokeStyle = '#007AFF'; // Apple Blue
+            // Rysuj Wykres
+            drawMainChart();
+
+            // Aktualizuj Falę
+            targetWavePercent = Math.min(100, (total / settings.dailyGoal) * 100);
+        }
+
+        function updatePrediction(currentTotal) {
+            const now = new Date();
+            const hour = now.getHours() + (now.getMinutes()/60);
+            const startH = 7; 
+            const endH = 23;
+            
+            let msg = "";
+            if (hour < startH) msg = "Dzień się zaczyna.";
+            else if (hour > endH) msg = "Dzień zakończony.";
+            else {
+                const hoursPassed = hour - startH;
+                const hoursLeft = endH - hour;
+                const rate = currentTotal / hoursPassed;
+                const projected = Math.round(currentTotal + (rate * hoursLeft));
+                msg = `Prognoza (23:00): <strong>${projected} ml</strong>`;
+            }
+            document.getElementById('prediction').innerHTML = msg;
+        }
+
+        // --- CANVAS: Chart (Złożony: Liniowy + Słupkowy w tle) ---
+        function drawMainChart() {
+            const canvas = document.getElementById('mainChart');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            ctx.scale(dpr, dpr);
+            
+            const w = rect.width;
+            const h = rect.height;
+            const pad = 20;
+
+            ctx.clearRect(0,0,w,h);
+
+            // 1. TŁO: Wykres słupkowy tygodniowy (szary, subtelny)
+            const history = JSON.parse(localStorage.getItem(KEYS.HISTORY)) || [];
+            // Ostatnie 7 dni (odwrócone żeby najstarsze były z lewej)
+            const weekData = [...history].reverse(); 
+            const barWidth = (w - (pad*2)) / 7;
+            
+            weekData.forEach((day, i) => {
+                // Pozycjonowanie od prawej strony (żeby dzisiaj było po prawej, lub puste miejsce)
+                // Zakładamy max 7 dni. 
+                const x = pad + (i * barWidth) + 5;
+                const barH = (day.total / 3500) * (h - pad * 2); // Skala do 3500ml
+                
+                ctx.fillStyle = 'rgba(128,128,128,0.2)';
+                ctx.fillRect(x, h - pad - barH, barWidth - 10, barH);
+                
+                // Data pod słupkiem
+                ctx.fillStyle = '#888';
+                ctx.font = '10px sans-serif';
+                ctx.textAlign = 'center';
+                const dateShort = day.date.substring(0,5);
+                ctx.fillText(dateShort, x + (barWidth-10)/2, h - 5);
+            });
+
+            // 2. PIERWSZY PLAN: Linia dzisiejsza
+            const maxY = Math.max(settings.dailyGoal * 1.2, 3000);
+            const mapX = (hr) => pad + (hr / 24) * (w - pad * 2);
+            const mapY = (ml) => h - pad - (ml / maxY) * (h - pad * 2);
+
+            // Cel (Linia przerywana pozioma)
+            ctx.beginPath();
+            const yGoal = mapY(settings.dailyGoal);
+            ctx.moveTo(pad, yGoal);
+            ctx.lineTo(w-pad, yGoal);
+            ctx.strokeStyle = 'rgba(0,122,255,0.3)';
+            ctx.setLineDash([5,5]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Linia postępu
+            if (state.log.length > 0) {
+                // Posortuj logi
+                const sorted = [...state.log].sort((a,b) => a.hourFloat - b.hourFloat);
+                
+                ctx.beginPath();
+                ctx.moveTo(mapX(0), mapY(0)); // Start o 0:00
+
+                let accumulated = 0;
+                sorted.forEach(pt => {
+                    accumulated += pt.ml; // To jest uproszczenie, powinniśmy liczyć typ
+                    ctx.lineTo(mapX(pt.hourFloat), mapY(accumulated));
+                });
+                
+                // Linia do teraz
+                const now = new Date();
+                const nowH = now.getHours() + now.getMinutes()/60;
+                const currentTotal = state.water + state.sweet;
+                ctx.lineTo(mapX(nowH), mapY(currentTotal));
+
+                ctx.strokeStyle = '#007AFF';
                 ctx.lineWidth = 3;
-                ctx.setLineDash([]); // Linia ciągła
                 ctx.lineCap = 'round';
                 ctx.lineJoin = 'round';
+                ctx.shadowColor = 'rgba(0,122,255,0.4)';
+                ctx.shadowBlur = 10;
                 ctx.stroke();
-
-                // Cień pod linią
-                ctx.lineTo(mapX(nowHour), height - padding.bottom);
-                ctx.lineTo(mapX(0), height - padding.bottom);
-                ctx.fillStyle = 'rgba(0, 122, 255, 0.1)';
-                ctx.fill();
-            }
-
-            // 3. Rysuj Prognozę (Linia przerywana)
-            const now = new Date();
-            const nowHour = now.getHours() + now.getMinutes()/60;
-            
-            if (nowHour < 22) { // Prognozujemy do 22:00 lub 24:00
-                // Oblicz tempo
-                // Zakładamy start o 8:00 dla sensownej prognozy, lub od 0:00
-                const hoursElapsed = Math.max(1, nowHour - 8); 
-                const rate = currentTotal / hoursElapsed; // ml na godzinę od 8 rano
-                
-                let predictedTotal = currentTotal;
-                if (rate > 0 && currentTotal > 100) {
-                     const hoursLeft = 22 - nowHour;
-                     predictedTotal = currentTotal + (rate * hoursLeft);
-                }
-
-                // Rysuj linię
-                ctx.beginPath();
-                ctx.moveTo(mapX(nowHour), mapY(currentTotal));
-                ctx.lineTo(mapX(22), mapY(predictedTotal));
-                
-                ctx.strokeStyle = '#FF9F0A'; // Apple Orange
-                ctx.lineWidth = 2;
-                ctx.setLineDash([5, 5]); // Przerywana
-                ctx.stroke();
-
-                // Kropka na końcu prognozy
-                ctx.beginPath();
-                ctx.arc(mapX(22), mapY(predictedTotal), 4, 0, Math.PI*2);
-                ctx.fillStyle = '#FF9F0A';
-                ctx.fill();
-                
-                // Tekst prognozy
-                document.getElementById('prediction_text').innerHTML = 
-                    `Prognoza na 22:00: <strong>${Math.round(predictedTotal)} ml</strong>`;
-            } else {
-                 document.getElementById('prediction_text').innerHTML = "Dzień zakończony";
+                ctx.shadowBlur = 0;
             }
         }
 
-        // Odświeżaj wykres co minutę (żeby linia czasu "płynęła")
-        setInterval(drawChart, 60000);
+        // --- ANIMACJA FALI (LIQUID BACKGROUND) ---
+        let waveCanvas, waveCtx, waveWidth, waveHeight;
+        let waveAngle = 0;
+        let targetWavePercent = 0;
+        let currentWavePercent = 0;
 
-        // Start
-        document.addEventListener('DOMContentLoaded', init);
-        window.onresize = drawChart;
+        function initWave() {
+            waveCanvas = document.getElementById('waveCanvas');
+            waveCtx = waveCanvas.getContext('2d');
+            resizeWave();
+            window.addEventListener('resize', resizeWave);
+        }
+
+        function resizeWave() {
+            waveWidth = window.innerWidth;
+            waveHeight = window.innerHeight;
+            waveCanvas.width = waveWidth;
+            waveCanvas.height = waveHeight;
+        }
+
+        function loopWave() {
+            waveCtx.clearRect(0, 0, waveWidth, waveHeight);
+
+            // Interpolacja poziomu (płynne podnoszenie)
+            const speed = 0.05;
+            currentWavePercent += (targetWavePercent - currentWavePercent) * speed;
+
+            const waterHeight = (currentWavePercent / 100) * waveHeight;
+            const yOffset = waveHeight - waterHeight;
+
+            // Rysuj fale
+            waveCtx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--wave-color').trim();
+            waveCtx.beginPath();
+            
+            // Fale
+            const amplitude = 15;
+            const frequency = 0.01;
+            waveAngle += 0.03;
+
+            for (let x = 0; x <= waveWidth; x++) {
+                const y = Math.sin(x * frequency + waveAngle) * amplitude + yOffset;
+                waveCtx.lineTo(x, y);
+            }
+
+            waveCtx.lineTo(waveWidth, waveHeight);
+            waveCtx.lineTo(0, waveHeight);
+            waveCtx.closePath();
+            waveCtx.fill();
+
+            // Druga fala (dla efektu głębi)
+            waveCtx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--wave-top').trim();
+            waveCtx.beginPath();
+            for (let x = 0; x <= waveWidth; x++) {
+                const y = Math.cos(x * frequency + waveAngle + 1) * amplitude + yOffset + 5; // lekkie przesunięcie
+                waveCtx.lineTo(x, y);
+            }
+            waveCtx.lineTo(waveWidth, waveHeight);
+            waveCtx.lineTo(0, waveHeight);
+            waveCtx.closePath();
+            waveCtx.fill();
+
+            requestAnimationFrame(loopWave);
+        }
+
+        // --- EFEKT KONFETTI (Prosty silnik) ---
+        function fireConfetti() {
+            const canvas = document.getElementById('confettiCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            
+            let particles = [];
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff', '#ff00ff'];
+            
+            for(let i=0; i<150; i++) {
+                particles.push({
+                    x: canvas.width / 2,
+                    y: canvas.height / 2,
+                    vx: (Math.random() - 0.5) * 15,
+                    vy: (Math.random() - 0.5) * 15 - 5,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    size: Math.random() * 8 + 4
+                });
+            }
+
+            let frame = 0;
+            function animateConfetti() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                let active = false;
+                
+                particles.forEach(p => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vy += 0.5; // Grawitacja
+                    p.vx *= 0.96; // Opór
+                    
+                    if (p.y < canvas.height) active = true;
+
+                    ctx.fillStyle = p.color;
+                    ctx.fillRect(p.x, p.y, p.size, p.size);
+                });
+
+                if (active && frame < 200) {
+                    frame++;
+                    requestAnimationFrame(animateConfetti);
+                } else {
+                    ctx.clearRect(0,0,canvas.width, canvas.height);
+                }
+            }
+            animateConfetti();
+        }
+
+        // --- MODAL ---
+        function openSettings() {
+            document.getElementById('settings_goal_input').value = settings.dailyGoal;
+            document.getElementById('settingsModal').style.display = 'flex';
+        }
+        function closeSettings() {
+            document.getElementById('settingsModal').style.display = 'none';
+        }
 
     </script>
 </body>
