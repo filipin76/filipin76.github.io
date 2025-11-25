@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Hydration</title>
+    <style>
+        :root {
+            --bg-gradient: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%), radial-gradient(at 100% 0%, hsla(339,49%,30%,1) 0, transparent 50%);
+            --glass-bg: rgba(255, 255, 255, 0.75);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --text-main: #1d1d1f;
+            --text-sec: #86868b;
+            --accent-water: #0a84ff;
+            --accent-sweet: #ff375f;
+            --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.15);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+            background-color: #f2f2f7;
+            /* Pływające tło "Liquid" */
+            background-image: 
+                radial-gradient(at 80% 0%, hsla(189,100%,56%,0.2) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, hsla(340,100%,76%,0.2) 0px, transparent 50%),
+                radial-gradient(at 80% 50%, hsla(270,100%,96%,0.2) 0px, transparent 50%),
+                radial-gradient(at 0% 100%, hsla(240,100%,70%,0.2) 0px, transparent 50%);
+            background-attachment: fixed;
+            background-size: cover;
+            margin: 0;
+            padding: 20px 20px 80px 20px; /* Padding bottom na scroll */
+            color: var(--text-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* Minimalistyczny Header */
+        header {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 30px;
+        }
+        
+        h1 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-sec);
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .main-count {
+            font-size: 64px;
+            font-weight: 200; /* Ultra cienki font jak w iOS */
+            letter-spacing: -2px;
+            margin: 5px 0;
+        }
+        .unit { font-size: 24px; color: var(--text-sec); font-weight: 400; }
+
+        /* Karty Glassmorphism */
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-radius: 28px;
+            border: 1px solid var(--glass-border);
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: var(--shadow-soft);
+        }
+
+        /* Wykres */
+        .chart-wrapper {
+            position: relative;
+            height: 200px;
+            width: 100%;
+        }
+        canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Grid Przycisków */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .control-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .icon-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 10px;
+            background: rgba(255,255,255,0.8);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        /* Nowoczesne przyciski */
+        button.add-btn {
+            width: 100%;
+            padding: 15px 0;
+            border: none;
+            border-radius: 18px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #fff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        button.add-btn:active { transform: scale(0.96); opacity: 0.9; }
+        
+        .btn-water { background: var(--accent-water); }
+        .btn-sweet { background: var(--accent-sweet); }
+        
+        .sub-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-sec);
+            font-size: 13px;
+            padding: 8px;
+            font-weight: 500;
+        }
+        
+        .custom-input {
+            width: 80%;
+            padding: 10px;
+            text-align: center;
+            border: none;
+            background: rgba(255,255,255,0.5);
+            border-radius: 12px;
+            font-size: 14px;
+            color: var(--text-main);
+        }
+
+        /* Przycisk Zakończ Dzień */
+        .end-day-btn {
+            width: 100%;
+            background: #1d1d1f;
+            color: white;
+            padding: 18px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        /* Historia */
+        .history-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            font-size: 14px;
+        }
+        .history-item:last-child { border-bottom: none; }
+        .date { color: var(--text-sec); }
+        .val { font-weight: 600; }
+
+        /* Animacja wejścia */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .container { animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header>
+            <h1>Dzisiejsze spożycie</h1>
+            <div class="main-count">
+                <span id="total_ml">0</span><span class="unit">ml</span>
+            </div>
+            <div style="font-size: 13px; color: #86868b; margin-top: -5px;" id="prediction_text">
+                Prognoza: 0 ml
+            </div>
+        </header>
+
+        <div class="card">
+            <div class="chart-wrapper">
+                <canvas id="hydrationChart"></canvas>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="controls-grid">
+                
+                <div class="control-column">
+                    <div class="icon-circle" style="color: var(--accent-water);">💧</div>
+                    <button class="add-btn btn-water" onclick="addDrink(200, 'water')">+ 200</button>
+                    <button class="add-btn btn-water" onclick="addDrink(300, 'water')">+ 300</button>
+                    <button class="add-btn btn-water" onclick="addDrink(500, 'water')">+ 500</button>
+                    <button class="sub-btn" onclick="addDrink(-100, 'water')">- 100 ml</button>
+                    <input type="number" id="custom_water" class="custom-input" placeholder="Własna ilość">
+                    <button class="sub-btn" onclick="addCustom('water')" style="color: var(--accent-water)">Dodaj</button>
+                </div>
+
+                <div class="control-column">
+                    <div class="icon-circle" style="color: var(--accent-sweet);">🥤</div>
+                    <button class="add-btn btn-sweet" onclick="addDrink(200, 'sweet')">+ 200</button>
+                    <button class="add-btn btn-sweet" onclick="addDrink(300, 'sweet')">+ 300</button>
+                    <button class="add-btn btn-sweet" onclick="addDrink(500, 'sweet')">+ 500</button>
+                    <button class="sub-btn" onclick="addDrink(-100, 'sweet')">- 100 ml</button>
+                    <input type="number" id="custom_sweet" class="custom-input" placeholder="Własna ilość">
+                    <button class="sub-btn" onclick="addCustom('sweet')" style="color: var(--accent-sweet)">Dodaj</button>
+                </div>
+
+            </div>
+        </div>
+
+        <button class="end-day-btn" onclick="endDay()">Zakończ Dzień i Zapisz 🌙</button>
+
+        <div class="card" style="margin-top: 25px;">
+            <h1 style="text-align: left; margin-bottom: 15px;">Ostatnie 3 dni</h1>
+            <ul class="history-list" id="history_container">
+                <li class="history-item" style="justify-content: center; color: #999;">Brak danych</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script>
+        // --- Stan Aplikacji ---
+        const KEYS = { DATA: 'hydro_data_v3', HISTORY: 'hydro_history_v3' };
+        
+        let state = {
+            date: new Date().toLocaleDateString('pl-PL'),
+            water: 0,
+            sweet: 0,
+            log: [] // { hour: float, total: int } - punkty na wykresie
+        };
+
+        // --- Inicjalizacja ---
+        function init() {
+            // Wczytaj dzisiejsze dane
+            const stored = localStorage.getItem(KEYS.DATA);
+            if (stored) {
+                const parsed = JSON.parse(stored);
+                // Sprawdź czy to ten sam dzień, jeśli nie, to po prostu wczytaj, 
+                // użytkownik musi sam kliknąć "Zakończ dzień" zgodnie z prośbą, 
+                // ale dla wygody zmienimy datę jeśli to świeże otwarcie
+                if (parsed.date === new Date().toLocaleDateString('pl-PL')) {
+                    state = parsed;
+                } else {
+                    // Opcjonalnie: można tu wymusić auto-zakończenie, 
+                    // ale zrobimy to manualnie przyciskiem jak w instrukcji.
+                    // Aktualizujemy tylko datę wyświetlania jeśli stara sesja wisi
+                    // Ale trzymamy dane do momentu kliknięcia przycisku.
+                }
+            } else {
+                // Nowy start o północy (0,0)
+                state.log.push({ hour: 0, total: 0 });
+            }
+            
+            updateUI();
+        }
+
+        // --- Logika Danych ---
+        function addDrink(ml, type) {
+            if (ml < 0) {
+                if (type === 'water' && state.water + ml < 0) return;
+                if (type === 'sweet' && state.sweet + ml < 0) return;
+            }
+
+            if (type === 'water') state.water += ml;
+            if (type === 'sweet') state.sweet += ml;
+
+            // Dodaj punkt do wykresu
+            const now = new Date();
+            const currentHour = now.getHours() + (now.getMinutes() / 60);
+            
+            state.log.push({
+                hour: currentHour,
+                total: state.water + state.sweet
+            });
+
+            // Sortuj log chronologicznie (na wypadek błędów)
+            state.log.sort((a, b) => a.hour - b.hour);
+
+            save();
+            updateUI();
+        }
+
+        function addCustom(type) {
+            const id = type === 'water' ? 'custom_water' : 'custom_sweet';
+            const val = parseInt(document.getElementById(id).value);
+            if (val > 0) {
+                addDrink(val, type);
+                document.getElementById(id).value = '';
+            }
+        }
+
+        function endDay() {
+            if (!confirm("Czy na pewno chcesz zakończyć dzień? Dane trafią do historii.")) return;
+
+            // 1. Zapisz do historii
+            let history = JSON.parse(localStorage.getItem(KEYS.HISTORY)) || [];
+            
+            const summary = {
+                date: state.date, // Data z zapisanego stanu
+                total: state.water + state.sweet,
+                water: state.water,
+                sweet: state.sweet
+            };
+
+            // Dodaj na początek
+            history.unshift(summary);
+            // Zachowaj tylko 3
+            if (history.length > 3) history = history.slice(0, 3);
+            localStorage.setItem(KEYS.HISTORY, JSON.stringify(history));
+
+            // 2. Resetuj stan na nowy dzień
+            state = {
+                date: new Date().toLocaleDateString('pl-PL'),
+                water: 0,
+                sweet: 0,
+                log: [{ hour: 0, total: 0 }]
+            };
+            
+            save();
+            updateUI();
+        }
+
+        function save() {
+            localStorage.setItem(KEYS.DATA, JSON.stringify(state));
+        }
+
+        // --- UI i Wykresy ---
+        function updateUI() {
+            const total = state.water + state.sweet;
+            document.getElementById('total_ml').innerText = total;
+
+            renderHistory();
+            drawChart();
+        }
+
+        function renderHistory() {
+            const container = document.getElementById('history_container');
+            const history = JSON.parse(localStorage.getItem(KEYS.HISTORY)) || [];
+            
+            if (history.length === 0) {
+                container.innerHTML = '<li class="history-item" style="justify-content: center; color: #999;">Brak historii</li>';
+                return;
+            }
+
+            container.innerHTML = history.map(day => `
+                <li class="history-item">
+                    <span class="date">${day.date}</span>
+                    <span class="val">
+                        <span style="color:var(--accent-water)">${day.water}</span> / 
+                        <span style="color:var(--accent-sweet)">${day.sweet}</span> 
+                        = ${day.total} ml
+                    </span>
+                </li>
+            `).join('');
+        }
+
+        // --- Silnik Wykresu (Canvas) ---
+        function drawChart() {
+            const canvas = document.getElementById('hydrationChart');
+            const ctx = canvas.getContext('2d');
+            const parent = canvas.parentElement;
+
+            // Retina scaling
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = parent.clientWidth * dpr;
+            canvas.height = parent.clientHeight * dpr;
+            ctx.scale(dpr, dpr);
+
+            const width = parent.clientWidth;
+            const height = parent.clientHeight;
+            const padding = { top: 20, right: 10, bottom: 20, left: 10 };
+
+            // Czyść
+            ctx.clearRect(0, 0, width, height);
+
+            // Oblicz skalę Y (minimum 2500ml lub więcej jeśli wypito więcej)
+            const currentTotal = state.water + state.sweet;
+            const maxY = Math.max(2500, currentTotal * 1.2);
+
+            // Funkcje pomocnicze mapowania
+            const mapX = (hour) => padding.left + (hour / 24) * (width - padding.left - padding.right);
+            const mapY = (ml) => height - padding.bottom - (ml / maxY) * (height - padding.top - padding.bottom);
+
+            // 1. Rysuj osie / linie pomocnicze
+            ctx.strokeStyle = 'rgba(0,0,0,0.05)';
+            ctx.lineWidth = 1;
+            
+            // Linie poziome co 500ml
+            for(let i=0; i<=maxY; i+=500) {
+                const y = mapY(i);
+                ctx.beginPath(); ctx.moveTo(padding.left, y); ctx.lineTo(width-padding.right, y); ctx.stroke();
+            }
+            
+            // Etykiety godzin (0, 6, 12, 18, 24)
+            ctx.fillStyle = '#86868b';
+            ctx.font = '10px sans-serif';
+            ctx.textAlign = 'center';
+            [0, 6, 12, 18, 24].forEach(h => {
+                ctx.fillText(h, mapX(h), height - 5);
+            });
+
+            // 2. Rysuj Linię Ciągłą (Historia dzisiejsza)
+            if (state.log.length > 0) {
+                ctx.beginPath();
+                ctx.moveTo(mapX(state.log[0].hour), mapY(state.log[0].total));
+                
+                // Rysujemy schodkowo lub liniowo? Liniowo lepiej wygląda
+                for (let i = 1; i < state.log.length; i++) {
+                    ctx.lineTo(mapX(state.log[i].hour), mapY(state.log[i].total));
+                }
+                
+                // Dodaj aktualny punkt (teraz)
+                const now = new Date();
+                const nowHour = Math.min(24, now.getHours() + now.getMinutes()/60);
+                
+                // Tylko jeśli ostatni log nie jest z przyszłości (błędy zegara)
+                if (state.log[state.log.length-1].hour <= nowHour) {
+                    ctx.lineTo(mapX(nowHour), mapY(currentTotal));
+                }
+
+                ctx.strokeStyle = '#007AFF'; // Apple Blue
+                ctx.lineWidth = 3;
+                ctx.setLineDash([]); // Linia ciągła
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.stroke();
+
+                // Cień pod linią
+                ctx.lineTo(mapX(nowHour), height - padding.bottom);
+                ctx.lineTo(mapX(0), height - padding.bottom);
+                ctx.fillStyle = 'rgba(0, 122, 255, 0.1)';
+                ctx.fill();
+            }
+
+            // 3. Rysuj Prognozę (Linia przerywana)
+            const now = new Date();
+            const nowHour = now.getHours() + now.getMinutes()/60;
+            
+            if (nowHour < 22) { // Prognozujemy do 22:00 lub 24:00
+                // Oblicz tempo
+                // Zakładamy start o 8:00 dla sensownej prognozy, lub od 0:00
+                const hoursElapsed = Math.max(1, nowHour - 8); 
+                const rate = currentTotal / hoursElapsed; // ml na godzinę od 8 rano
+                
+                let predictedTotal = currentTotal;
+                if (rate > 0 && currentTotal > 100) {
+                     const hoursLeft = 22 - nowHour;
+                     predictedTotal = currentTotal + (rate * hoursLeft);
+                }
+
+                // Rysuj linię
+                ctx.beginPath();
+                ctx.moveTo(mapX(nowHour), mapY(currentTotal));
+                ctx.lineTo(mapX(22), mapY(predictedTotal));
+                
+                ctx.strokeStyle = '#FF9F0A'; // Apple Orange
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]); // Przerywana
+                ctx.stroke();
+
+                // Kropka na końcu prognozy
+                ctx.beginPath();
+                ctx.arc(mapX(22), mapY(predictedTotal), 4, 0, Math.PI*2);
+                ctx.fillStyle = '#FF9F0A';
+                ctx.fill();
+                
+                // Tekst prognozy
+                document.getElementById('prediction_text').innerHTML = 
+                    `Prognoza na 22:00: <strong>${Math.round(predictedTotal)} ml</strong>`;
+            } else {
+                 document.getElementById('prediction_text').innerHTML = "Dzień zakończony";
+            }
+        }
+
+        // Odświeżaj wykres co minutę (żeby linia czasu "płynęła")
+        setInterval(drawChart, 60000);
+
+        // Start
+        document.addEventListener('DOMContentLoaded', init);
+        window.onresize = drawChart;
+
+    </script>
+</body>
+</html>
