@@ -4,740 +4,730 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#ffffff">
-    <title>Hydration Ultimate</title>
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="theme-color" content="#E6F4FF">
+    <title>Hydration Pure</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
-        /* --- Zmienne CSS (Tryb Jasny/Ciemny) --- */
+        /* --- DESIGN SYSTEM: PURE WATER --- */
         :root {
-            --primary: #007AFF;
-            --primary-dark: #005ecb;
-            --sweet: #FF2D55;
-            --bg-color: #F2F2F7;
-            --text-main: #000000;
-            --text-sec: #8E8E93;
-            --glass-bg: rgba(255, 255, 255, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.4);
-            --wave-color: rgba(0, 122, 255, 0.2);
-            --wave-top: rgba(0, 122, 255, 0.4);
-            --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
-            --card-radius: 24px;
+            /* Kolory Kategorii */
+            --water: #0099FF;
+            --water-bg: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            
+            --coffee: #C49A6C;
+            --coffee-bg: #EAD8C5;
+            
+            --sweet: #FF7075;
+            --sweet-bg: #FFD1D3;
+
+            /* UI Colors */
+            --text-main: #002B55;
+            --text-light: #6C8CA5;
+            --bg-body: #E6F4FF;
+            --card-bg: #FFFFFF;
+            
+            /* Cienie i Kształty */
+            --shadow: 0 10px 30px rgba(0, 110, 255, 0.08);
+            --radius: 20px;
+            --font: 'Outfit', sans-serif;
         }
 
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --bg-color: #000000;
-                --text-main: #FFFFFF;
-                --text-sec: #98989D;
-                --glass-bg: rgba(28, 28, 30, 0.65);
-                --glass-border: rgba(255, 255, 255, 0.1);
-                --wave-color: rgba(10, 132, 255, 0.2);
-                --wave-top: rgba(10, 132, 255, 0.4);
-                --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-            }
-        }
-
-        /* --- Style Podstawowe --- */
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: var(--bg-color);
+            font-family: var(--font);
+            background: linear-gradient(180deg, #E6F4FF 0%, #FFFFFF 100%);
             color: var(--text-main);
-            height: 100vh;
+            margin: 0;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
-            overflow-y: auto;
-            -webkit-tap-highlight-color: transparent;
-            position: relative;
         }
 
-        /* Tło Falujące */
-        #waveCanvas {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            pointer-events: none;
-            transition: transform 1s ease-in-out;
-        }
+        #confettiCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; }
 
-        /* Konfetti */
-        #confettiCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 9999;
-            pointer-events: none;
-        }
-
-        /* Kontener Główny */
         .container {
-            position: relative;
-            z-index: 10;
-            padding: 60px 20px 100px 20px; /* Padding pod iPhone Notch i Scroll */
-            max-width: 600px;
+            padding: 50px 20px 120px 20px;
+            max-width: 500px;
             margin: 0 auto;
         }
 
-        /* Nagłówek i Ustawienia */
+        /* --- HEADER & TOP BAR --- */
         .top-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
-        
-        .streak-badge {
-            background: linear-gradient(135deg, #FF9500, #FFCC00);
-            color: #fff;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 14px;
-            box-shadow: 0 2px 10px rgba(255, 149, 0, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
 
-        .settings-btn {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            width: 40px;
-            height: 40px;
+        .icon-btn {
+            background: white;
+            border: 1px solid rgba(0,0,0,0.05);
+            width: 44px; height: 44px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--text-main);
             cursor: pointer;
-            backdrop-filter: blur(20px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            transition: all 0.2s;
+        }
+        .icon-btn:active { transform: scale(0.95); }
+        .icon-btn.active { background: #FFD700; color: #8B8000; border-color: #FFD700; }
+
+        .streak-pill {
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 153, 255, 0.15);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex; align-items: center; gap: 8px;
+            color: var(--text-main);
         }
 
-        /* Główny Licznik */
-        .header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
+        .header-section { text-align: center; margin: 20px 0 40px 0; }
+        
+        .main-count-wrapper { position: relative; display: inline-block; }
         .main-count {
             font-size: 72px;
-            font-weight: 200;
-            letter-spacing: -3px;
+            font-weight: 800;
+            color: var(--water);
             line-height: 1;
+            letter-spacing: -2px;
+            background: linear-gradient(135deg, var(--water) 0%, #0055AA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        .goal-text {
-            color: var(--text-sec);
-            font-size: 16px;
+        .real-volume {
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: 500;
             margin-top: 5px;
         }
+        
+        .timer-badge {
+            display: inline-flex; align-items: center; gap: 5px;
+            background: #DFF2FF; color: var(--water);
+            padding: 5px 12px; border-radius: 20px;
+            font-size: 13px; font-weight: 600; margin-top: 15px;
+        }
 
-        /* Glass Cards */
+        /* --- CARDS --- */
         .card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--card-radius);
-            padding: 20px;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 24px;
             margin-bottom: 20px;
             box-shadow: var(--shadow);
+            border: 1px solid rgba(255,255,255,0.8);
         }
-        
-        h2 { font-size: 18px; margin: 0 0 15px 0; font-weight: 600; }
+        h2 { font-size: 17px; margin: 0 0 20px 0; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px;}
 
-        /* Wykresy (Canvas) */
-        canvas.chart { width: 100%; height: 160px; }
-
-        /* Przyciski Sterowania */
-        .controls {
+        /* --- CONTROLS (3 Column) --- */
+        .controls-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
         }
-        .control-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .btn-large {
-            border: none;
-            padding: 16px;
-            border-radius: 18px;
-            color: white;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: transform 0.1s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-        }
-        .btn-large:active { transform: scale(0.95); }
-        .btn-water { background: var(--primary); }
-        .btn-sweet { background: var(--sweet); }
         
-        .btn-small-row {
-            display: flex;
-            gap: 8px;
-        }
-        .btn-small {
-            flex: 1;
-            padding: 10px;
-            border: none;
-            border-radius: 12px;
-            background: rgba(128,128,128,0.15);
-            color: var(--text-main);
-            font-weight: 500;
-            cursor: pointer;
-        }
+        .control-col { display: flex; flex-direction: column; gap: 8px; }
 
-        /* Historia z usuwaniem */
-        .log-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            max-height: 200px;
-            overflow-y: auto;
+        .btn-drink {
+            border: none; width: 100%; padding: 15px 5px;
+            border-radius: 16px; color: white;
+            font-family: var(--font); cursor: pointer;
+            display: flex; flex-direction: column; align-items: center; gap: 5px;
+            transition: transform 0.1s; position: relative; overflow: hidden;
         }
+        .btn-drink:active { transform: scale(0.96); }
+        .btn-drink span { font-size: 15px; font-weight: 700; }
+        
+        .btn-water { background: var(--water-bg); box-shadow: 0 8px 20px rgba(0, 153, 255, 0.2); }
+        .btn-coffee { background: var(--coffee); box-shadow: 0 8px 20px rgba(196, 154, 108, 0.25); }
+        .btn-sweet { background: var(--sweet); box-shadow: 0 8px 20px rgba(255, 112, 117, 0.25); }
+
+        .btn-tiny {
+            background: #F4F9FF; color: var(--text-light);
+            border: none; padding: 10px; border-radius: 10px;
+            font-weight: 600; cursor: pointer; font-size: 12px;
+        }
+        .btn-tiny:active { background: #E1EFFF; }
+
+        /* --- STATS & ACHIEVEMENTS --- */
+        .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .stat-box {
+            background: #F8FBFF; border-radius: 12px; padding: 15px; text-align: center;
+        }
+        .stat-val { font-size: 20px; font-weight: 700; color: var(--water); display: block; }
+        .stat-label { font-size: 12px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
+
+        .achievements-grid { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 5px; }
+        .badge {
+            min-width: 60px; height: 60px;
+            border-radius: 50%;
+            background: #F0F0F5;
+            display: flex; align-items: center; justify-content: center;
+            color: #CCD;
+            position: relative;
+        }
+        .badge.unlocked { background: #FFD700; color: #FFF; box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3); }
+        .badge-icon { width: 30px; height: 30px; fill: currentColor; }
+
+        /* --- LOG LIST --- */
+        .log-list { list-style: none; padding: 0; margin: 0; max-height: 200px; overflow-y: auto; }
         .log-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid rgba(128,128,128,0.1);
+            padding: 12px 0; border-bottom: 1px solid #F4F9FF;
+            display: flex; align-items: center; font-size: 15px; font-weight: 500;
         }
-        .log-delete {
-            color: #FF3B30;
-            background: none;
-            border: none;
-            font-size: 18px;
-            padding: 0 10px;
-            cursor: pointer;
-        }
+        .log-meta { display: flex; flex-direction: column; width: 60px; }
+        .log-time { font-size: 12px; color: var(--text-light); }
+        .log-details { flex-grow: 1; display: flex; align-items: center; gap: 10px; }
+        .log-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
+        .log-val { font-weight: 700; color: var(--text-main); }
+        .log-del { background: none; border: none; color: #FF7075; font-size: 20px; opacity: 0.3; padding: 0 10px; }
+        .log-del:hover { opacity: 1; }
 
-        /* Przycisk Zakończ Dzień */
-        .end-btn {
-            width: 100%;
-            padding: 18px;
-            background: var(--text-main);
-            color: var(--bg-color);
-            border: none;
-            border-radius: 20px;
-            font-size: 17px;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-        }
-
-        /* Modal Ustawień */
+        /* --- MODAL --- */
         .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 1000;
-            align-items: center;
-            justify-content: center;
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 43, 85, 0.4); backdrop-filter: blur(8px);
+            z-index: 2000; align-items: flex-end; justify-content: center;
         }
         .modal-content {
-            background: var(--bg-color);
-            padding: 30px;
-            border-radius: 24px;
-            width: 80%;
-            max-width: 300px;
-            text-align: center;
+            background: #FFFFFF; width: 100%; max-width: 500px;
+            border-radius: 24px 24px 0 0; padding: 30px; box-sizing: border-box;
+            max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease;
         }
-        .modal input {
-            width: 100%;
-            padding: 15px;
-            margin: 20px 0;
-            border-radius: 12px;
-            border: 1px solid #ccc;
-            font-size: 18px;
-            text-align: center;
-        }
+        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
+        .modal-section { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #F4F9FF; }
+        .modal-label { display: block; margin-bottom: 10px; font-weight: 700; font-size: 14px; color: var(--text-main); }
+        .input-row { display: flex; gap: 10px; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        
+        .modal input, .modal select {
+            padding: 12px; border-radius: 12px; border: 2px solid #F4F9FF;
+            font-size: 16px; background: #FAFDFF; color: var(--text-main);
+            font-family: var(--font); font-weight: 600; width: 100%; box-sizing: border-box;
+        }
+        .modal input:focus { border-color: var(--water); outline: none; }
+
+        .btn-full { width: 100%; padding: 18px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px; }
+        .btn-save { background: var(--text-main); color: white; }
+        .end-btn { background: var(--text-main); color: white; width: 100%; padding: 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; margin-top: 20px; }
+
+        /* SVG Icons Utility */
+        .svg-icon { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+        .svg-fill { fill: currentColor; stroke: none; }
     </style>
 </head>
 <body>
 
-    <canvas id="waveCanvas"></canvas>
     <canvas id="confettiCanvas"></canvas>
 
     <div class="container">
         
         <div class="top-bar">
-            <div class="streak-badge" id="streak_badge">🔥 0 dni</div>
-            <button class="settings-btn" onclick="openSettings()">⚙️</button>
+            <div class="streak-pill" id="streak_badge">
+                <svg class="svg-icon svg-fill" viewBox="0 0 24 24" style="color: #FF9500;"><path d="M17.66 11.2C17.43 10.9 17.15 10.64 16.89 10.38C16.22 9.78 15.46 9.35 14.82 8.72C13.33 7.26 13 4.85 13.95 3C13 3.23 12.17 3.75 11.46 4.32C8.87 6.4 7.85 10.07 9.07 13.22C9.11 13.32 9.15 13.42 9.15 13.55C9.15 13.77 9 13.97 8.8 14.05C8.63 14.11 8.44 14.09 8.26 14.04C6.96 13.66 5.92 12.8 5.14 11.66C5.23 15.65 7.9 19.1 11.75 20.3C15.6 21.5 19.83 20 21.67 16.4C22.25 15.28 22.19 13.45 20.94 12.72C19.78 12.04 18.5 12.3 17.66 11.2ZM12.92 18.42C12.33 18.59 11.71 18.43 11.23 18.06C10.67 17.63 10.33 16.92 10.34 16.19C10.34 16.15 10.34 16.11 10.34 16.07C10.36 15.7 10.59 15.39 10.92 15.25C11.3 15.1 11.72 15.2 12.03 15.47C12.44 15.83 13 15.93 13.5 15.73C13.88 15.58 14.2 15.27 14.39 14.88C14.53 14.6 14.93 14.53 15.18 14.73C15.46 14.96 15.48 15.38 15.26 15.65C14.77 16.24 14.36 18 12.92 18.42Z"/></svg>
+                <span id="streak_val">0</span>
+            </div>
+            
+            <div style="display:flex; gap:10px;">
+                <button class="icon-btn" id="hot_mode_btn" onclick="toggleHotMode()">
+                    <svg class="svg-icon svg-fill" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                </button>
+                <button class="icon-btn" onclick="openSettings()">
+                    <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                </button>
+            </div>
         </div>
 
-        <div class="header">
-            <div class="main-count" id="display_total">0</div>
-            <div class="goal-text">Cel: <span id="display_goal">2500</span> ml</div>
-            <div style="font-size: 13px; color: var(--text-sec); margin-top: 8px;" id="prediction">
-                Prognoza: Obliczam...
+        <div class="header-section">
+            <div class="main-count-wrapper">
+                <div class="main-count" id="display_hydration">0</div>
+                <div class="real-volume">Objętość: <span id="display_volume">0</span> ml</div>
+            </div>
+            <div style="margin-top: 10px;">
+                <span class="goal-text">Cel: <span id="display_goal">2500</span> ml</span>
+            </div>
+            
+            <div id="last_drink_badge" class="timer-badge" style="display:none;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <span id="last_drink_time">0 min temu</span>
             </div>
         </div>
 
         <div class="card">
-            <h2>📊 Dziś i Tydzień</h2>
+            <h2>Dodaj napój</h2>
+            <div class="controls-grid">
+                <div class="control-col">
+                    <button class="btn-drink btn-water" onclick="addDrink('water', settings.presets.water)">
+                        <svg class="svg-icon svg-fill" viewBox="0 0 24 24"><path d="M12 22c4.97 0 9-4.03 9-9 0-4.97-9-13-9-13S3 8.03 3 13c0 4.97 4.03 9 9 9z"/></svg>
+                        <span id="lbl_water">250</span>
+                    </button>
+                    <button class="btn-tiny" onclick="openCustom('water')">Inna</button>
+                </div>
+                <div class="control-col">
+                    <button class="btn-drink btn-coffee" onclick="addDrink('coffee', settings.presets.coffee)">
+                        <svg class="svg-icon svg-fill" viewBox="0 0 24 24"><path d="M18.5 3H6c-1.1 0-2 .9-2 2v5.71c0 3.83 2.95 7.18 6.78 7.29 3.96.12 7.22-3.06 7.22-7V9h1.5c.83 0 1.5.67 1.5 1.5S20.33 12 19.5 12H19v2h.5c1.93 0 3.5-1.57 3.5-3.5V4.5c0-.83-.67-1.5-1.5-1.5zM16 9H6V5h10v4zM2 19h20v2H2z"/></svg>
+                        <span id="lbl_coffee">200</span>
+                    </button>
+                    <button class="btn-tiny" onclick="openCustom('coffee')">Inna</button>
+                </div>
+                <div class="control-col">
+                    <button class="btn-drink btn-sweet" onclick="addDrink('sweet', settings.presets.sweet)">
+                        <svg class="svg-icon svg-fill" viewBox="0 0 24 24"><path d="M17 19c0 1.1-.9 2-2 2H9c-1.1 0-2-.9-2-2V9h10v10zM7 7h10v2H7zM18 2H6v3h12z"/></svg>
+                        <span id="lbl_sweet">330</span>
+                    </button>
+                    <button class="btn-tiny" onclick="openCustom('sweet')">Inna</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Statystyki</h2>
+            <div class="stats-row" style="margin-bottom: 20px;">
+                <div class="stat-box">
+                    <span class="stat-val" id="stat_best">0</span>
+                    <span class="stat-label">Rekord Dnia</span>
+                </div>
+                <div class="stat-box">
+                    <span class="stat-val" id="stat_avg">0</span>
+                    <span class="stat-label">Średnia</span>
+                </div>
+            </div>
+            
+            <h2>Odznaki</h2>
+            <div class="achievements-grid">
+                <div class="badge" id="badge_streak" title="7 dni z rzędu">
+                    <svg class="badge-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                </div>
+                <div class="badge" id="badge_hydra" title="Hydra: Wypij 3500ml">
+                    <svg class="badge-icon" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 3.99L19.53 20H4.47L12 5.99z"/></svg>
+                </div>
+                <div class="badge" id="badge_early" title="Ranny Ptaszek: Pij przed 8:00">
+                    <svg class="badge-icon" viewBox="0 0 24 24"><path d="M20 15.31L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69zM12 18V6l8.5 6L12 18z"/></svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Historia Tygodnia</h2>
             <div style="position: relative; height: 160px; width: 100%;">
-                <canvas id="mainChart" class="chart"></canvas>
-            </div>
-        </div>
-
-        <div class="card controls">
-            <div class="control-group">
-                <div style="text-align: center; font-size: 30px;">💧</div>
-                <button class="btn-large btn-water" onclick="addDrink(250, 'water')">+ 250 ml</button>
-                <div class="btn-small-row">
-                    <button class="btn-small" onclick="addDrink(500, 'water')">+500</button>
-                    <button class="btn-small" onclick="openCustom('water')">Inna</button>
-                </div>
-            </div>
-            <div class="control-group">
-                <div style="text-align: center; font-size: 30px;">🥤</div>
-                <button class="btn-large btn-sweet" onclick="addDrink(250, 'sweet')">+ 250 ml</button>
-                <div class="btn-small-row">
-                    <button class="btn-small" onclick="addDrink(330, 'sweet')">+330</button>
-                    <button class="btn-small" onclick="openCustom('sweet')">Inna</button>
-                </div>
+                <canvas id="mainChart" style="width:100%; height:100%"></canvas>
             </div>
         </div>
 
         <div class="card">
-            <h2>🕒 Dzisiejsze wpisy</h2>
-            <ul class="log-list" id="log_list">
-                </ul>
+            <h2>Dziś</h2>
+            <ul class="log-list" id="log_list"></ul>
         </div>
 
-        <button class="end-btn" onclick="endDay()">Zakończ Dzień i Zapisz 🌙</button>
+        <button class="end-btn" onclick="endDay()">Zakończ Dzień i Zapisz</button>
     </div>
 
     <div id="settingsModal" class="modal">
         <div class="modal-content">
-            <h3>Ustaw Cel Dzienny</h3>
-            <input type="number" id="settings_goal_input" placeholder="np. 2500">
-            <button class="btn-large btn-water" style="width:100%" onclick="saveSettings()">Zapisz</button>
-            <button class="btn-small" style="background:transparent; margin-top:10px" onclick="closeSettings()">Anuluj</button>
+            <h3>Ustawienia</h3>
+            
+            <div class="modal-section">
+                <span class="modal-label">Twoje Presety (Kubki)</span>
+                <div class="input-row">
+                    <span>Woda 💧</span>
+                    <input type="number" id="pset_water" style="width:100px;">
+                </div>
+                <div class="input-row">
+                    <span>Kawa ☕</span>
+                    <input type="number" id="pset_coffee" style="width:100px;">
+                </div>
+                <div class="input-row">
+                    <span>Napoje 🥤</span>
+                    <input type="number" id="pset_sweet" style="width:100px;">
+                </div>
+            </div>
+
+            <div class="modal-section">
+                <span class="modal-label">Współczynnik Nawodnienia (%)</span>
+                <div class="input-row">
+                    <span>Kawa</span>
+                    <input type="number" id="factor_coffee" value="85" style="width:80px;">
+                </div>
+                <div class="input-row">
+                    <span>Napoje</span>
+                    <input type="number" id="factor_sweet" value="90" style="width:80px;">
+                </div>
+            </div>
+
+            <div class="modal-section">
+                <span class="modal-label">Kalkulator Celu</span>
+                <input type="number" id="calc_weight" placeholder="Waga (kg)" style="margin-bottom:10px">
+                <select id="calc_gender" style="margin-bottom:10px">
+                    <option value="male">Mężczyzna</option>
+                    <option value="female">Kobieta</option>
+                </select>
+                <button class="btn-full" style="background:#E6F4FF; color:var(--text-main);" onclick="calcGoal()">Oblicz Cel</button>
+            </div>
+
+            <div class="modal-section" style="border:none">
+                <span class="modal-label">Edytuj Cel Ręcznie (ml)</span>
+                <input type="number" id="set_goal">
+            </div>
+
+            <button class="btn-full btn-save" onclick="saveSettings()">Zapisz</button>
+            <button class="btn-full" style="background:transparent; color:#999;" onclick="closeSettings()">Anuluj</button>
         </div>
     </div>
 
     <script>
-        // --- KONFIGURACJA I STAN ---
-        const KEYS = { DATA: 'hydro_ult_data', HISTORY: 'hydro_ult_history', SETTINGS: 'hydro_ult_settings' };
+        // --- CORE DATA ---
+        const KEYS = { DATA: 'hp_data', HISTORY: 'hp_hist', SETTINGS: 'hp_conf' };
         
-        let state = {
-            date: new Date().toLocaleDateString('pl-PL'),
-            water: 0,
-            sweet: 0,
-            log: [] // { id: timestamp, time: string, type: string, ml: number, hourFloat: number }
+        let state = { date: '', water: 0, coffee: 0, sweet: 0, log: [] }; // volumes
+        let settings = { 
+            dailyGoal: 2500, 
+            streak: 0, 
+            lastGoalDate: null,
+            hotMode: false,
+            presets: { water: 250, coffee: 200, sweet: 330 },
+            factors: { coffee: 0.85, sweet: 0.90 } // water is always 1.0
         };
 
-        let settings = {
-            dailyGoal: 2500,
-            streak: 0,
-            lastGoalMetDate: null
-        };
-
-        // --- INICJALIZACJA ---
+        // --- INIT ---
         document.addEventListener('DOMContentLoaded', () => {
             loadAll();
-            initWave();
-            loopWave();
+            checkNewDay();
             updateUI();
+            setInterval(updateTimer, 60000); // Update "Last drink" every min
         });
 
         function loadAll() {
-            // Ustawienia
             const s = localStorage.getItem(KEYS.SETTINGS);
-            if (s) settings = JSON.parse(s);
-
-            // Dzisiejsze dane
+            if (s) settings = {...settings, ...JSON.parse(s)}; // Merge defaults
+            
             const d = localStorage.getItem(KEYS.DATA);
             if (d) {
                 const parsed = JSON.parse(d);
-                if (parsed.date === new Date().toLocaleDateString('pl-PL')) {
-                    state = parsed;
-                } else {
-                    // Stara sesja, nie zakończona ręcznie - nie resetujemy automatycznie, 
-                    // czekamy na usera, ale datę w UI pokażemy dzisiejszą przy resecie
-                }
+                if (parsed.date === new Date().toLocaleDateString('pl-PL')) state = parsed;
+            } else {
+                state.date = new Date().toLocaleDateString('pl-PL');
             }
         }
 
-        // --- LOGIKA BIZNESOWA ---
-
-        function triggerHaptic() {
-            if (navigator.vibrate) navigator.vibrate(15);
+        function checkNewDay() {
+            const today = new Date().toLocaleDateString('pl-PL');
+            if (state.date !== today) {
+                // Should technically end previous day if not ended manually, but for safety just start new
+                state = { date: today, water: 0, coffee: 0, sweet: 0, log: [] };
+                // Hot mode resets daily
+                settings.hotMode = false; 
+                saveData();
+            }
         }
 
-        function addDrink(ml, type) {
-            triggerHaptic();
-            
+        // --- LOGIC ---
+        function getHydration() {
+            return Math.round(
+                (state.water * 1) + 
+                (state.coffee * settings.factors.coffee) + 
+                (state.sweet * settings.factors.sweet)
+            );
+        }
+
+        function getVolume() {
+            return state.water + state.coffee + state.sweet;
+        }
+
+        function getEffectiveGoal() {
+            return settings.dailyGoal + (settings.hotMode ? 500 : 0);
+        }
+
+        function addDrink(type, ml) {
+            if(!ml || ml <= 0) return;
+            if(navigator.vibrate) navigator.vibrate(10);
+
             const now = new Date();
             const entry = {
                 id: Date.now(),
                 time: now.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' }),
+                ts: now.getTime(),
                 type: type,
-                ml: ml,
-                hourFloat: now.getHours() + (now.getMinutes() / 60)
+                ml: parseInt(ml)
             };
 
-            if (type === 'water') state.water += ml;
-            if (type === 'sweet') state.sweet += ml;
+            state[type] += entry.ml;
             state.log.push(entry);
 
-            checkGoalCompletion(state.water + state.sweet - ml); // Sprawdź czy przekroczono TERAZ
+            const hyd = getHydration();
+            const goal = getEffectiveGoal();
+            // Check Confetti
+            const prevHyd = hyd - (type==='water'?ml : (type==='coffee'?ml*settings.factors.coffee : ml*settings.factors.sweet));
+            if(prevHyd < goal && hyd >= goal) fireConfetti();
+
+            checkAchievements(entry);
             saveData();
             updateUI();
         }
 
-        function openCustom(type) {
-            let amount = prompt("Podaj ilość ml:", "200");
-            if (amount && !isNaN(amount)) {
-                addDrink(parseInt(amount), type);
-            }
-        }
-
         function removeEntry(id) {
-            const index = state.log.findIndex(e => e.id === id);
-            if (index > -1) {
-                const item = state.log[index];
-                if (item.type === 'water') state.water -= item.ml;
-                if (item.type === 'sweet') state.sweet -= item.ml;
-                state.log.splice(index, 1);
-                saveData();
-                updateUI();
+            const idx = state.log.findIndex(e => e.id === id);
+            if(idx > -1) {
+                const item = state.log[idx];
+                state[item.type] -= item.ml;
+                state.log.splice(idx, 1);
+                saveData(); updateUI();
             }
         }
 
-        function checkGoalCompletion(previousTotal) {
-            const currentTotal = state.water + state.sweet;
-            if (previousTotal < settings.dailyGoal && currentTotal >= settings.dailyGoal) {
-                fireConfetti();
-            }
+        function toggleHotMode() {
+            settings.hotMode = !settings.hotMode;
+            updateUI(); // Goal update
+            saveSettings(false); // Silent save
+        }
+
+        function openCustom(type) {
+            let val = prompt("Podaj ilość (ml):", "200");
+            if(val) addDrink(type, val);
         }
 
         function endDay() {
             if(!confirm("Zakończyć dzień?")) return;
-
-            const total = state.water + state.sweet;
+            
+            const hyd = getHydration();
+            const goal = getEffectiveGoal();
             const todayStr = state.date;
 
-            // Logika Streak
-            if (total >= settings.dailyGoal) {
-                // Jeśli ostatni sukces był wczoraj lub dzisiaj (aby nie resetować przy podwójnym kliknięciu)
-                const yesterday = new Date(); yesterday.setDate(yesterday.getDate() - 1);
-                const yesterdayStr = yesterday.toLocaleDateString('pl-PL');
-                
-                if (settings.lastGoalMetDate === yesterdayStr) {
-                    settings.streak++;
-                } else if (settings.lastGoalMetDate !== todayStr) {
-                     // Jeśli przerwa była dłuższa niż 1 dzień, reset. 
-                     // Jeśli streak=0, to ustaw 1.
-                     settings.streak = 1; 
-                }
-                settings.lastGoalMetDate = todayStr;
+            // Streak Logic
+            if(hyd >= goal) {
+                const yest = new Date(); yest.setDate(yest.getDate() - 1);
+                const yestStr = yest.toLocaleDateString('pl-PL');
+                if(settings.lastGoalDate === yestStr) settings.streak++;
+                else if(settings.lastGoalDate !== todayStr) settings.streak = 1;
+                settings.lastGoalDate = todayStr;
             } else {
                 settings.streak = 0;
             }
 
-            // Zapisz do historii
-            let history = JSON.parse(localStorage.getItem(KEYS.HISTORY)) || [];
-            history.unshift({
-                date: todayStr,
-                total: total,
-                water: state.water,
-                sweet: state.sweet,
-                goal: settings.dailyGoal
-            });
-            if(history.length > 7) history = history.slice(0, 7);
-            localStorage.setItem(KEYS.HISTORY, JSON.stringify(history));
+            let hist = JSON.parse(localStorage.getItem(KEYS.HISTORY)) || [];
+            hist.unshift({ date: todayStr, hyd: hyd, vol: getVolume() });
+            if(hist.length > 7) hist = hist.slice(0, 7);
+            localStorage.setItem(KEYS.HISTORY, JSON.stringify(hist));
 
-            // Reset Stanu
-            state = {
-                date: new Date().toLocaleDateString('pl-PL'),
-                water: 0,
-                sweet: 0,
-                log: []
-            };
-
-            saveData();
-            saveSettings();
-            updateUI();
-        }
-
-        function saveData() { localStorage.setItem(KEYS.DATA, JSON.stringify(state)); }
-        function saveSettings() { 
-            const input = document.getElementById('settings_goal_input').value;
-            if(input) settings.dailyGoal = parseInt(input);
-            localStorage.setItem(KEYS.SETTINGS, JSON.stringify(settings));
-            closeSettings();
-            updateUI();
-        }
-
-        // --- UI I RYSOWANIE ---
-
-        function updateUI() {
-            const total = state.water + state.sweet;
+            // Reset
+            state = { date: new Date().toLocaleDateString('pl-PL'), water: 0, coffee: 0, sweet: 0, log: [] };
+            settings.hotMode = false;
             
-            // Teksty
-            document.getElementById('display_total').innerText = total;
-            document.getElementById('display_goal').innerText = settings.dailyGoal;
-            document.getElementById('streak_badge').innerText = `🔥 ${settings.streak} dni serii`;
+            saveData(); saveSettings(false); updateUI();
+        }
 
-            // Lista Logów
+        function checkAchievements(lastEntry) {
+            const badges = {
+                early: document.getElementById('badge_early'),
+                hydra: document.getElementById('badge_hydra'),
+                streak: document.getElementById('badge_streak')
+            };
+            
+            // Early Bird (Before 8:00)
+            const h = new Date(lastEntry.ts).getHours();
+            if(h < 8) badges.early.classList.add('unlocked');
+            
+            // Hydra (3500ml hydration)
+            if(getHydration() >= 3500) badges.hydra.classList.add('unlocked');
+        }
+
+        function calcStats() {
+            let hist = JSON.parse(localStorage.getItem(KEYS.HISTORY)) || [];
+            let max = 0;
+            let sum = 0;
+            hist.forEach(d => {
+                if(d.hyd > max) max = d.hyd;
+                sum += d.hyd;
+            });
+            const avg = hist.length ? Math.round(sum / hist.length) : 0;
+            
+            // Include today in max
+            if(getHydration() > max) max = getHydration();
+
+            document.getElementById('stat_best').innerText = max;
+            document.getElementById('stat_avg').innerText = avg;
+        }
+
+        // --- UI ---
+        function updateUI() {
+            const hyd = getHydration();
+            const vol = getVolume();
+            const goal = getEffectiveGoal();
+
+            document.getElementById('display_hydration').innerText = hyd;
+            document.getElementById('display_volume').innerText = vol;
+            document.getElementById('display_goal').innerText = goal;
+            document.getElementById('streak_val').innerText = settings.streak;
+
+            // Hot Mode visual
+            const btnHot = document.getElementById('hot_mode_btn');
+            if(settings.hotMode) btnHot.classList.add('active');
+            else btnHot.classList.remove('active');
+
+            // Button labels
+            document.getElementById('lbl_water').innerText = settings.presets.water;
+            document.getElementById('lbl_coffee').innerText = settings.presets.coffee;
+            document.getElementById('lbl_sweet').innerText = settings.presets.sweet;
+
+            // Log List
             const list = document.getElementById('log_list');
             list.innerHTML = '';
             [...state.log].reverse().forEach(item => {
+                const color = item.type==='water'?'var(--water)':(item.type==='coffee'?'var(--coffee)':'var(--sweet)');
+                const icon = item.type==='water'?'💧':(item.type==='coffee'?'☕':'🥤');
+                
                 const li = document.createElement('li');
                 li.className = 'log-item';
                 li.innerHTML = `
-                    <span>${item.time} ${item.type === 'water' ? '💧' : '🥤'} <strong>${item.ml}ml</strong></span>
-                    <button class="log-delete" onclick="removeEntry(${item.id})">✕</button>
+                    <div class="log-meta"><span class="log-time">${item.time}</span></div>
+                    <div class="log-details">
+                        <div class="log-icon" style="background:${color}20; color:${color}">${icon}</div>
+                        <span style="color:var(--text-main)">${item.type==='water'?'Woda':(item.type==='coffee'?'Kawa':'Napój')}</span>
+                        <span class="log-val">${item.ml}ml</span>
+                    </div>
+                    <button class="log-del" onclick="removeEntry(${item.id})">×</button>
                 `;
                 list.appendChild(li);
             });
 
-            // Prognoza
-            updatePrediction(total);
-
-            // Rysuj Wykres
-            drawMainChart();
-
-            // Aktualizuj Falę
-            targetWavePercent = Math.min(100, (total / settings.dailyGoal) * 100);
+            // Last Drink Timer
+            updateTimer();
+            calcStats();
+            drawChart();
+            
+            // Check streak badge visual
+            if(settings.streak >= 7) document.getElementById('badge_streak').classList.add('unlocked');
         }
 
-        function updatePrediction(currentTotal) {
-            const now = new Date();
-            const hour = now.getHours() + (now.getMinutes()/60);
-            const startH = 7; 
-            const endH = 23;
-            
-            let msg = "";
-            if (hour < startH) msg = "Dzień się zaczyna.";
-            else if (hour > endH) msg = "Dzień zakończony.";
-            else {
-                const hoursPassed = hour - startH;
-                const hoursLeft = endH - hour;
-                const rate = currentTotal / hoursPassed;
-                const projected = Math.round(currentTotal + (rate * hoursLeft));
-                msg = `Prognoza (23:00): <strong>${projected} ml</strong>`;
+        function updateTimer() {
+            const badge = document.getElementById('last_drink_badge');
+            if(state.log.length === 0) {
+                badge.style.display = 'none';
+                return;
             }
-            document.getElementById('prediction').innerHTML = msg;
+            badge.style.display = 'inline-flex';
+            const lastTs = state.log[state.log.length-1].ts;
+            const diffMin = Math.floor((Date.now() - lastTs) / 60000);
+            
+            let txt = diffMin + ' min temu';
+            if(diffMin === 0) txt = 'Przed chwilą';
+            if(diffMin > 60) txt = Math.floor(diffMin/60) + 'h temu';
+            
+            document.getElementById('last_drink_time').innerText = txt;
         }
 
-        // --- CANVAS: Chart (Złożony: Liniowy + Słupkowy w tle) ---
-        function drawMainChart() {
-            const canvas = document.getElementById('mainChart');
-            const ctx = canvas.getContext('2d');
+        function drawChart() {
+            const cvs = document.getElementById('mainChart');
+            const ctx = cvs.getContext('2d');
             const dpr = window.devicePixelRatio || 1;
-            const rect = canvas.getBoundingClientRect();
-            
-            canvas.width = rect.width * dpr;
-            canvas.height = rect.height * dpr;
+            const rect = cvs.getBoundingClientRect();
+            cvs.width = rect.width * dpr; cvs.height = rect.height * dpr;
             ctx.scale(dpr, dpr);
-            
-            const w = rect.width;
-            const h = rect.height;
-            const pad = 20;
-
+            const w = rect.width, h = rect.height, pad = 10;
             ctx.clearRect(0,0,w,h);
 
-            // 1. TŁO: Wykres słupkowy tygodniowy (szary, subtelny)
-            const history = JSON.parse(localStorage.getItem(KEYS.HISTORY)) || [];
-            // Ostatnie 7 dni (odwrócone żeby najstarsze były z lewej)
-            const weekData = [...history].reverse(); 
-            const barWidth = (w - (pad*2)) / 7;
-            
-            weekData.forEach((day, i) => {
-                // Pozycjonowanie od prawej strony (żeby dzisiaj było po prawej, lub puste miejsce)
-                // Zakładamy max 7 dni. 
-                const x = pad + (i * barWidth) + 5;
-                const barH = (day.total / 3500) * (h - pad * 2); // Skala do 3500ml
-                
-                ctx.fillStyle = 'rgba(128,128,128,0.2)';
-                ctx.fillRect(x, h - pad - barH, barWidth - 10, barH);
-                
-                // Data pod słupkiem
-                ctx.fillStyle = '#888';
-                ctx.font = '10px sans-serif';
-                ctx.textAlign = 'center';
-                const dateShort = day.date.substring(0,5);
-                ctx.fillText(dateShort, x + (barWidth-10)/2, h - 5);
+            const hist = JSON.parse(localStorage.getItem(KEYS.HISTORY)) || [];
+            const week = [...hist].reverse();
+            const bw = (w - pad*2) / 7;
+
+            week.forEach((d, i) => {
+                const x = pad + (i * bw) + 5;
+                const bh = (d.hyd / 3500) * (h - pad*2); // Scale to 3500
+                ctx.fillStyle = '#E6F4FF';
+                ctx.beginPath(); ctx.roundRect(x, h-pad-bh, bw-10, bh, 6); ctx.fill();
             });
-
-            // 2. PIERWSZY PLAN: Linia dzisiejsza
-            const maxY = Math.max(settings.dailyGoal * 1.2, 3000);
-            const mapX = (hr) => pad + (hr / 24) * (w - pad * 2);
-            const mapY = (ml) => h - pad - (ml / maxY) * (h - pad * 2);
-
-            // Cel (Linia przerywana pozioma)
-            ctx.beginPath();
-            const yGoal = mapY(settings.dailyGoal);
-            ctx.moveTo(pad, yGoal);
-            ctx.lineTo(w-pad, yGoal);
-            ctx.strokeStyle = 'rgba(0,122,255,0.3)';
-            ctx.setLineDash([5,5]);
-            ctx.stroke();
-            ctx.setLineDash([]);
-
-            // Linia postępu
-            if (state.log.length > 0) {
-                // Posortuj logi
-                const sorted = [...state.log].sort((a,b) => a.hourFloat - b.hourFloat);
-                
-                ctx.beginPath();
-                ctx.moveTo(mapX(0), mapY(0)); // Start o 0:00
-
-                let accumulated = 0;
-                sorted.forEach(pt => {
-                    accumulated += pt.ml; // To jest uproszczenie, powinniśmy liczyć typ
-                    ctx.lineTo(mapX(pt.hourFloat), mapY(accumulated));
-                });
-                
-                // Linia do teraz
-                const now = new Date();
-                const nowH = now.getHours() + now.getMinutes()/60;
-                const currentTotal = state.water + state.sweet;
-                ctx.lineTo(mapX(nowH), mapY(currentTotal));
-
-                ctx.strokeStyle = '#007AFF';
-                ctx.lineWidth = 3;
-                ctx.lineCap = 'round';
-                ctx.lineJoin = 'round';
-                ctx.shadowColor = 'rgba(0,122,255,0.4)';
-                ctx.shadowBlur = 10;
-                ctx.stroke();
-                ctx.shadowBlur = 0;
-            }
-        }
-
-        // --- ANIMACJA FALI (LIQUID BACKGROUND) ---
-        let waveCanvas, waveCtx, waveWidth, waveHeight;
-        let waveAngle = 0;
-        let targetWavePercent = 0;
-        let currentWavePercent = 0;
-
-        function initWave() {
-            waveCanvas = document.getElementById('waveCanvas');
-            waveCtx = waveCanvas.getContext('2d');
-            resizeWave();
-            window.addEventListener('resize', resizeWave);
-        }
-
-        function resizeWave() {
-            waveWidth = window.innerWidth;
-            waveHeight = window.innerHeight;
-            waveCanvas.width = waveWidth;
-            waveCanvas.height = waveHeight;
-        }
-
-        function loopWave() {
-            waveCtx.clearRect(0, 0, waveWidth, waveHeight);
-
-            // Interpolacja poziomu (płynne podnoszenie)
-            const speed = 0.05;
-            currentWavePercent += (targetWavePercent - currentWavePercent) * speed;
-
-            const waterHeight = (currentWavePercent / 100) * waveHeight;
-            const yOffset = waveHeight - waterHeight;
-
-            // Rysuj fale
-            waveCtx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--wave-color').trim();
-            waveCtx.beginPath();
             
-            // Fale
-            const amplitude = 15;
-            const frequency = 0.01;
-            waveAngle += 0.03;
+            // Today Line
+            if(state.log.length > 0) {
+                // Approximate graph for today
+                const goal = getEffectiveGoal();
+                const maxY = Math.max(goal * 1.2, 3000);
+                const mx = hr => pad + (hr/24)*(w-pad*2);
+                const my = ml => h - pad - (ml/maxY)*(h-pad*2);
 
-            for (let x = 0; x <= waveWidth; x++) {
-                const y = Math.sin(x * frequency + waveAngle) * amplitude + yOffset;
-                waveCtx.lineTo(x, y);
-            }
-
-            waveCtx.lineTo(waveWidth, waveHeight);
-            waveCtx.lineTo(0, waveHeight);
-            waveCtx.closePath();
-            waveCtx.fill();
-
-            // Druga fala (dla efektu głębi)
-            waveCtx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--wave-top').trim();
-            waveCtx.beginPath();
-            for (let x = 0; x <= waveWidth; x++) {
-                const y = Math.cos(x * frequency + waveAngle + 1) * amplitude + yOffset + 5; // lekkie przesunięcie
-                waveCtx.lineTo(x, y);
-            }
-            waveCtx.lineTo(waveWidth, waveHeight);
-            waveCtx.lineTo(0, waveHeight);
-            waveCtx.closePath();
-            waveCtx.fill();
-
-            requestAnimationFrame(loopWave);
-        }
-
-        // --- EFEKT KONFETTI (Prosty silnik) ---
-        function fireConfetti() {
-            const canvas = document.getElementById('confettiCanvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            
-            let particles = [];
-            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff', '#ff00ff'];
-            
-            for(let i=0; i<150; i++) {
-                particles.push({
-                    x: canvas.width / 2,
-                    y: canvas.height / 2,
-                    vx: (Math.random() - 0.5) * 15,
-                    vy: (Math.random() - 0.5) * 15 - 5,
-                    color: colors[Math.floor(Math.random() * colors.length)],
-                    size: Math.random() * 8 + 4
-                });
-            }
-
-            let frame = 0;
-            function animateConfetti() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                let active = false;
+                ctx.beginPath(); 
+                ctx.moveTo(mx(0), my(0));
                 
-                particles.forEach(p => {
-                    p.x += p.vx;
-                    p.y += p.vy;
-                    p.vy += 0.5; // Grawitacja
-                    p.vx *= 0.96; // Opór
+                let runningHyd = 0;
+                // Need to sort log by time to draw correctly
+                const sorted = [...state.log].sort((a,b) => a.ts - b.ts);
+                
+                sorted.forEach(l => {
+                    // Effective hydration add
+                    let eff = l.ml;
+                    if(l.type==='coffee') eff *= settings.factors.coffee;
+                    if(l.type==='sweet') eff *= settings.factors.sweet;
+                    runningHyd += eff;
                     
-                    if (p.y < canvas.height) active = true;
-
-                    ctx.fillStyle = p.color;
-                    ctx.fillRect(p.x, p.y, p.size, p.size);
+                    const d = new Date(l.ts);
+                    const hr = d.getHours() + d.getMinutes()/60;
+                    ctx.lineTo(mx(hr), my(runningHyd));
                 });
-
-                if (active && frame < 200) {
-                    frame++;
-                    requestAnimationFrame(animateConfetti);
-                } else {
-                    ctx.clearRect(0,0,canvas.width, canvas.height);
-                }
+                
+                const now = new Date();
+                ctx.lineTo(mx(now.getHours() + now.getMinutes()/60), my(runningHyd));
+                
+                ctx.strokeStyle = '#0099FF'; ctx.lineWidth = 3; 
+                ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.stroke();
             }
-            animateConfetti();
         }
 
-        // --- MODAL ---
+        // --- SETTINGS ---
         function openSettings() {
-            document.getElementById('settings_goal_input').value = settings.dailyGoal;
-            document.getElementById('settingsModal').style.display = 'flex';
+            document.getElementById('pset_water').value = settings.presets.water;
+            document.getElementById('pset_coffee').value = settings.presets.coffee;
+            document.getElementById('pset_sweet').value = settings.presets.sweet;
+            
+            document.getElementById('factor_coffee').value = Math.round(settings.factors.coffee * 100);
+            document.getElementById('factor_sweet').value = Math.round(settings.factors.sweet * 100);
+            
+            document.getElementById('set_goal').value = settings.dailyGoal;
+            document.getElementById('settingsModal').style.display='flex';
         }
-        function closeSettings() {
-            document.getElementById('settingsModal').style.display = 'none';
+        
+        function closeSettings() { document.getElementById('settingsModal').style.display='none'; }
+        
+        function saveSettings(close = true) {
+            settings.presets.water = parseInt(document.getElementById('pset_water').value);
+            settings.presets.coffee = parseInt(document.getElementById('pset_coffee').value);
+            settings.presets.sweet = parseInt(document.getElementById('pset_sweet').value);
+            
+            settings.factors.coffee = parseInt(document.getElementById('factor_coffee').value) / 100;
+            settings.factors.sweet = parseInt(document.getElementById('factor_sweet').value) / 100;
+            
+            const g = parseInt(document.getElementById('set_goal').value);
+            if(g > 0) settings.dailyGoal = g;
+            
+            localStorage.setItem(KEYS.SETTINGS, JSON.stringify(settings));
+            if(close) closeSettings();
+            updateUI();
         }
 
+        function calcGoal() {
+            const w = parseInt(document.getElementById('calc_weight').value);
+            const gen = document.getElementById('calc_gender').value;
+            if(w>0) {
+                const base = (gen === 'male') ? 35 : 31;
+                const g = Math.ceil((w * base)/50)*50;
+                document.getElementById('set_goal').value = g;
+            }
+        }
+
+        function saveData() { localStorage.setItem(KEYS.DATA, JSON.stringify(state)); }
+        
+        function fireConfetti() {
+            const cvs = document.getElementById('confettiCanvas');
+            const ctx = cvs.getContext('2d');
+            cvs.width = window.innerWidth; cvs.height = window.innerHeight;
+            let p = Array.from({length:80}, ()=>({x:cvs.width/2,y:cvs.height/2,vx:(Math.random()-0.5)*20,vy:(Math.random()-0.5)*20-5,c:['#0099FF','#FF7075'][Math.floor(Math.random()*2)]}));
+            let f=0; function a(){ctx.clearRect(0,0,cvs.width,cvs.height);let act=false;p.forEach(pt=>{pt.x+=pt.vx;pt.y+=pt.vy;pt.vy+=0.5;pt.vx*=0.95;if(pt.y<cvs.height)act=true;ctx.fillStyle=pt.c;ctx.fillRect(pt.x,pt.y,6,6)});if(act&&f++<150)requestAnimationFrame(a);else ctx.clearRect(0,0,cvs.width,cvs.height);}a();
+        }
     </script>
 </body>
 </html>
