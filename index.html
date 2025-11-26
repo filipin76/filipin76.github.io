@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="theme-color" content="#E6F4FF">
+    <meta name="theme-color" content="#E7F1FA">
     <title>Hydration Pure</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,44 +13,216 @@
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* --- DESIGN SYSTEM: PURE WATER --- */
         :root {
-            /* Kolory Kategorii */
-            --water: #0099FF;
-            --water-bg: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            
-            --coffee: #C49A6C;
-            --coffee-bg: #EAD8C5;
-            
-            --sweet: #FF7075;
-            --sweet-bg: #FFD1D3;
-
-            /* UI Colors */
-            --text-main: #002B55;
-            --text-light: #6C8CA5;
-            --bg-body: #E6F4FF;
-            --card-bg: #FFFFFF;
-            
-            /* Cienie i Kształty */
-            --shadow: 0 10px 30px rgba(0, 110, 255, 0.08);
-            --radius: 20px;
             --font: 'Outfit', sans-serif;
+
+            /* wartości domyślne, nadpisywane przez theme+mode */
+            --bg-body: #E7F1FA;
+            --bg-card: #FFFFFF;
+            --bg-card-soft: #F5F7FB;
+            --text-main: #11243A;
+            --text-light: #6C8CA5;
+            --border-soft: rgba(255,255,255,0.9);
+            --shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.10);
+
+            --accent: #8DB9E3;
+            --accent-soft: #E0ECFA;
+
+            --icon-color: #5A6F86;
+
+            --color-water: #A9D6F5;
+            --color-coffee: #D9B89A;
+            --color-sweet: #F7A8B1;
+
+            --color-water-deep: #4B9FE1;
+            --color-coffee-deep: #B58B60;
+            --color-sweet-deep: #E56A7A;
+
+            --radius-card: 20px;
+            --radius-glass: 36px;
         }
+
+        /* --- MOTYWY (LIGHT + DARK) --- */
+
+        /* BLUE */
+        body[data-theme="blue"][data-mode="light"] {
+            --bg-body: #E7F1FA;
+            --bg-card: #FFFFFF;
+            --bg-card-soft: #F3F6FC;
+            --text-main: #10243D;
+            --text-light: #6B88A4;
+            --border-soft: rgba(255,255,255,0.9);
+            --shadow-soft: 0 16px 40px rgba(15, 23, 42, 0.12);
+            --accent: #8DB9E3;
+            --accent-soft: #DFEBFA;
+            --icon-color: #5C7391;
+
+            --color-water: #A9D6F5;
+            --color-water-deep: #4B9FE1;
+            --color-coffee: #D9B89A;
+            --color-coffee-deep: #B58B60;
+            --color-sweet: #F7A8B1;
+            --color-sweet-deep: #E56A7A;
+        }
+
+        body[data-theme="blue"][data-mode="dark"] {
+            --bg-body: #0B1624;
+            --bg-card: #131C2A;
+            --bg-card-soft: #182335;
+            --text-main: #E5EDF7;
+            --text-light: #9BA9C6;
+            --border-soft: rgba(148, 163, 184, 0.35);
+            --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.65);
+            --accent: #8DB9E3;
+            --accent-soft: #26344C;
+            --icon-color: #AFC8E8;
+
+            --color-water: #4B9FE1;
+            --color-water-deep: #2E6FB0;
+            --color-coffee: #C8A381;
+            --color-coffee-deep: #9B7A59;
+            --color-sweet: #E98B97;
+            --color-sweet-deep: #D66574;
+        }
+
+        /* MINT */
+        body[data-theme="mint"][data-mode="light"] {
+            --bg-body: #E8F7F2;
+            --bg-card: #FFFFFF;
+            --bg-card-soft: #EDF8F4;
+            --text-main: #104033;
+            --text-light: #719688;
+            --border-soft: rgba(255,255,255,0.9);
+            --shadow-soft: 0 16px 40px rgba(15, 23, 42, 0.10);
+            --accent: #8ED7C1;
+            --accent-soft: #DDF4EC;
+            --icon-color: #5D8F82;
+
+            --color-water: #A9EFE0;
+            --color-water-deep: #4BBFA1;
+            --color-coffee: #D9C1A5;
+            --color-coffee-deep: #AF9472;
+            --color-sweet: #F6B3C1;
+            --color-sweet-deep: #E4768D;
+        }
+
+        body[data-theme="mint"][data-mode="dark"] {
+            --bg-body: #071912;
+            --bg-card: #0E241B;
+            --bg-card-soft: #132B22;
+            --text-main: #EAF7F2;
+            --text-light: #95B8AB;
+            --border-soft: rgba(148, 163, 184, 0.35);
+            --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.7);
+            --accent: #8ED7C1;
+            --accent-soft: #15392C;
+            --icon-color: #A9D9CB;
+
+            --color-water: #62CDB0;
+            --color-water-deep: #3F9C84;
+            --color-coffee: #C7AA8E;
+            --color-coffee-deep: #9A7E60;
+            --color-sweet: #E798A7;
+            --color-sweet-deep: #D46A7D;
+        }
+
+        /* NUDE */
+        body[data-theme="nude"][data-mode="light"] {
+            --bg-body: #F6F1EB;
+            --bg-card: #FFFFFF;
+            --bg-card-soft: #F5EEE6;
+            --text-main: #3F3126;
+            --text-light: #9A8776;
+            --border-soft: rgba(255,255,255,0.9);
+            --shadow-soft: 0 16px 40px rgba(68, 51, 34, 0.18);
+            --accent: #D7C8B6;
+            --accent-soft: #EFE4D8;
+            --icon-color: #8B7B6C;
+
+            --color-water: #E9DED3;
+            --color-water-deep: #C2A58A;
+            --color-coffee: #D1B39A;
+            --color-coffee-deep: #A27C5B;
+            --color-sweet: #F0B7B5;
+            --color-sweet-deep: #D57B76;
+        }
+
+        body[data-theme="nude"][data-mode="dark"] {
+            --bg-body: #1A1410;
+            --bg-card: #241B15;
+            --bg-card-soft: #2B211A;
+            --text-main: #F5ECE2;
+            --text-light: #C3B3A3;
+            --border-soft: rgba(148, 163, 184, 0.35);
+            --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.7);
+            --accent: #D7C8B6;
+            --accent-soft: #3B2C21;
+            --icon-color: #E0D0C0;
+
+            --color-water: #C9B4A2;
+            --color-water-deep: #A38568;
+            --color-coffee: #C8A489;
+            --color-coffee-deep: #9F7A5B;
+            --color-sweet: #E79E9A;
+            --color-sweet-deep: #CF6D68;
+        }
+
+        /* LAVENDER */
+        body[data-theme="lavender"][data-mode="light"] {
+            --bg-body: #F3EEFF;
+            --bg-card: #FFFFFF;
+            --bg-card-soft: #F2ECFF;
+            --text-main: #2B2440;
+            --text-light: #8F86B5;
+            --border-soft: rgba(255,255,255,0.9);
+            --shadow-soft: 0 16px 40px rgba(31, 24, 54, 0.15);
+            --accent: #C7B7F4;
+            --accent-soft: #E5DDFF;
+            --icon-color: #7C70A9;
+
+            --color-water: #DCD2FF;
+            --color-water-deep: #9E8AF0;
+            --color-coffee: #D9C1A5;
+            --color-coffee-deep: #AF9472;
+            --color-sweet: #F4B7CE;
+            --color-sweet-deep: #E0769B;
+        }
+
+        body[data-theme="lavender"][data-mode="dark"] {
+            --bg-body: #120F24;
+            --bg-card: #191632;
+            --bg-card-soft: #201B3F;
+            --text-main: #EEE9FF;
+            --text-light: #B5AED8;
+            --border-soft: rgba(148, 163, 184, 0.4);
+            --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.75);
+            --accent: #C7B7F4;
+            --accent-soft: #262145;
+            --icon-color: #D0C6FF;
+
+            --color-water: #A99AEF;
+            --color-water-deep: #7F68D8;
+            --color-coffee: #C7AA8E;
+            --color-coffee-deep: #9B7A59;
+            --color-sweet: #E79AB7;
+            --color-sweet-deep: #D5698F;
+        }
+
+        * { box-sizing: border-box; }
 
         body {
             font-family: var(--font);
-            background: linear-gradient(180deg, #E6F4FF 0%, #FFFFFF 100%);
+            background: var(--bg-body);
             color: var(--text-main);
             margin: 0;
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
-        #confettiCanvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; }
-
         .container {
-            padding: 50px 20px 120px 20px;
+            padding: 30px 20px 120px 20px;
             max-width: 500px;
             margin: 0 auto;
         }
@@ -60,71 +232,213 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 14px;
         }
 
         .icon-btn {
-            background: white;
-            border: 1px solid rgba(0,0,0,0.05);
-            width: 44px; height: 44px;
+            background: var(--bg-card);
+            border: 1px solid var(--accent-soft);
+            width: 42px; 
+            height: 42px;
             border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: var(--text-main);
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            color: var(--icon-color);
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12);
             transition: all 0.2s;
         }
-        .icon-btn:active { transform: scale(0.95); }
-        .icon-btn.active { background: #FFD700; color: #8B8000; border-color: #FFD700; }
-
-        .streak-pill {
-            background: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(0, 153, 255, 0.15);
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-weight: 600;
-            font-size: 14px;
-            display: flex; align-items: center; gap: 8px;
-            color: var(--text-main);
+        .icon-btn:active { transform: scale(0.94); box-shadow: none; }
+        .icon-btn.active { 
+            background: var(--accent-soft); 
+            border-color: var(--accent); 
         }
 
-        .header-section { text-align: center; margin: 20px 0 40px 0; }
-        
-        .main-count-wrapper { position: relative; display: inline-block; }
+        .top-right {
+            display:flex; 
+            gap:8px;
+            align-items: center;
+        }
+
+        .header-section { margin: 10px 0 20px 0; }
+
+        .header-grid {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+
+        .water-visual {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .water-glass {
+            width: 150px;
+            height: 150px;
+            border-radius: var(--radius-glass);
+            padding: 6px;
+            background:
+                radial-gradient(circle at 25% 0%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.3) 40%, transparent 70%),
+                linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.35) 60%, rgba(255,255,255,0.1) 100%);
+            box-shadow: var(--shadow-soft);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .water-glass-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: calc(var(--radius-glass) - 6px);
+            background: rgba(255,255,255,0.38);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .water-fill {
+            position: absolute;
+            left: -5%;
+            bottom: 0;
+            width: 110%;
+            height: 0%;
+            background: linear-gradient(180deg, var(--color-water) 0%, var(--color-water-deep) 100%);
+            transition: height 0.55s ease-out;
+            transform-origin: center bottom;
+            animation: waterFloat 4s ease-in-out infinite;
+            overflow: hidden;
+        }
+
+        .water-wave,
+        .water-wave.second {
+            position: absolute;
+            left: -50%;
+            width: 200%;
+            height: 60px;
+            top: -26px;
+            background: radial-gradient(circle at 50% 0, rgba(255,255,255,0.9) 8%, rgba(255,255,255,0.4) 30%, transparent 70%);
+            opacity: 0.9;
+        }
+
+        .water-wave { animation: waveMove 6s linear infinite; }
+        .water-wave.second {
+            top: -20px;
+            opacity: 0.55;
+            animation: waveMove2 9s linear infinite;
+        }
+
+        .water-glass-inner::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at 20% 0, rgba(255,255,255,0.45) 0%, transparent 50%);
+            mix-blend-mode: screen;
+            pointer-events: none;
+        }
+
+        @keyframes waveMove {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        @keyframes waveMove2 {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(50%); }
+        }
+        @keyframes waterFloat {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+            100% { transform: translateY(0); }
+        }
+
+        .header-info {
+            flex: 1;
+            min-width: 190px;
+            text-align: right;
+        }
+
+        .main-count-wrapper { display: inline-block; text-align: right; }
         .main-count {
-            font-size: 72px;
+            font-size: 48px;
             font-weight: 800;
-            color: var(--water);
+            color: var(--color-water-deep);
             line-height: 1;
-            letter-spacing: -2px;
-            background: linear-gradient(135deg, var(--water) 0%, #0055AA 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            letter-spacing: -1px;
         }
         .real-volume {
             font-size: 14px;
             color: var(--text-light);
             font-weight: 500;
-            margin-top: 5px;
+            margin-top: 4px;
+        }
+
+        .goal-text {
+            font-size: 13px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .goal-percent {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 4px;
+            font-weight: 600;
         }
         
         .timer-badge {
-            display: inline-flex; align-items: center; gap: 5px;
-            background: #DFF2FF; color: var(--water);
-            padding: 5px 12px; border-radius: 20px;
-            font-size: 13px; font-weight: 600; margin-top: 15px;
+            display: inline-flex; 
+            align-items: center; 
+            gap: 5px;
+            background: var(--accent-soft); 
+            color: var(--text-main);
+            padding: 5px 12px; 
+            border-radius: 20px;
+            font-size: 12px; 
+            font-weight: 600; 
+            margin-top: 10px;
         }
 
         /* --- CARDS --- */
         .card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 24px;
-            margin-bottom: 20px;
-            box-shadow: var(--shadow);
-            border: 1px solid rgba(255,255,255,0.8);
+            background: var(--bg-card);
+            border-radius: var(--radius-card);
+            padding: 22px;
+            margin-bottom: 18px;
+            box-shadow: var(--shadow-soft);
+            border: 1px solid var(--border-soft);
         }
-        h2 { font-size: 17px; margin: 0 0 20px 0; font-weight: 700; color: var(--text-main); display: flex; align-items: center; gap: 8px;}
+
+        h2 { 
+            font-size: 16px; 
+            margin: 0 0 14px 0; 
+            font-weight: 700; 
+            color: var(--text-main); 
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+            justify-content: space-between;
+        }
+
+        .section-subtitle {
+            margin: 0 0 14px 0;
+            font-size: 12px;
+            color: var(--text-light);
+        }
+
+        /* Prognoza */
+        .forecast-value {
+            font-size: 14px;
+            font-weight: 600;
+        }
+        .forecast-comment {
+            font-size: 13px;
+            color: var(--text-light);
+            margin-top: 4px;
+        }
 
         /* --- CONTROLS (3 Column) --- */
         .controls-grid {
@@ -136,307 +450,590 @@
         .control-col { display: flex; flex-direction: column; gap: 8px; }
 
         .btn-drink {
-            border: none; width: 100%; padding: 15px 5px;
-            border-radius: 16px; color: white;
-            font-family: var(--font); cursor: pointer;
-            display: flex; flex-direction: column; align-items: center; gap: 5px;
-            transition: transform 0.1s; position: relative; overflow: hidden;
+            border: none; 
+            width: 100%; 
+            padding: 14px 6px 12px;
+            border-radius: 18px; 
+            color: var(--text-main);
+            font-family: var(--font); 
+            cursor: pointer;
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 4px;
+            transition: transform 0.12s, box-shadow 0.15s, background 0.2s;
         }
-        .btn-drink:active { transform: scale(0.96); }
-        .btn-drink span { font-size: 15px; font-weight: 700; }
+        .btn-drink:active { transform: scale(0.96); box-shadow: none; }
+
+        .btn-water { 
+            background: linear-gradient(135deg, var(--color-water) 0%, var(--color-water-deep) 100%);
+            color: #0B1520;
+        }
+        .btn-coffee { 
+            background: linear-gradient(135deg, var(--color-coffee) 0%, var(--color-coffee-deep) 100%);
+            color: #221610;
+        }
+        .btn-sweet { 
+            background: linear-gradient(135deg, var(--color-sweet) 0%, var(--color-sweet-deep) 100%);
+            color: #231017;
+        }
+
+        body[data-mode="dark"] .btn-water,
+        body[data-mode="dark"] .btn-coffee,
+        body[data-mode="dark"] .btn-sweet {
+            color: #0B1020;
+        }
+
+        .btn-drink span { font-weight: 600; }
+
+        .drink-name {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+        }
+
+        .drink-ml {
+            font-size: 13px;
+        }
         
-        .btn-water { background: var(--water-bg); box-shadow: 0 8px 20px rgba(0, 153, 255, 0.2); }
-        .btn-coffee { background: var(--coffee); box-shadow: 0 8px 20px rgba(196, 154, 108, 0.25); }
-        .btn-sweet { background: var(--sweet); box-shadow: 0 8px 20px rgba(255, 112, 117, 0.25); }
-
         .btn-tiny {
-            background: #F4F9FF; color: var(--text-light);
-            border: none; padding: 10px; border-radius: 10px;
-            font-weight: 600; cursor: pointer; font-size: 12px;
+            background: var(--bg-card-soft); 
+            color: var(--text-light);
+            border: none; 
+            padding: 9px 10px; 
+            border-radius: 999px;
+            font-weight: 600; 
+            cursor: pointer; 
+            font-size: 11px;
         }
-        .btn-tiny:active { background: #E1EFFF; }
+        .btn-tiny:active { background: var(--accent-soft); }
 
-        /* --- STATS & ACHIEVEMENTS --- */
-        .stats-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .btn-inline {
+            border: none;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 600;
+            background: var(--bg-card-soft);
+            color: var(--text-main);
+            cursor: pointer;
+        }
+        .btn-inline:active {
+            background: var(--accent-soft);
+        }
+
+        /* --- STATS --- */
+        .stats-row { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 12px; 
+        }
+
         .stat-box {
-            background: #F8FBFF; border-radius: 12px; padding: 15px; text-align: center;
+            background: var(--bg-card-soft); 
+            border-radius: 14px; 
+            padding: 13px; 
+            text-align: center;
         }
-        .stat-val { font-size: 20px; font-weight: 700; color: var(--water); display: block; }
-        .stat-label { font-size: 12px; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; }
+        .stat-val { 
+            font-size: 19px; 
+            font-weight: 700; 
+            color: var(--color-water-deep); 
+            display: block; 
+        }
+        .stat-label { 
+            font-size: 11px; 
+            color: var(--text-light); 
+            text-transform: uppercase; 
+            letter-spacing: 0.5px; 
+        }
 
-        .achievements-grid { display: flex; gap: 15px; overflow-x: auto; padding-bottom: 5px; }
-        .badge {
-            min-width: 60px; height: 60px;
-            border-radius: 50%;
-            background: #F0F0F5;
-            display: flex; align-items: center; justify-content: center;
-            color: #CCD;
-            position: relative;
+        .today-breakdown {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 12px;
+            font-size: 12px;
+            margin: 12px 0 2px 0;
+            color: var(--text-light);
         }
-        .badge.unlocked { background: #FFD700; color: #FFF; box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3); }
-        .badge-icon { width: 30px; height: 30px; fill: currentColor; }
+
+        .today-breakdown span strong {
+            color: var(--text-main);
+        }
 
         /* --- LOG LIST --- */
-        .log-list { list-style: none; padding: 0; margin: 0; max-height: 200px; overflow-y: auto; }
-        .log-item {
-            padding: 12px 0; border-bottom: 1px solid #F4F9FF;
-            display: flex; align-items: center; font-size: 15px; font-weight: 500;
+        .log-list { 
+            list-style: none; 
+            padding: 0; 
+            margin: 0; 
+            max-height: 210px; 
+            overflow-y: auto; 
         }
-        .log-meta { display: flex; flex-direction: column; width: 60px; }
-        .log-time { font-size: 12px; color: var(--text-light); }
-        .log-details { flex-grow: 1; display: flex; align-items: center; gap: 10px; }
-        .log-icon { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; }
-        .log-val { font-weight: 700; color: var(--text-main); }
-        .log-del { background: none; border: none; color: #FF7075; font-size: 20px; opacity: 0.3; padding: 0 10px; }
+        .log-item {
+            padding: 10px 0; 
+            border-bottom: 1px solid var(--bg-card-soft);
+            display: flex; 
+            align-items: center; 
+            font-size: 14px; 
+            font-weight: 500;
+        }
+        .log-meta { 
+            display: flex; 
+            flex-direction: column; 
+            width: 60px; 
+        }
+        .log-time { 
+            font-size: 11px; 
+            color: var(--text-light); 
+        }
+        .log-details { 
+            flex-grow: 1; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+        }
+        .log-icon { 
+            width: 30px; 
+            height: 30px; 
+            border-radius: 10px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-size: 17px;
+        }
+        .log-val { 
+            font-weight: 700; 
+            color: var(--text-main); 
+        }
+        .log-del { 
+            background: none; 
+            border: none; 
+            color: #FF7075; 
+            font-size: 20px; 
+            opacity: 0.3; 
+            padding: 0 6px; 
+            cursor: pointer; 
+        }
         .log-del:hover { opacity: 1; }
 
         /* --- MODAL --- */
         .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 43, 85, 0.4); backdrop-filter: blur(8px);
-            z-index: 2000; align-items: flex-end; justify-content: center;
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%;
+            background: rgba(15, 23, 42, 0.35); 
+            backdrop-filter: blur(8px);
+            z-index: 2000; 
+            align-items: flex-end; 
+            justify-content: center;
         }
         .modal-content {
-            background: #FFFFFF; width: 100%; max-width: 500px;
-            border-radius: 24px 24px 0 0; padding: 30px; box-sizing: border-box;
-            max-height: 90vh; overflow-y: auto; animation: slideUp 0.3s ease;
+            background: var(--bg-card); 
+            width: 100%; 
+            max-width: 500px;
+            border-radius: 24px 24px 0 0; 
+            padding: 22px 22px 26px 22px; 
+            box-sizing: border-box;
+            max-height: 90vh; 
+            overflow-y: auto; 
+            animation: slideUp 0.28s ease;
+            border: 1px solid var(--border-soft);
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.2);
         }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+        @keyframes slideUp { 
+            from { transform: translateY(100%); opacity:0; } 
+            to { transform: translateY(0); opacity:1; } 
+        }
 
-        .modal-section { margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid #F4F9FF; }
-        .modal-label { display: block; margin-bottom: 10px; font-weight: 700; font-size: 14px; color: var(--text-main); }
-        .input-row { display: flex; gap: 10px; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+        .modal h3 {
+            margin: 0 0 14px 0;
+            font-size: 17px;
+        }
+
+        .modal-section { 
+            margin-bottom: 20px; 
+            padding-bottom: 14px; 
+            border-bottom: 1px solid var(--bg-card-soft); 
+        }
+        .modal-section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 8px;
+        }
+
+        .modal-label { 
+            display: block; 
+            margin-bottom: 8px; 
+            font-weight: 700; 
+            font-size: 13px; 
+            color: var(--text-main); 
+        }
+        .modal-hint {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .input-row { 
+            display: flex; 
+            gap: 10px; 
+            align-items: center; 
+            justify-content: space-between; 
+            margin-bottom: 8px; 
+        }
         
-        .modal input, .modal select {
-            padding: 12px; border-radius: 12px; border: 2px solid #F4F9FF;
-            font-size: 16px; background: #FAFDFF; color: var(--text-main);
-            font-family: var(--font); font-weight: 600; width: 100%; box-sizing: border-box;
+        .modal input, 
+        .modal select {
+            padding: 10px 11px; 
+            border-radius: 12px; 
+            border: 2px solid var(--bg-card-soft);
+            font-size: 14px; 
+            background: var(--bg-card-soft); 
+            color: var(--text-main);
+            font-family: var(--font); 
+            font-weight: 500; 
+            width: 100%; 
+            box-sizing: border-box;
         }
-        .modal input:focus { border-color: var(--water); outline: none; }
+        .modal input:focus, 
+        .modal select:focus { 
+            border-color: var(--accent); 
+            outline: none; 
+        }
 
-        .btn-full { width: 100%; padding: 18px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; margin-top: 10px; }
-        .btn-save { background: var(--text-main); color: white; }
-        .end-btn { background: var(--text-main); color: white; width: 100%; padding: 20px; border-radius: 16px; border: none; font-size: 16px; font-weight: 700; margin-top: 20px; }
+        .btn-full { 
+            width: 100%; 
+            padding: 15px; 
+            border-radius: 16px; 
+            border: none; 
+            font-size: 15px; 
+            font-weight: 700; 
+            cursor: pointer; 
+            margin-top: 8px; 
+        }
+        .btn-save { 
+            background: var(--accent); 
+            color: #111827; 
+        }
+        .btn-cancel { 
+            background: transparent; 
+            color: var(--text-light); 
+        }
 
-        /* SVG Icons Utility */
-        .svg-icon { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-        .svg-fill { fill: currentColor; stroke: none; }
+        .end-btn { 
+            background: var(--accent); 
+            color: #111827; 
+            width: 100%; 
+            padding: 18px; 
+            border-radius: 18px; 
+            border: none; 
+            font-size: 16px; 
+            font-weight: 700; 
+            margin-top: 18px; 
+            cursor: pointer;
+        }
+
+        .svg-icon { 
+            width: 22px; 
+            height: 22px; 
+            fill: none; 
+            stroke: currentColor; 
+            stroke-width: 2; 
+            stroke-linecap: round; 
+            stroke-linejoin: round; 
+        }
+        .svg-fill { 
+            width: 22px; 
+            height: 22px; 
+            fill: currentColor; 
+            stroke: none; 
+        }
+
+        /* Wykresy */
+        #dayChart, #weekChart {
+            width: 100%;
+            height: 160px;
+        }
     </style>
 </head>
-<body>
-
-    <canvas id="confettiCanvas"></canvas>
+<body data-theme="blue" data-mode="light">
 
     <div class="container">
         
         <div class="top-bar">
-            <div class="streak-pill" id="streak_badge">
-                <svg class="svg-icon svg-fill" viewBox="0 0 24 24" style="color: #FF9500;"><path d="M17.66 11.2C17.43 10.9 17.15 10.64 16.89 10.38C16.22 9.78 15.46 9.35 14.82 8.72C13.33 7.26 13 4.85 13.95 3C13 3.23 12.17 3.75 11.46 4.32C8.87 6.4 7.85 10.07 9.07 13.22C9.11 13.32 9.15 13.42 9.15 13.55C9.15 13.77 9 13.97 8.8 14.05C8.63 14.11 8.44 14.09 8.26 14.04C6.96 13.66 5.92 12.8 5.14 11.66C5.23 15.65 7.9 19.1 11.75 20.3C15.6 21.5 19.83 20 21.67 16.4C22.25 15.28 22.19 13.45 20.94 12.72C19.78 12.04 18.5 12.3 17.66 11.2ZM12.92 18.42C12.33 18.59 11.71 18.43 11.23 18.06C10.67 17.63 10.33 16.92 10.34 16.19C10.34 16.15 10.34 16.11 10.34 16.07C10.36 15.7 10.59 15.39 10.92 15.25C11.3 15.1 11.72 15.2 12.03 15.47C12.44 15.83 13 15.93 13.5 15.73C13.88 15.58 14.2 15.27 14.39 14.88C14.53 14.6 14.93 14.53 15.18 14.73C15.46 14.96 15.48 15.38 15.26 15.65C14.77 16.24 14.36 18 12.92 18.42Z"/></svg>
-                <span id="streak_val">0</span>
-            </div>
+            <div></div>
             
-            <div style="display:flex; gap:10px;">
-                <button class="icon-btn" id="hot_mode_btn" onclick="toggleHotMode()">
-                    <svg class="svg-icon svg-fill" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            <div class="top-right">
+                <!-- Ikona treningu: +500 ml do celu -->
+                <button class="icon-btn" id="hot_mode_btn" title="Trening / gorąco: +500 ml do celu" onclick="toggleHotMode()">
+                    <svg class="svg-icon" viewBox="0 0 24 24">
+                        <rect x="3" y="10" width="3" height="4"></rect>
+                        <rect x="18" y="10" width="3" height="4"></rect>
+                        <rect x="7" y="9" width="10" height="6" rx="1"></rect>
+                    </svg>
                 </button>
-                <button class="icon-btn" onclick="openSettings()">
-                    <svg class="svg-icon" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                <button class="icon-btn" id="mode_toggle_btn" title="Tryb jasny / ciemny" onclick="toggleMode()">
+                    <svg class="svg-icon" id="mode_icon" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
+                    </svg>
+                </button>
+                <button class="icon-btn" onclick="openSettings()" title="Ustawienia">
+                    <svg class="svg-icon" viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
                 </button>
             </div>
         </div>
 
         <div class="header-section">
-            <div class="main-count-wrapper">
-                <div class="main-count" id="display_hydration">0</div>
-                <div class="real-volume">Objętość: <span id="display_volume">0</span> ml</div>
+            <div class="header-grid">
+                <div class="water-visual">
+                    <div class="water-glass">
+                        <div class="water-glass-inner">
+                            <div class="water-fill" id="water_fill">
+                                <div class="water-wave"></div>
+                                <div class="water-wave second"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="header-info">
+                    <div class="main-count-wrapper">
+                        <div class="main-count" id="display_total">0</div>
+                        <div class="real-volume">Łącznie wypite: <span id="display_volume">0</span> ml</div>
+                    </div>
+                    <div style="margin-top: 8px;">
+                        <span class="goal-text">Dzisiejszy cel: <span id="display_goal">2500</span> ml</span>
+                        <div class="goal-percent">Wypełnienie celu: <span id="goal_percent">0</span>%</div>
+                    </div>
+                    
+                    <div id="last_drink_badge" class="timer-badge" style="display:none;">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                        <span id="last_drink_time">0 min temu</span>
+                    </div>
+                </div>
             </div>
-            <div style="margin-top: 10px;">
-                <span class="goal-text">Cel: <span id="display_goal">2500</span> ml</span>
+        </div>
+
+        <!-- Prognoza -->
+        <div class="card">
+            <h2>Prognoza dnia</h2>
+            <div class="forecast-value">
+                Prognozowana ilość do końca dnia: <span id="forecast_total">0</span> ml
             </div>
-            
-            <div id="last_drink_badge" class="timer-badge" style="display:none;">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                <span id="last_drink_time">0 min temu</span>
-            </div>
+            <div class="forecast-comment" id="forecast_comment">Za wcześnie na prognozę.</div>
         </div>
 
         <div class="card">
             <h2>Dodaj napój</h2>
+            <p class="section-subtitle">💧 Woda · ☕ Kawa / herbata · 🥤 Napoje słodzone</p>
             <div class="controls-grid">
                 <div class="control-col">
                     <button class="btn-drink btn-water" onclick="addDrink('water', settings.presets.water)">
-                        <svg class="svg-icon svg-fill" viewBox="0 0 24 24"><path d="M12 22c4.97 0 9-4.03 9-9 0-4.97-9-13-9-13S3 8.03 3 13c0 4.97 4.03 9 9 9z"/></svg>
-                        <span id="lbl_water">250</span>
+                        <svg class="svg-fill" viewBox="0 0 24 24">
+                            <path d="M12 22c4.97 0 9-4.03 9-9 0-4.97-9-13-9-13S3 8.03 3 13c0 4.97 4.03 9 9 9z"/>
+                        </svg>
+                        <span class="drink-name">Woda</span>
+                        <span class="drink-ml" id="lbl_water">250 ml</span>
                     </button>
-                    <button class="btn-tiny" onclick="openCustom('water')">Inna</button>
+                    <button class="btn-tiny" onclick="openCustom('water')">Własna ilość</button>
                 </div>
                 <div class="control-col">
                     <button class="btn-drink btn-coffee" onclick="addDrink('coffee', settings.presets.coffee)">
-                        <svg class="svg-icon svg-fill" viewBox="0 0 24 24"><path d="M18.5 3H6c-1.1 0-2 .9-2 2v5.71c0 3.83 2.95 7.18 6.78 7.29 3.96.12 7.22-3.06 7.22-7V9h1.5c.83 0 1.5.67 1.5 1.5S20.33 12 19.5 12H19v2h.5c1.93 0 3.5-1.57 3.5-3.5V4.5c0-.83-.67-1.5-1.5-1.5zM16 9H6V5h10v4zM2 19h20v2H2z"/></svg>
-                        <span id="lbl_coffee">200</span>
+                        <svg class="svg-fill" viewBox="0 0 24 24">
+                            <path d="M18.5 3H6c-1.1 0-2 .9-2 2v5.71c0 3.83 2.95 7.18 6.78 7.29 3.96.12 7.22-3.06 7.22-7V9h1.5c.83 0 1.5.67 1.5 1.5S20.33 12 19.5 12H19v2h.5c1.93 0 3.5-1.57 3.5-3.5V4.5c0-.83-.67-1.5-1.5-1.5zM16 9H6V5h10v4zM2 19h20v2H2z"/>
+                        </svg>
+                        <span class="drink-name">Kawa / herbata</span>
+                        <span class="drink-ml" id="lbl_coffee">200 ml</span>
                     </button>
-                    <button class="btn-tiny" onclick="openCustom('coffee')">Inna</button>
+                    <button class="btn-tiny" onclick="openCustom('coffee')">Własna ilość</button>
                 </div>
                 <div class="control-col">
                     <button class="btn-drink btn-sweet" onclick="addDrink('sweet', settings.presets.sweet)">
-                        <svg class="svg-icon svg-fill" viewBox="0 0 24 24"><path d="M17 19c0 1.1-.9 2-2 2H9c-1.1 0-2-.9-2-2V9h10v10zM7 7h10v2H7zM18 2H6v3h12z"/></svg>
-                        <span id="lbl_sweet">330</span>
+                        <svg class="svg-fill" viewBox="0 0 24 24">
+                            <path d="M17 19c0 1.1-.9 2-2 2H9c-1.1 0-2-.9-2-2V9h10v10zM7 7h10v2H7zM18 2H6v3h12z"/>
+                        </svg>
+                        <span class="drink-name">Napoje słodzone</span>
+                        <span class="drink-ml" id="lbl_sweet">330 ml</span>
                     </button>
-                    <button class="btn-tiny" onclick="openCustom('sweet')">Inna</button>
+                    <button class="btn-tiny" onclick="openCustom('sweet')">Własna ilość</button>
                 </div>
             </div>
         </div>
 
         <div class="card">
             <h2>Statystyki</h2>
-            <div class="stats-row" style="margin-bottom: 20px;">
+            <div class="stats-row" style="margin-bottom: 10px;">
                 <div class="stat-box">
                     <span class="stat-val" id="stat_best">0</span>
-                    <span class="stat-label">Rekord Dnia</span>
+                    <span class="stat-label">Rekord (ostatnie dni)</span>
                 </div>
                 <div class="stat-box">
                     <span class="stat-val" id="stat_avg">0</span>
-                    <span class="stat-label">Średnia</span>
+                    <span class="stat-label">Średnia (7 dni)</span>
                 </div>
             </div>
-            
-            <h2>Odznaki</h2>
-            <div class="achievements-grid">
-                <div class="badge" id="badge_streak" title="7 dni z rzędu">
-                    <svg class="badge-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                </div>
-                <div class="badge" id="badge_hydra" title="Hydra: Wypij 3500ml">
-                    <svg class="badge-icon" viewBox="0 0 24 24"><path d="M12 2L2 22h20L12 2zm0 3.99L19.53 20H4.47L12 5.99z"/></svg>
-                </div>
-                <div class="badge" id="badge_early" title="Ranny Ptaszek: Pij przed 8:00">
-                    <svg class="badge-icon" viewBox="0 0 24 24"><path d="M20 15.31L23.31 12 20 8.69V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69zM12 18V6l8.5 6L12 18z"/></svg>
-                </div>
+
+            <div class="today-breakdown">
+                <span>💧 Woda: <strong id="today_water">0</strong> ml</span>
+                <span>☕ Kawa / herbata: <strong id="today_coffee">0</strong> ml</span>
+                <span>🥤 Napoje słodzone: <strong id="today_sweet">0</strong> ml</span>
             </div>
         </div>
 
         <div class="card">
-            <h2>Historia Tygodnia</h2>
-            <div style="position: relative; height: 160px; width: 100%;">
-                <canvas id="mainChart" style="width:100%; height:100%"></canvas>
-            </div>
+            <h2>Wykres dnia</h2>
+            <canvas id="dayChart"></canvas>
         </div>
 
         <div class="card">
-            <h2>Dziś</h2>
+            <h2>Historia tygodnia</h2>
+            <canvas id="weekChart"></canvas>
+        </div>
+
+        <div class="card">
+            <h2>
+                Dziś
+                <button class="btn-inline" onclick="undoLast()">Cofnij ostatni</button>
+            </h2>
             <ul class="log-list" id="log_list"></ul>
         </div>
 
-        <button class="end-btn" onclick="endDay()">Zakończ Dzień i Zapisz</button>
+        <button class="end-btn" onclick="endDay()">Zakończ dzień i zapisz</button>
     </div>
 
+    <!-- MODAL USTAWIEŃ -->
     <div id="settingsModal" class="modal">
         <div class="modal-content">
             <h3>Ustawienia</h3>
             
             <div class="modal-section">
-                <span class="modal-label">Twoje Presety (Kubki)</span>
+                <span class="modal-label">Motyw kolorystyczny</span>
+                <p class="modal-hint">Wybierz pastelową paletę kolorów dla aplikacji.</p>
+                <select id="theme_select">
+                    <option value="blue">Błękitny</option>
+                    <option value="mint">Miętowy</option>
+                    <option value="nude">Beżowy</option>
+                    <option value="lavender">Lawendowy</option>
+                </select>
+            </div>
+
+            <div class="modal-section">
+                <span class="modal-label">Twoje presety (kubki)</span>
                 <div class="input-row">
-                    <span>Woda 💧</span>
-                    <input type="number" id="pset_water" style="width:100px;">
+                    <span style="font-size:13px;">Woda 💧</span>
+                    <input type="number" id="pset_water" style="width:110px;">
                 </div>
                 <div class="input-row">
-                    <span>Kawa ☕</span>
-                    <input type="number" id="pset_coffee" style="width:100px;">
+                    <span style="font-size:13px;">Kawa ☕</span>
+                    <input type="number" id="pset_coffee" style="width:110px;">
                 </div>
                 <div class="input-row">
-                    <span>Napoje 🥤</span>
-                    <input type="number" id="pset_sweet" style="width:100px;">
+                    <span style="font-size:13px;">Napoje 🥤</span>
+                    <input type="number" id="pset_sweet" style="width:110px;">
                 </div>
             </div>
 
             <div class="modal-section">
-                <span class="modal-label">Współczynnik Nawodnienia (%)</span>
-                <div class="input-row">
-                    <span>Kawa</span>
-                    <input type="number" id="factor_coffee" value="85" style="width:80px;">
-                </div>
-                <div class="input-row">
-                    <span>Napoje</span>
-                    <input type="number" id="factor_sweet" value="90" style="width:80px;">
-                </div>
-            </div>
-
-            <div class="modal-section">
-                <span class="modal-label">Kalkulator Celu</span>
-                <input type="number" id="calc_weight" placeholder="Waga (kg)" style="margin-bottom:10px">
-                <select id="calc_gender" style="margin-bottom:10px">
+                <span class="modal-label">Kalkulator celu</span>
+                <p class="modal-hint">Na podstawie masy ciała obliczymy sugerowany dzienny cel.</p>
+                <input type="number" id="calc_weight" placeholder="Waga (kg)" style="margin-bottom:8px">
+                <select id="calc_gender" style="margin-bottom:8px">
                     <option value="male">Mężczyzna</option>
                     <option value="female">Kobieta</option>
                 </select>
-                <button class="btn-full" style="background:#E6F4FF; color:var(--text-main);" onclick="calcGoal()">Oblicz Cel</button>
+                <button class="btn-full" style="background: var(--bg-card-soft); color: var(--text-main);" onclick="calcGoal()">Oblicz cel</button>
             </div>
 
             <div class="modal-section" style="border:none">
-                <span class="modal-label">Edytuj Cel Ręcznie (ml)</span>
+                <span class="modal-label">Edytuj cel ręcznie (ml)</span>
                 <input type="number" id="set_goal">
             </div>
 
             <button class="btn-full btn-save" onclick="saveSettings()">Zapisz</button>
-            <button class="btn-full" style="background:transparent; color:#999;" onclick="closeSettings()">Anuluj</button>
+            <button class="btn-full btn-cancel" onclick="closeSettings()">Anuluj</button>
         </div>
     </div>
 
     <script>
-        // --- CORE DATA ---
         const KEYS = { DATA: 'hp_data', HISTORY: 'hp_hist', SETTINGS: 'hp_conf' };
         
-        let state = { date: '', water: 0, coffee: 0, sweet: 0, log: [] }; // volumes
+        let state = { date: '', water: 0, coffee: 0, sweet: 0, log: [] };
         let settings = { 
             dailyGoal: 2500, 
-            streak: 0, 
-            lastGoalDate: null,
             hotMode: false,
             presets: { water: 250, coffee: 200, sweet: 330 },
-            factors: { coffee: 0.85, sweet: 0.90 } // water is always 1.0
+            theme: 'blue',
+            mode: 'light'
         };
 
-        // --- INIT ---
         document.addEventListener('DOMContentLoaded', () => {
             loadAll();
+            applyThemeAndMode();
             checkNewDay();
             updateUI();
-            setInterval(updateTimer, 60000); // Update "Last drink" every min
+            setInterval(updateTimer, 60000);
+            setInterval(updateForecast, 60000);
         });
 
         function loadAll() {
             const s = localStorage.getItem(KEYS.SETTINGS);
-            if (s) settings = {...settings, ...JSON.parse(s)}; // Merge defaults
+            if (s) {
+                const parsed = JSON.parse(s);
+                settings = { ...settings, ...parsed };
+            }
             
             const d = localStorage.getItem(KEYS.DATA);
+            const todayStr = new Date().toLocaleDateString('pl-PL');
             if (d) {
                 const parsed = JSON.parse(d);
-                if (parsed.date === new Date().toLocaleDateString('pl-PL')) state = parsed;
+                if (parsed.date === todayStr) state = parsed;
+                else state.date = todayStr;
             } else {
-                state.date = new Date().toLocaleDateString('pl-PL');
+                state.date = todayStr;
             }
+        }
+
+        function applyThemeAndMode() {
+            const body = document.body;
+            body.setAttribute('data-theme', settings.theme || 'blue');
+            body.setAttribute('data-mode', settings.mode || 'light');
+            const icon = document.getElementById('mode_icon');
+            if(icon) {
+                if(settings.mode === 'dark') {
+                    icon.setAttribute('viewBox', '0 0 24 24');
+                    icon.innerHTML = '<path d="M21 12.79A9 9 0 0 1 12.21 3 7 7 0 1 0 21 12.79z"></path>';
+                } else {
+                    icon.setAttribute('viewBox', '0 0 24 24');
+                    icon.innerHTML = '<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>';
+                }
+            }
+        }
+
+        function toggleMode() {
+            settings.mode = (settings.mode === 'dark') ? 'light' : 'dark';
+            persistSettings();
+            applyThemeAndMode();
+            updateUI();
         }
 
         function checkNewDay() {
             const today = new Date().toLocaleDateString('pl-PL');
             if (state.date !== today) {
-                // Should technically end previous day if not ended manually, but for safety just start new
                 state = { date: today, water: 0, coffee: 0, sweet: 0, log: [] };
-                // Hot mode resets daily
                 settings.hotMode = false; 
                 saveData();
+                persistSettings();
             }
         }
 
-        // --- LOGIC ---
-        function getHydration() {
-            return Math.round(
-                (state.water * 1) + 
-                (state.coffee * settings.factors.coffee) + 
-                (state.sweet * settings.factors.sweet)
-            );
-        }
-
-        function getVolume() {
+        function getTotalVolume() {
             return state.water + state.coffee + state.sweet;
         }
 
@@ -445,6 +1042,7 @@
         }
 
         function addDrink(type, ml) {
+            ml = parseInt(ml);
             if(!ml || ml <= 0) return;
             if(navigator.vibrate) navigator.vibrate(10);
 
@@ -454,19 +1052,14 @@
                 time: now.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' }),
                 ts: now.getTime(),
                 type: type,
-                ml: parseInt(ml)
+                ml: ml
             };
 
-            state[type] += entry.ml;
+            if(type === 'water') state.water += ml;
+            if(type === 'coffee') state.coffee += ml;
+            if(type === 'sweet') state.sweet += ml;
             state.log.push(entry);
 
-            const hyd = getHydration();
-            const goal = getEffectiveGoal();
-            // Check Confetti
-            const prevHyd = hyd - (type==='water'?ml : (type==='coffee'?ml*settings.factors.coffee : ml*settings.factors.sweet));
-            if(prevHyd < goal && hyd >= goal) fireConfetti();
-
-            checkAchievements(entry);
             saveData();
             updateUI();
         }
@@ -475,134 +1068,189 @@
             const idx = state.log.findIndex(e => e.id === id);
             if(idx > -1) {
                 const item = state.log[idx];
-                state[item.type] -= item.ml;
+                if(item.type === 'water') state.water -= item.ml;
+                if(item.type === 'coffee') state.coffee -= item.ml;
+                if(item.type === 'sweet') state.sweet -= item.ml;
                 state.log.splice(idx, 1);
-                saveData(); updateUI();
+                saveData(); 
+                updateUI();
             }
+        }
+
+        function undoLast() {
+            if(state.log.length === 0) return;
+            const last = state.log[state.log.length - 1];
+            if(!confirm(`Usunąć ostatni wpis: ${last.ml} ml (${translateType(last.type)})?`)) return;
+            removeEntry(last.id);
+        }
+
+        function translateType(type) {
+            if(type === 'water') return 'woda';
+            if(type === 'coffee') return 'kawa/herbata';
+            if(type === 'sweet') return 'napój słodzony';
+            return type;
         }
 
         function toggleHotMode() {
             settings.hotMode = !settings.hotMode;
-            updateUI(); // Goal update
-            saveSettings(false); // Silent save
+            persistSettings();
+            updateUI();
         }
 
         function openCustom(type) {
-            let val = prompt("Podaj ilość (ml):", "200");
+            const labels = {
+                water: 'wody',
+                coffee: 'kawy/herbaty',
+                sweet: 'napoju słodzonego'
+            };
+            let val = prompt(`Podaj ilość ${labels[type] || ''} (ml):`, "200");
             if(val) addDrink(type, val);
         }
 
         function endDay() {
-            if(!confirm("Zakończyć dzień?")) return;
+            if(!confirm("Zakończyć dzień i zapisać do historii?")) return;
             
-            const hyd = getHydration();
-            const goal = getEffectiveGoal();
+            const total = getTotalVolume();
             const todayStr = state.date;
 
-            // Streak Logic
-            if(hyd >= goal) {
-                const yest = new Date(); yest.setDate(yest.getDate() - 1);
-                const yestStr = yest.toLocaleDateString('pl-PL');
-                if(settings.lastGoalDate === yestStr) settings.streak++;
-                else if(settings.lastGoalDate !== todayStr) settings.streak = 1;
-                settings.lastGoalDate = todayStr;
-            } else {
-                settings.streak = 0;
-            }
-
             let hist = JSON.parse(localStorage.getItem(KEYS.HISTORY)) || [];
-            hist.unshift({ date: todayStr, hyd: hyd, vol: getVolume() });
+            hist.unshift({ 
+                date: todayStr, 
+                water: state.water, 
+                coffee: state.coffee, 
+                sweet: state.sweet,
+                total: total 
+            });
             if(hist.length > 7) hist = hist.slice(0, 7);
             localStorage.setItem(KEYS.HISTORY, JSON.stringify(hist));
 
-            // Reset
-            state = { date: new Date().toLocaleDateString('pl-PL'), water: 0, coffee: 0, sweet: 0, log: [] };
+            state = { 
+                date: new Date().toLocaleDateString('pl-PL'), 
+                water: 0, coffee: 0, sweet: 0, log: [] 
+            };
             settings.hotMode = false;
             
-            saveData(); saveSettings(false); updateUI();
-        }
-
-        function checkAchievements(lastEntry) {
-            const badges = {
-                early: document.getElementById('badge_early'),
-                hydra: document.getElementById('badge_hydra'),
-                streak: document.getElementById('badge_streak')
-            };
-            
-            // Early Bird (Before 8:00)
-            const h = new Date(lastEntry.ts).getHours();
-            if(h < 8) badges.early.classList.add('unlocked');
-            
-            // Hydra (3500ml hydration)
-            if(getHydration() >= 3500) badges.hydra.classList.add('unlocked');
+            saveData(); 
+            persistSettings(); 
+            updateUI();
         }
 
         function calcStats() {
             let hist = JSON.parse(localStorage.getItem(KEYS.HISTORY)) || [];
             let max = 0;
             let sum = 0;
+
             hist.forEach(d => {
-                if(d.hyd > max) max = d.hyd;
-                sum += d.hyd;
+                const t = d.total || (d.water + d.coffee + d.sweet);
+                if(t > max) max = t;
+                sum += t;
             });
+
+            const todayTotal = getTotalVolume();
+            if(todayTotal > max) max = todayTotal;
+
             const avg = hist.length ? Math.round(sum / hist.length) : 0;
-            
-            // Include today in max
-            if(getHydration() > max) max = getHydration();
 
             document.getElementById('stat_best').innerText = max;
             document.getElementById('stat_avg').innerText = avg;
         }
 
-        // --- UI ---
-        function updateUI() {
-            const hyd = getHydration();
-            const vol = getVolume();
+        function updateWaterVisual(total, goal) {
+            const fill = document.getElementById('water_fill');
+            if(!fill) return;
+
+            let perc = 0;
+            if(goal > 0) {
+                perc = (total / goal) * 100;
+                if(perc > 100) perc = 100;
+                if(perc < 0) perc = 0;
+            }
+            fill.style.height = perc + '%';
+        }
+
+        function updateForecast() {
+            const now = new Date();
+            const hour = now.getHours() + now.getMinutes() / 60;
+            const total = getTotalVolume();
             const goal = getEffectiveGoal();
 
-            document.getElementById('display_hydration').innerText = hyd;
-            document.getElementById('display_volume').innerText = vol;
-            document.getElementById('display_goal').innerText = goal;
-            document.getElementById('streak_val').innerText = settings.streak;
+            if(state.log.length === 0 || hour < 1) {
+                document.getElementById('forecast_total').innerText = total;
+                document.getElementById('forecast_comment').innerText = "Za wcześnie na prognozę – wypij coś i wróć później.";
+                return;
+            }
 
-            // Hot Mode visual
+            const rate = total / hour; // ml / godz
+            const forecast = Math.round(total + rate * (24 - hour));
+
+            document.getElementById('forecast_total').innerText = forecast;
+
+            if(forecast < goal * 0.7) {
+                document.getElementById('forecast_comment').innerText = "❗ W tym tempie raczej nie osiągniesz celu – pij częściej.";
+            } else if(forecast < goal) {
+                document.getElementById('forecast_comment').innerText = "⚠️ Blisko celu, ale tempo jest trochę za wolne – przyda się kilka dodatkowych szklanek.";
+            } else if(forecast <= goal * 1.2) {
+                document.getElementById('forecast_comment').innerText = "✅ Idealnie – prognoza wskazuje, że osiągniesz dzisiejszy cel.";
+            } else {
+                document.getElementById('forecast_comment').innerText = "💧 Jesteś przed planem – pijesz więcej niż minimalny cel.";
+            }
+        }
+
+        function updateUI() {
+            const total = getTotalVolume();
+            const goal = getEffectiveGoal();
+
+            document.getElementById('display_total').innerText = total;
+            document.getElementById('display_volume').innerText = total;
+            document.getElementById('display_goal').innerText = goal;
+
+            const pct = goal > 0 ? Math.round((total / goal) * 100) : 0;
+            document.getElementById('goal_percent').innerText = pct;
+
             const btnHot = document.getElementById('hot_mode_btn');
             if(settings.hotMode) btnHot.classList.add('active');
             else btnHot.classList.remove('active');
 
-            // Button labels
-            document.getElementById('lbl_water').innerText = settings.presets.water;
-            document.getElementById('lbl_coffee').innerText = settings.presets.coffee;
-            document.getElementById('lbl_sweet').innerText = settings.presets.sweet;
+            document.getElementById('lbl_water').innerText = settings.presets.water + ' ml';
+            document.getElementById('lbl_coffee').innerText = settings.presets.coffee + ' ml';
+            document.getElementById('lbl_sweet').innerText = settings.presets.sweet + ' ml';
 
-            // Log List
+            document.getElementById('today_water').innerText = state.water;
+            document.getElementById('today_coffee').innerText = state.coffee;
+            document.getElementById('today_sweet').innerText = state.sweet;
+
             const list = document.getElementById('log_list');
             list.innerHTML = '';
             [...state.log].reverse().forEach(item => {
-                const color = item.type==='water'?'var(--water)':(item.type==='coffee'?'var(--coffee)':'var(--sweet)');
+                const iconColor = (item.type==='water') ? 'var(--color-water-deep)' :
+                                  (item.type==='coffee') ? 'var(--color-coffee-deep)' :
+                                  'var(--color-sweet-deep)';
+                const iconBg = (item.type==='water') ? 'var(--color-water)' :
+                               (item.type==='coffee') ? 'var(--color-coffee)' :
+                               'var(--color-sweet)';
                 const icon = item.type==='water'?'💧':(item.type==='coffee'?'☕':'🥤');
+                const label = item.type==='water'?'Woda':(item.type==='coffee'?'Kawa / herbata':'Napój słodzony');
                 
                 const li = document.createElement('li');
                 li.className = 'log-item';
                 li.innerHTML = `
                     <div class="log-meta"><span class="log-time">${item.time}</span></div>
                     <div class="log-details">
-                        <div class="log-icon" style="background:${color}20; color:${color}">${icon}</div>
-                        <span style="color:var(--text-main)">${item.type==='water'?'Woda':(item.type==='coffee'?'Kawa':'Napój')}</span>
-                        <span class="log-val">${item.ml}ml</span>
+                        <div class="log-icon" style="background:${iconBg}; color:${iconColor}">${icon}</div>
+                        <span style="color:var(--text-main)">${label}</span>
+                        <span class="log-val">${item.ml} ml</span>
                     </div>
                     <button class="log-del" onclick="removeEntry(${item.id})">×</button>
                 `;
                 list.appendChild(li);
             });
 
-            // Last Drink Timer
             updateTimer();
             calcStats();
-            drawChart();
-            
-            // Check streak badge visual
-            if(settings.streak >= 7) document.getElementById('badge_streak').classList.add('unlocked');
+            drawDayChart();
+            drawWeekChart();
+            updateWaterVisual(total, goal);
+            updateForecast();
         }
 
         function updateTimer() {
@@ -617,96 +1265,211 @@
             
             let txt = diffMin + ' min temu';
             if(diffMin === 0) txt = 'Przed chwilą';
-            if(diffMin > 60) txt = Math.floor(diffMin/60) + 'h temu';
+            if(diffMin >= 60) txt = Math.floor(diffMin/60) + 'h temu';
             
             document.getElementById('last_drink_time').innerText = txt;
         }
 
-        function drawChart() {
-            const cvs = document.getElementById('mainChart');
+        function drawDayChart() {
+            const cvs = document.getElementById('dayChart');
+            if(!cvs) return;
             const ctx = cvs.getContext('2d');
             const dpr = window.devicePixelRatio || 1;
             const rect = cvs.getBoundingClientRect();
-            cvs.width = rect.width * dpr; cvs.height = rect.height * dpr;
-            ctx.scale(dpr, dpr);
-            const w = rect.width, h = rect.height, pad = 10;
+            cvs.width = rect.width * dpr; 
+            cvs.height = rect.height * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            const w = rect.width, h = rect.height;
             ctx.clearRect(0,0,w,h);
 
-            const hist = JSON.parse(localStorage.getItem(KEYS.HISTORY)) || [];
-            const week = [...hist].reverse();
-            const bw = (w - pad*2) / 7;
+            const log = [...state.log].sort((a,b) => a.ts - b.ts);
+            if(log.length === 0) return;
 
-            week.forEach((d, i) => {
-                const x = pad + (i * bw) + 5;
-                const bh = (d.hyd / 3500) * (h - pad*2); // Scale to 3500
-                ctx.fillStyle = '#E6F4FF';
-                ctx.beginPath(); ctx.roundRect(x, h-pad-bh, bw-10, bh, 6); ctx.fill();
+            const padding = 12;
+            const maxTotal = getTotalVolume() || 1;
+            const maxY = maxTotal * 1.15;
+
+            const startX = padding;
+            const endX = w - padding;
+            const startY = h - padding;
+            const endY = padding;
+
+            ctx.strokeStyle = 'rgba(148, 163, 184, 0.4)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(endX, startY);
+            ctx.stroke();
+
+            const firstTs = log[0].ts;
+            const lastTs = log[log.length-1].ts;
+            const span = Math.max(1, lastTs - firstTs);
+
+            let running = 0;
+
+            ctx.beginPath();
+            log.forEach((entry, idx) => {
+                running += entry.ml;
+                const tNorm = (entry.ts - firstTs) / span;
+                const x = startX + tNorm * (endX - startX);
+                const y = startY - (running / maxY) * (startY - endY);
+
+                if(idx === 0) ctx.moveTo(x,y);
+                else ctx.lineTo(x,y);
             });
-            
-            // Today Line
-            if(state.log.length > 0) {
-                // Approximate graph for today
-                const goal = getEffectiveGoal();
-                const maxY = Math.max(goal * 1.2, 3000);
-                const mx = hr => pad + (hr/24)*(w-pad*2);
-                const my = ml => h - pad - (ml/maxY)*(h-pad*2);
 
-                ctx.beginPath(); 
-                ctx.moveTo(mx(0), my(0));
+            ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--color-water-deep') || '#4B9FE1';
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.stroke();
+        }
+
+        function getWeekData() {
+            let hist = JSON.parse(localStorage.getItem(KEYS.HISTORY)) || [];
+            const todayTotal = getTotalVolume();
+
+            const todayObj = {
+                date: state.date,
+                water: state.water,
+                coffee: state.coffee,
+                sweet: state.sweet,
+                total: todayTotal
+            };
+
+            const existingIdx = hist.findIndex(h => h.date === state.date);
+            if(existingIdx >= 0) {
+                hist[existingIdx] = todayObj;
+            } else {
+                hist = [todayObj, ...hist];
+            }
+
+            hist = hist.slice(0,7);
+            return hist.reverse();
+        }
+
+        function drawWeekChart() {
+            const cvs = document.getElementById('weekChart');
+            if(!cvs) return;
+            const ctx = cvs.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = cvs.getBoundingClientRect();
+            cvs.width = rect.width * dpr; 
+            cvs.height = rect.height * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            const w = rect.width, h = rect.height;
+            ctx.clearRect(0,0,w,h);
+
+            const data = getWeekData();
+            if(data.length === 0) return;
+
+            const padding = 14;
+            const startX = padding;
+            const endX = w - padding;
+            const startY = h - padding;
+            const endY = padding;
+
+            let maxTotal = 0;
+            data.forEach(d => {
+                const t = d.total || (d.water + d.coffee + d.sweet);
+                if(t > maxTotal) maxTotal = t;
+            });
+            if(maxTotal <= 0) maxTotal = 1;
+
+            const count = 7;
+            const barWidth = (endX - startX) / count * 0.6;
+            const gap = (endX - startX) / count;
+
+            ctx.strokeStyle = 'rgba(148, 163, 184, 0.4)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(startX, startY);
+            ctx.lineTo(endX, startY);
+            ctx.stroke();
+
+            const colorWater = getComputedStyle(document.body).getPropertyValue('--color-water').trim() || '#A9D6F5';
+            const colorCoffee = getComputedStyle(document.body).getPropertyValue('--color-coffee').trim() || '#D9B89A';
+            const colorSweet = getComputedStyle(document.body).getPropertyValue('--color-sweet').trim() || '#F7A8B1';
+            const colorLine = getComputedStyle(document.body).getPropertyValue('--color-water-deep').trim() || '#4B9FE1';
+
+            const points = [];
+
+            data.forEach((d, idx) => {
+                const total = d.total || (d.water + d.coffee + d.sweet);
+                const xCenter = startX + gap * idx + gap/2;
+                const x = xCenter - barWidth/2;
+                let yBase = startY;
                 
-                let runningHyd = 0;
-                // Need to sort log by time to draw correctly
-                const sorted = [...state.log].sort((a,b) => a.ts - b.ts);
-                
-                sorted.forEach(l => {
-                    // Effective hydration add
-                    let eff = l.ml;
-                    if(l.type==='coffee') eff *= settings.factors.coffee;
-                    if(l.type==='sweet') eff *= settings.factors.sweet;
-                    runningHyd += eff;
-                    
-                    const d = new Date(l.ts);
-                    const hr = d.getHours() + d.getMinutes()/60;
-                    ctx.lineTo(mx(hr), my(runningHyd));
+                const hWater = (d.water / maxTotal) * (startY - endY);
+                const hCoffee = (d.coffee / maxTotal) * (startY - endY);
+                const hSweet = (d.sweet / maxTotal) * (startY - endY);
+
+                ctx.fillStyle = colorWater;
+                ctx.fillRect(x, yBase - hWater, barWidth, hWater);
+                yBase -= hWater;
+
+                ctx.fillStyle = colorCoffee;
+                ctx.fillRect(x, yBase - hCoffee, barWidth, hCoffee);
+                yBase -= hCoffee;
+
+                ctx.fillStyle = colorSweet;
+                ctx.fillRect(x, yBase - hSweet, barWidth, hSweet);
+
+                const yLine = startY - (total / maxTotal) * (startY - endY);
+                points.push({ x: xCenter, y: yLine });
+            });
+
+            if(points.length > 1) {
+                ctx.beginPath();
+                points.forEach((p, idx) => {
+                    if(idx === 0) ctx.moveTo(p.x, p.y);
+                    else ctx.lineTo(p.x, p.y);
                 });
-                
-                const now = new Date();
-                ctx.lineTo(mx(now.getHours() + now.getMinutes()/60), my(runningHyd));
-                
-                ctx.strokeStyle = '#0099FF'; ctx.lineWidth = 3; 
-                ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.stroke();
+                ctx.strokeStyle = colorLine;
+                ctx.lineWidth = 2;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.stroke();
             }
         }
 
-        // --- SETTINGS ---
         function openSettings() {
             document.getElementById('pset_water').value = settings.presets.water;
             document.getElementById('pset_coffee').value = settings.presets.coffee;
             document.getElementById('pset_sweet').value = settings.presets.sweet;
             
-            document.getElementById('factor_coffee').value = Math.round(settings.factors.coffee * 100);
-            document.getElementById('factor_sweet').value = Math.round(settings.factors.sweet * 100);
-            
             document.getElementById('set_goal').value = settings.dailyGoal;
+            document.getElementById('theme_select').value = settings.theme || 'blue';
             document.getElementById('settingsModal').style.display='flex';
         }
         
-        function closeSettings() { document.getElementById('settingsModal').style.display='none'; }
+        function closeSettings() { 
+            document.getElementById('settingsModal').style.display='none'; 
+        }
         
-        function saveSettings(close = true) {
-            settings.presets.water = parseInt(document.getElementById('pset_water').value);
-            settings.presets.coffee = parseInt(document.getElementById('pset_coffee').value);
-            settings.presets.sweet = parseInt(document.getElementById('pset_sweet').value);
-            
-            settings.factors.coffee = parseInt(document.getElementById('factor_coffee').value) / 100;
-            settings.factors.sweet = parseInt(document.getElementById('factor_sweet').value) / 100;
+        function saveSettings() {
+            const w = parseInt(document.getElementById('pset_water').value);
+            const c = parseInt(document.getElementById('pset_coffee').value);
+            const s = parseInt(document.getElementById('pset_sweet').value);
+
+            if(!isNaN(w) && w > 0) settings.presets.water = w;
+            if(!isNaN(c) && c > 0) settings.presets.coffee = c;
+            if(!isNaN(s) && s > 0) settings.presets.sweet = s;
             
             const g = parseInt(document.getElementById('set_goal').value);
-            if(g > 0) settings.dailyGoal = g;
+            if(!isNaN(g) && g > 0) settings.dailyGoal = g;
+
+            const theme = document.getElementById('theme_select').value;
+            if(theme) settings.theme = theme;
             
-            localStorage.setItem(KEYS.SETTINGS, JSON.stringify(settings));
-            if(close) closeSettings();
+            persistSettings();
+            applyThemeAndMode();
+            closeSettings();
             updateUI();
+        }
+
+        function persistSettings() {
+            localStorage.setItem(KEYS.SETTINGS, JSON.stringify(settings));
         }
 
         function calcGoal() {
@@ -719,14 +1482,8 @@
             }
         }
 
-        function saveData() { localStorage.setItem(KEYS.DATA, JSON.stringify(state)); }
-        
-        function fireConfetti() {
-            const cvs = document.getElementById('confettiCanvas');
-            const ctx = cvs.getContext('2d');
-            cvs.width = window.innerWidth; cvs.height = window.innerHeight;
-            let p = Array.from({length:80}, ()=>({x:cvs.width/2,y:cvs.height/2,vx:(Math.random()-0.5)*20,vy:(Math.random()-0.5)*20-5,c:['#0099FF','#FF7075'][Math.floor(Math.random()*2)]}));
-            let f=0; function a(){ctx.clearRect(0,0,cvs.width,cvs.height);let act=false;p.forEach(pt=>{pt.x+=pt.vx;pt.y+=pt.vy;pt.vy+=0.5;pt.vx*=0.95;if(pt.y<cvs.height)act=true;ctx.fillStyle=pt.c;ctx.fillRect(pt.x,pt.y,6,6)});if(act&&f++<150)requestAnimationFrame(a);else ctx.clearRect(0,0,cvs.width,cvs.height);}a();
+        function saveData() { 
+            localStorage.setItem(KEYS.DATA, JSON.stringify(state)); 
         }
     </script>
 </body>
