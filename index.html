@@ -234,6 +234,7 @@
             padding: 30px 20px 120px 20px;
             max-width: 500px;
             margin: 0 auto;
+            width: 100%;
         }
 
         /* --- HEADER & TOP BAR --- */
@@ -578,6 +579,13 @@
             position: relative;
             height: 170px;
             width: 100%;
+            overflow: hidden; /* Fix for responsive resizing overflow */
+        }
+        
+        canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
         }
 
         .chart-caption {
@@ -800,7 +808,6 @@
             </div>
             
             <div class="top-right">
-                <!-- przycisk treningu +500 ml -->
                 <button class="icon-btn" id="training_btn" title="Dzień treningowy (+500 ml)" onclick="toggleTraining()">
                     <svg class="svg-icon" viewBox="0 0 24 24">
                         <rect x="3" y="9" width="3" height="6"></rect>
@@ -808,14 +815,12 @@
                         <rect x="7" y="10" width="10" height="4" rx="1"></rect>
                     </svg>
                 </button>
-                <!-- tryb jasny/ciemny -->
                 <button class="icon-btn" id="mode_toggle_btn" title="Tryb jasny / ciemny" onclick="toggleMode()">
                     <svg class="svg-icon" id="mode_icon" viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="4"></circle>
                         <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
                     </svg>
                 </button>
-                <!-- ustawienia -->
                 <button class="icon-btn" onclick="openSettings()" title="Ustawienia">
                     <svg class="svg-icon" viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="3"></circle>
@@ -947,7 +952,6 @@
         <button class="end-btn" onclick="endDay()">Zakończ dzień i zapisz</button>
     </div>
 
-    <!-- MODAL USTAWIEŃ -->
     <div id="settingsModal" class="modal">
         <div class="modal-content">
             <h3>Ustawienia</h3>
@@ -1020,6 +1024,12 @@
             checkNewDay();
             updateUI();
             setInterval(updateTimer, 60000);
+            
+            // Dodana obsługa zmiany rozmiaru okna
+            window.addEventListener('resize', () => {
+                drawWeekChart();
+                drawDayChart();
+            });
         });
 
         function loadAll() {
@@ -1397,10 +1407,11 @@
             const w = rect.width, h = rect.height;
             ctx.clearRect(0,0,w,h);
 
-            const paddingLeft = 32;
-            const paddingRight = 12;
+            // Zmniejszone marginesy dla urządzeń mobilnych
+            const paddingLeft = w < 350 ? 24 : 30;
+            const paddingRight = 10;
             const paddingTop = 10;
-            const paddingBottom = 26;
+            const paddingBottom = 22;
 
             const plotW = w - paddingLeft - paddingRight;
             const plotH = h - paddingTop - paddingBottom;
@@ -1417,6 +1428,9 @@
             const sweetColor = style.getPropertyValue('--color-sweet').trim() || '#F7A8B1';
             const lineColor = style.getPropertyValue('--color-water-deep').trim() || '#4B9FE1';
             const textColor = style.getPropertyValue('--text-light').trim() || '#6B7280';
+            
+            // Dynamiczna czcionka
+            const fontSize = w < 350 ? '9px' : '10px';
 
             /* Siatka pozioma + wartości Y */
             const steps = 4;
@@ -1432,7 +1446,7 @@
                 ctx.lineTo(paddingLeft + plotW, y);
                 ctx.stroke();
 
-                ctx.font = '10px "Outfit", system-ui';
+                ctx.font = `${fontSize} "Outfit", system-ui`;
                 ctx.textAlign = 'right';
                 ctx.textBaseline = 'middle';
                 ctx.fillText(yVal.toString(), paddingLeft - 4, y);
@@ -1451,7 +1465,7 @@
                 ctx.stroke();
 
                 ctx.fillStyle = textColor;
-                ctx.font = '10px "Outfit", system-ui';
+                ctx.font = `${fontSize} "Outfit", system-ui`;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'top';
                 ctx.fillText(d.label, xCenter, paddingTop + plotH + 4);
@@ -1470,7 +1484,7 @@
                     ctx.fillStyle = color;
                     ctx.beginPath();
                     const yTop = yBase - barH;
-                    const r = 4;
+                    const r = 3;
                     if(ctx.roundRect) {
                         ctx.roundRect(x, yTop, barW, barH, r);
                     } else {
@@ -1541,10 +1555,11 @@
             const w = rect.width, h = rect.height;
             ctx.clearRect(0,0,w,h);
 
-            const paddingLeft = 32;
-            const paddingRight = 12;
+            // Mniejsze marginesy
+            const paddingLeft = w < 350 ? 24 : 30;
+            const paddingRight = 10;
             const paddingTop = 10;
-            const paddingBottom = 26;
+            const paddingBottom = 22;
 
             const plotW = w - paddingLeft - paddingRight;
             const plotH = h - paddingTop - paddingBottom;
@@ -1557,6 +1572,8 @@
             const gridColor = style.getPropertyValue('--bg-card-soft') || '#E5E7EB';
             const lineColor = style.getPropertyValue('--color-water-deep').trim() || '#4B9FE1';
             const textColor = style.getPropertyValue('--text-light').trim() || '#6B7280';
+            
+            const fontSize = w < 350 ? '9px' : '10px';
 
             /* Siatka pozioma */
             const steps = 4;
@@ -1572,7 +1589,7 @@
                 ctx.lineTo(paddingLeft + plotW, y);
                 ctx.stroke();
 
-                ctx.font = '10px "Outfit", system-ui';
+                ctx.font = `${fontSize} "Outfit", system-ui`;
                 ctx.textAlign = 'right';
                 ctx.textBaseline = 'middle';
                 ctx.fillText(yVal.toString(), paddingLeft - 4, y);
@@ -1588,7 +1605,7 @@
                 ctx.strokeStyle = gridColor;
                 ctx.stroke();
 
-                ctx.font = '10px "Outfit", system-ui';
+                ctx.font = `${fontSize} "Outfit", system-ui`;
                 ctx.fillStyle = textColor;
                 ctx.textAlign = 'center';
                 ctx.textBaseline = 'top';
