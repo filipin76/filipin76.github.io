@@ -208,6 +208,7 @@
             --color-sweet-deep: #D5698F;
         }
 
+        /* --- GLOBAL --- */
         * { box-sizing: border-box; }
 
         body {
@@ -219,6 +220,14 @@
             -webkit-font-smoothing: antialiased;
             overflow-x: hidden;
             transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        #confettiCanvas { 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            pointer-events: none; 
+            z-index: 100; 
         }
 
         .container {
@@ -255,13 +264,26 @@
             border-color: var(--accent); 
         }
 
+        .streak-pill {
+            background: var(--bg-card-soft);
+            border: 1px solid var(--accent-soft);
+            padding: 7px 14px;
+            border-radius: 999px;
+            font-weight: 600;
+            font-size: 13px;
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+            color: var(--text-main);
+        }
+
         .top-right {
             display:flex; 
             gap:8px;
             align-items: center;
         }
 
-        .header-section { margin: 10px 0 20px 0; }
+        .header-section { margin: 10px 0 26px 0; }
 
         .header-grid {
             display: flex;
@@ -283,6 +305,7 @@
             height: 150px;
             border-radius: var(--radius-glass);
             padding: 6px;
+            box-sizing: border-box;
             background:
                 radial-gradient(circle at 25% 0%, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.3) 40%, transparent 70%),
                 linear-gradient(180deg, rgba(255,255,255,0.85) 0%, rgba(255,255,255,0.35) 60%, rgba(255,255,255,0.1) 100%);
@@ -303,33 +326,12 @@
 
         .water-fill {
             position: absolute;
-            left: -5%;
+            left: 0;
             bottom: 0;
-            width: 110%;
+            width: 100%;
             height: 0%;
             background: linear-gradient(180deg, var(--color-water) 0%, var(--color-water-deep) 100%);
-            transition: height 0.55s ease-out;
-            transform-origin: center bottom;
-            animation: waterFloat 4s ease-in-out infinite;
-            overflow: hidden;
-        }
-
-        .water-wave,
-        .water-wave.second {
-            position: absolute;
-            left: -50%;
-            width: 200%;
-            height: 60px;
-            top: -26px;
-            background: radial-gradient(circle at 50% 0, rgba(255,255,255,0.9) 8%, rgba(255,255,255,0.4) 30%, transparent 70%);
-            opacity: 0.9;
-        }
-
-        .water-wave { animation: waveMove 6s linear infinite; }
-        .water-wave.second {
-            top: -20px;
-            opacity: 0.55;
-            animation: waveMove2 9s linear infinite;
+            transition: height 0.45s ease-out;
         }
 
         .water-glass-inner::after {
@@ -341,29 +343,15 @@
             pointer-events: none;
         }
 
-        @keyframes waveMove {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        @keyframes waveMove2 {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(50%); }
-        }
-        @keyframes waterFloat {
-            0% { transform: translateY(0); }
-            50% { transform: translateY(-4px); }
-            100% { transform: translateY(0); }
-        }
-
         .header-info {
             flex: 1;
-            min-width: 190px;
+            min-width: 180px;
             text-align: right;
         }
 
         .main-count-wrapper { display: inline-block; text-align: right; }
         .main-count {
-            font-size: 48px;
+            font-size: 50px;
             font-weight: 800;
             color: var(--color-water-deep);
             line-height: 1;
@@ -373,7 +361,7 @@
             font-size: 14px;
             color: var(--text-light);
             font-weight: 500;
-            margin-top: 4px;
+            margin-top: 5px;
         }
 
         .goal-text {
@@ -386,7 +374,6 @@
             font-size: 13px;
             color: var(--text-light);
             margin-top: 4px;
-            font-weight: 600;
         }
         
         .timer-badge {
@@ -429,17 +416,6 @@
             color: var(--text-light);
         }
 
-        /* Prognoza */
-        .forecast-value {
-            font-size: 14px;
-            font-weight: 600;
-        }
-        .forecast-comment {
-            font-size: 13px;
-            color: var(--text-light);
-            margin-top: 4px;
-        }
-
         /* --- CONTROLS (3 Column) --- */
         .controls-grid {
             display: grid;
@@ -452,7 +428,7 @@
         .btn-drink {
             border: none; 
             width: 100%; 
-            padding: 14px 6px 12px;
+            padding: 10px 6px 10px;
             border-radius: 18px; 
             color: var(--text-main);
             font-family: var(--font); 
@@ -460,8 +436,12 @@
             display: flex; 
             flex-direction: column; 
             align-items: center; 
+            justify-content: space-between;
             gap: 4px;
             transition: transform 0.12s, box-shadow 0.15s, background 0.2s;
+            position: relative; 
+            overflow: hidden;
+            min-height: 112px;
         }
         .btn-drink:active { transform: scale(0.96); box-shadow: none; }
 
@@ -518,8 +498,28 @@
             color: var(--text-main);
             cursor: pointer;
         }
+
         .btn-inline:active {
             background: var(--accent-soft);
+        }
+
+        /* ---------- Ikony SVG (bez emoji) ---------- */
+
+        .icon-small {
+            width: 18px;
+            height: 18px;
+            stroke: currentColor;
+            fill: none;
+            stroke-width: 1.8;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .icon-fill {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+            stroke: none;
         }
 
         /* --- STATS --- */
@@ -553,12 +553,37 @@
             flex-wrap: wrap;
             gap: 6px 12px;
             font-size: 12px;
-            margin: 12px 0 2px 0;
+            margin: 12px 0 8px 0;
             color: var(--text-light);
         }
 
         .today-breakdown span strong {
             color: var(--text-main);
+        }
+
+        .goal-extra {
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--text-light);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .goal-extra strong {
+            color: var(--text-main);
+        }
+
+        /* --- WYKRESY --- */
+        .chart-wrapper {
+            position: relative;
+            height: 170px;
+            width: 100%;
+        }
+
+        .chart-caption {
+            font-size: 11px;
+            color: var(--text-light);
+            margin-top: 6px;
         }
 
         /* --- LOG LIST --- */
@@ -599,7 +624,6 @@
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            font-size: 17px;
         }
         .log-val { 
             font-weight: 700; 
@@ -749,35 +773,49 @@
             stroke: none; 
         }
 
-        /* Wykresy */
-        #dayChart, #weekChart {
-            width: 100%;
-            height: 160px;
+        .svg-icon, 
+        .svg-fill {
+            color: var(--icon-color);
         }
+
+        body[data-mode="dark"] .svg-icon,
+        body[data-mode="dark"] .svg-fill {
+            color: var(--icon-color);
+        }
+
     </style>
 </head>
 <body data-theme="blue" data-mode="light">
 
+    <canvas id="confettiCanvas"></canvas>
+
     <div class="container">
         
         <div class="top-bar">
-            <div></div>
+            <div class="streak-pill" id="streak_badge">
+                <svg class="svg-fill" viewBox="0 0 24 24">
+                    <path d="M17.66 11.2C17.43 10.9 17.15 10.64 16.89 10.38C16.22 9.78 15.46 9.35 14.82 8.72C13.33 7.26 13 4.85 13.95 3C13 3.23 12.17 3.75 11.46 4.32C8.87 6.4 7.85 10.07 9.07 13.22C9.11 13.32 9.15 13.42 9.15 13.55C9.15 13.77 9 13.97 8.8 14.05C8.63 14.11 8.44 14.09 8.26 14.04C6.96 13.66 5.92 12.8 5.14 11.66C5.23 15.65 7.9 19.1 11.75 20.3C15.6 21.5 19.83 20 21.67 16.4C22.25 15.28 22.19 13.45 20.94 12.72C19.78 12.04 18.5 12.3 17.66 11.2ZM12.92 18.42C12.33 18.59 11.71 18.43 11.23 18.06C10.67 17.63 10.33 16.92 10.34 16.19C10.34 16.15 10.34 16.11 10.34 16.07C10.36 15.7 10.59 15.39 10.92 15.25C11.3 15.1 11.72 15.2 12.03 15.47C12.44 15.83 13 15.93 13.5 15.73C13.88 15.58 14.2 15.27 14.39 14.88C14.53 14.6 14.93 14.53 15.18 14.73C15.46 14.96 15.48 15.38 15.26 15.65C14.77 16.24 14.36 18 12.92 18.42Z"/>
+                </svg>
+                <span id="streak_val">0</span>
+            </div>
             
             <div class="top-right">
-                <!-- Ikona treningu: +500 ml do celu -->
-                <button class="icon-btn" id="hot_mode_btn" title="Trening / gorąco: +500 ml do celu" onclick="toggleHotMode()">
+                <!-- przycisk treningu +500 ml -->
+                <button class="icon-btn" id="training_btn" title="Dzień treningowy (+500 ml)" onclick="toggleTraining()">
                     <svg class="svg-icon" viewBox="0 0 24 24">
-                        <rect x="3" y="10" width="3" height="4"></rect>
-                        <rect x="18" y="10" width="3" height="4"></rect>
-                        <rect x="7" y="9" width="10" height="6" rx="1"></rect>
+                        <rect x="3" y="9" width="3" height="6"></rect>
+                        <rect x="18" y="9" width="3" height="6"></rect>
+                        <rect x="7" y="10" width="10" height="4" rx="1"></rect>
                     </svg>
                 </button>
+                <!-- tryb jasny/ciemny -->
                 <button class="icon-btn" id="mode_toggle_btn" title="Tryb jasny / ciemny" onclick="toggleMode()">
                     <svg class="svg-icon" id="mode_icon" viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="4"></circle>
                         <path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>
                     </svg>
                 </button>
+                <!-- ustawienia -->
                 <button class="icon-btn" onclick="openSettings()" title="Ustawienia">
                     <svg class="svg-icon" viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="3"></circle>
@@ -792,28 +830,25 @@
                 <div class="water-visual">
                     <div class="water-glass">
                         <div class="water-glass-inner">
-                            <div class="water-fill" id="water_fill">
-                                <div class="water-wave"></div>
-                                <div class="water-wave second"></div>
-                            </div>
+                            <div class="water-fill" id="water_fill"></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="header-info">
                     <div class="main-count-wrapper">
-                        <div class="main-count" id="display_total">0</div>
-                        <div class="real-volume">Łącznie wypite: <span id="display_volume">0</span> ml</div>
+                        <div class="main-count" id="display_hydration">0</div>
+                        <div class="real-volume">Łączna objętość: <span id="display_volume">0</span> ml</div>
                     </div>
                     <div style="margin-top: 8px;">
                         <span class="goal-text">Dzisiejszy cel: <span id="display_goal">2500</span> ml</span>
-                        <div class="goal-percent">Wypełnienie celu: <span id="goal_percent">0</span>%</div>
+                        <div class="goal-percent" id="goal_percent">Wypełnienie celu: 0%</div>
                     </div>
                     
                     <div id="last_drink_badge" class="timer-badge" style="display:none;">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <circle cx="12" cy="12" r="10"/>
-                            <polyline points="12 6 12 12 16 14"/>
+                        <svg class="icon-small" viewBox="0 0 24 24">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <polyline points="12 6 12 12 16 14"></polyline>
                         </svg>
                         <span id="last_drink_time">0 min temu</span>
                     </div>
@@ -821,23 +856,14 @@
             </div>
         </div>
 
-        <!-- Prognoza -->
-        <div class="card">
-            <h2>Prognoza dnia</h2>
-            <div class="forecast-value">
-                Prognozowana ilość do końca dnia: <span id="forecast_total">0</span> ml
-            </div>
-            <div class="forecast-comment" id="forecast_comment">Za wcześnie na prognozę.</div>
-        </div>
-
         <div class="card">
             <h2>Dodaj napój</h2>
-            <p class="section-subtitle">💧 Woda · ☕ Kawa / herbata · 🥤 Napoje słodzone</p>
+            <p class="section-subtitle">Woda · Kawa / herbata · Napoje słodzone</p>
             <div class="controls-grid">
                 <div class="control-col">
                     <button class="btn-drink btn-water" onclick="addDrink('water', settings.presets.water)">
-                        <svg class="svg-fill" viewBox="0 0 24 24">
-                            <path d="M12 22c4.97 0 9-4.03 9-9 0-4.97-9-13-9-13S3 8.03 3 13c0 4.97 4.03 9 9 9z"/>
+                        <svg class="icon-fill" viewBox="0 0 24 24">
+                            <path d="M12 2L7 11a5 5 0 1 0 10 0L12 2z"></path>
                         </svg>
                         <span class="drink-name">Woda</span>
                         <span class="drink-ml" id="lbl_water">250 ml</span>
@@ -846,8 +872,9 @@
                 </div>
                 <div class="control-col">
                     <button class="btn-drink btn-coffee" onclick="addDrink('coffee', settings.presets.coffee)">
-                        <svg class="svg-fill" viewBox="0 0 24 24">
-                            <path d="M18.5 3H6c-1.1 0-2 .9-2 2v5.71c0 3.83 2.95 7.18 6.78 7.29 3.96.12 7.22-3.06 7.22-7V9h1.5c.83 0 1.5.67 1.5 1.5S20.33 12 19.5 12H19v2h.5c1.93 0 3.5-1.57 3.5-3.5V4.5c0-.83-.67-1.5-1.5-1.5zM16 9H6V5h10v4zM2 19h20v2H2z"/>
+                        <svg class="icon-fill" viewBox="0 0 24 24">
+                            <path d="M4 7h13v7a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V7z"></path>
+                            <path d="M17 9h2a2 2 0 0 1 0 4h-2"></path>
                         </svg>
                         <span class="drink-name">Kawa / herbata</span>
                         <span class="drink-ml" id="lbl_coffee">200 ml</span>
@@ -856,8 +883,9 @@
                 </div>
                 <div class="control-col">
                     <button class="btn-drink btn-sweet" onclick="addDrink('sweet', settings.presets.sweet)">
-                        <svg class="svg-fill" viewBox="0 0 24 24">
-                            <path d="M17 19c0 1.1-.9 2-2 2H9c-1.1 0-2-.9-2-2V9h10v10zM7 7h10v2H7zM18 2H6v3h12z"/>
+                        <svg class="icon-fill" viewBox="0 0 24 24">
+                            <rect x="7" y="3" width="10" height="7" rx="2"></rect>
+                            <path d="M8 10v8a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-8"></path>
                         </svg>
                         <span class="drink-name">Napoje słodzone</span>
                         <span class="drink-ml" id="lbl_sweet">330 ml</span>
@@ -881,25 +909,36 @@
             </div>
 
             <div class="today-breakdown">
-                <span>💧 Woda: <strong id="today_water">0</strong> ml</span>
-                <span>☕ Kawa / herbata: <strong id="today_coffee">0</strong> ml</span>
-                <span>🥤 Napoje słodzone: <strong id="today_sweet">0</strong> ml</span>
+                <span>Woda: <strong id="today_water">0</strong> ml</span>
+                <span>Kawa / herbata: <strong id="today_coffee">0</strong> ml</span>
+                <span>Napoje słodzone: <strong id="today_sweet">0</strong> ml</span>
+            </div>
+
+            <div class="goal-extra">
+                <div>Prognoza do końca dnia: <strong id="forecast_amount">0 ml</strong></div>
+                <div id="forecast_comment">Brak danych do prognozy.</div>
             </div>
         </div>
 
         <div class="card">
-            <h2>Wykres dnia</h2>
-            <canvas id="dayChart"></canvas>
+            <h2>Historia tygodnia</h2>
+            <div class="chart-wrapper">
+                <canvas id="weekChart"></canvas>
+            </div>
+            <div class="chart-caption">Oś X: dni tygodnia (ostatnie 7, dziś po prawej) · Oś Y: ml</div>
         </div>
 
         <div class="card">
-            <h2>Historia tygodnia</h2>
-            <canvas id="weekChart"></canvas>
+            <h2>Przebieg dnia</h2>
+            <div class="chart-wrapper">
+                <canvas id="dayChart"></canvas>
+            </div>
+            <div class="chart-caption">Oś X: godziny 0–24 · Oś Y: skumulowana ilość wypitych napojów (ml)</div>
         </div>
 
         <div class="card">
             <h2>
-                Dziś
+                Dzisiejsze wpisy
                 <button class="btn-inline" onclick="undoLast()">Cofnij ostatni</button>
             </h2>
             <ul class="log-list" id="log_list"></ul>
@@ -917,25 +956,25 @@
                 <span class="modal-label">Motyw kolorystyczny</span>
                 <p class="modal-hint">Wybierz pastelową paletę kolorów dla aplikacji.</p>
                 <select id="theme_select">
-                    <option value="blue">Błękitny</option>
-                    <option value="mint">Miętowy</option>
-                    <option value="nude">Beżowy</option>
-                    <option value="lavender">Lawendowy</option>
+                    <option value="blue">Pastelowy niebieski</option>
+                    <option value="mint">Pastelowa mięta</option>
+                    <option value="nude">Pastelowy beż</option>
+                    <option value="lavender">Pastelowa lawenda</option>
                 </select>
             </div>
 
             <div class="modal-section">
                 <span class="modal-label">Twoje presety (kubki)</span>
                 <div class="input-row">
-                    <span style="font-size:13px;">Woda 💧</span>
+                    <span style="font-size:13px;">Woda</span>
                     <input type="number" id="pset_water" style="width:110px;">
                 </div>
                 <div class="input-row">
-                    <span style="font-size:13px;">Kawa ☕</span>
+                    <span style="font-size:13px;">Kawa / herbata</span>
                     <input type="number" id="pset_coffee" style="width:110px;">
                 </div>
                 <div class="input-row">
-                    <span style="font-size:13px;">Napoje 🥤</span>
+                    <span style="font-size:13px;">Napoje słodzone</span>
                     <input type="number" id="pset_sweet" style="width:110px;">
                 </div>
             </div>
@@ -962,12 +1001,14 @@
     </div>
 
     <script>
-        const KEYS = { DATA: 'hp_data', HISTORY: 'hp_hist', SETTINGS: 'hp_conf' };
+        const KEYS = { DATA: 'hp_data_v2', HISTORY: 'hp_hist_v2', SETTINGS: 'hp_conf_v2' };
         
         let state = { date: '', water: 0, coffee: 0, sweet: 0, log: [] };
         let settings = { 
             dailyGoal: 2500, 
-            hotMode: false,
+            streak: 0, 
+            lastGoalDate: null,
+            training: false,
             presets: { water: 250, coffee: 200, sweet: 330 },
             theme: 'blue',
             mode: 'light'
@@ -979,7 +1020,6 @@
             checkNewDay();
             updateUI();
             setInterval(updateTimer, 60000);
-            setInterval(updateForecast, 60000);
         });
 
         function loadAll() {
@@ -1004,16 +1044,19 @@
             const body = document.body;
             body.setAttribute('data-theme', settings.theme || 'blue');
             body.setAttribute('data-mode', settings.mode || 'light');
+
             const icon = document.getElementById('mode_icon');
             if(icon) {
                 if(settings.mode === 'dark') {
-                    icon.setAttribute('viewBox', '0 0 24 24');
                     icon.innerHTML = '<path d="M21 12.79A9 9 0 0 1 12.21 3 7 7 0 1 0 21 12.79z"></path>';
                 } else {
-                    icon.setAttribute('viewBox', '0 0 24 24');
                     icon.innerHTML = '<circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"></path>';
                 }
             }
+
+            const trainingBtn = document.getElementById('training_btn');
+            if(settings.training) trainingBtn.classList.add('active');
+            else trainingBtn.classList.remove('active');
         }
 
         function toggleMode() {
@@ -1023,42 +1066,59 @@
             updateUI();
         }
 
+        function toggleTraining() {
+            settings.training = !settings.training;
+            persistSettings();
+            applyThemeAndMode();
+            updateUI();
+        }
+
         function checkNewDay() {
             const today = new Date().toLocaleDateString('pl-PL');
             if (state.date !== today) {
                 state = { date: today, water: 0, coffee: 0, sweet: 0, log: [] };
-                settings.hotMode = false; 
+                settings.training = false; 
                 saveData();
                 persistSettings();
             }
         }
 
-        function getTotalVolume() {
+        function getVolume() {
             return state.water + state.coffee + state.sweet;
         }
 
+        function getHydration() {
+            // każdy napój liczy się 1:1
+            return getVolume();
+        }
+
         function getEffectiveGoal() {
-            return settings.dailyGoal + (settings.hotMode ? 500 : 0);
+            return settings.dailyGoal + (settings.training ? 500 : 0);
         }
 
         function addDrink(type, ml) {
-            ml = parseInt(ml);
-            if(!ml || ml <= 0) return;
+            let amount = parseInt(ml);
+            if(isNaN(amount) || amount <= 0) return;
             if(navigator.vibrate) navigator.vibrate(10);
 
+            const prevTotal = getVolume();
             const now = new Date();
             const entry = {
                 id: Date.now(),
                 time: now.toLocaleTimeString('pl-PL', { hour: '2-digit', minute: '2-digit' }),
                 ts: now.getTime(),
                 type: type,
-                ml: ml
+                ml: amount
             };
 
-            if(type === 'water') state.water += ml;
-            if(type === 'coffee') state.coffee += ml;
-            if(type === 'sweet') state.sweet += ml;
+            state[type] += entry.ml;
             state.log.push(entry);
+
+            const newTotal = getVolume();
+            const goal = getEffectiveGoal();
+            if(prevTotal < goal && newTotal >= goal) {
+                fireConfetti();
+            }
 
             saveData();
             updateUI();
@@ -1068,9 +1128,7 @@
             const idx = state.log.findIndex(e => e.id === id);
             if(idx > -1) {
                 const item = state.log[idx];
-                if(item.type === 'water') state.water -= item.ml;
-                if(item.type === 'coffee') state.coffee -= item.ml;
-                if(item.type === 'sweet') state.sweet -= item.ml;
+                state[item.type] -= item.ml;
                 state.log.splice(idx, 1);
                 saveData(); 
                 updateUI();
@@ -1086,15 +1144,9 @@
 
         function translateType(type) {
             if(type === 'water') return 'woda';
-            if(type === 'coffee') return 'kawa/herbata';
+            if(type === 'coffee') return 'kawa / herbata';
             if(type === 'sweet') return 'napój słodzony';
             return type;
-        }
-
-        function toggleHotMode() {
-            settings.hotMode = !settings.hotMode;
-            persistSettings();
-            updateUI();
         }
 
         function openCustom(type) {
@@ -1110,25 +1162,34 @@
         function endDay() {
             if(!confirm("Zakończyć dzień i zapisać do historii?")) return;
             
-            const total = getTotalVolume();
+            const total = getVolume();
+            const goal = getEffectiveGoal();
             const todayStr = state.date;
 
+            if(total >= goal) {
+                const yest = new Date(); 
+                yest.setDate(yest.getDate() - 1);
+                const yestStr = yest.toLocaleDateString('pl-PL');
+                if(settings.lastGoalDate === yestStr) settings.streak++;
+                else if(settings.lastGoalDate !== todayStr) settings.streak = 1;
+                settings.lastGoalDate = todayStr;
+            } else {
+                settings.streak = 0;
+            }
+
             let hist = JSON.parse(localStorage.getItem(KEYS.HISTORY)) || [];
-            hist.unshift({ 
-                date: todayStr, 
-                water: state.water, 
-                coffee: state.coffee, 
+            hist.unshift({
+                date: todayStr,
+                water: state.water,
+                coffee: state.coffee,
                 sweet: state.sweet,
-                total: total 
+                total: total
             });
             if(hist.length > 7) hist = hist.slice(0, 7);
             localStorage.setItem(KEYS.HISTORY, JSON.stringify(hist));
 
-            state = { 
-                date: new Date().toLocaleDateString('pl-PL'), 
-                water: 0, coffee: 0, sweet: 0, log: [] 
-            };
-            settings.hotMode = false;
+            state = { date: new Date().toLocaleDateString('pl-PL'), water: 0, coffee: 0, sweet: 0, log: [] };
+            settings.training = false;
             
             saveData(); 
             persistSettings(); 
@@ -1139,17 +1200,14 @@
             let hist = JSON.parse(localStorage.getItem(KEYS.HISTORY)) || [];
             let max = 0;
             let sum = 0;
-
             hist.forEach(d => {
-                const t = d.total || (d.water + d.coffee + d.sweet);
+                const t = d.total || 0;
                 if(t > max) max = t;
                 sum += t;
             });
-
-            const todayTotal = getTotalVolume();
-            if(todayTotal > max) max = todayTotal;
-
             const avg = hist.length ? Math.round(sum / hist.length) : 0;
+            
+            if(getVolume() > max) max = getVolume();
 
             document.getElementById('stat_best').innerText = max;
             document.getElementById('stat_avg').innerText = avg;
@@ -1168,48 +1226,55 @@
             fill.style.height = perc + '%';
         }
 
-        function updateForecast() {
-            const now = new Date();
-            const hour = now.getHours() + now.getMinutes() / 60;
-            const total = getTotalVolume();
+        function calcForecastAndGoalInfo() {
             const goal = getEffectiveGoal();
+            const vol = getVolume();
 
-            if(state.log.length === 0 || hour < 1) {
-                document.getElementById('forecast_total').innerText = total;
-                document.getElementById('forecast_comment').innerText = "Za wcześnie na prognozę – wypij coś i wróć później.";
-                return;
+            const percent = goal > 0 ? Math.min(Math.round(vol / goal * 100), 999) : 0;
+            document.getElementById('goal_percent').innerText = `Wypełnienie celu: ${percent}%`;
+
+            const now = new Date();
+            const start = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0,0,0,0);
+            const end = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23,59,59,999);
+
+            const elapsedMs = now - start;
+            const totalMs = end - start;
+
+            let forecast = vol;
+            if(elapsedMs > 30 * 60 * 1000 && vol > 0) {
+                const rate = vol / elapsedMs;
+                forecast = Math.round(rate * totalMs);
             }
 
-            const rate = total / hour; // ml / godz
-            const forecast = Math.round(total + rate * (24 - hour));
+            document.getElementById('forecast_amount').innerText = `${forecast} ml`;
 
-            document.getElementById('forecast_total').innerText = forecast;
-
-            if(forecast < goal * 0.7) {
-                document.getElementById('forecast_comment').innerText = "❗ W tym tempie raczej nie osiągniesz celu – pij częściej.";
-            } else if(forecast < goal) {
-                document.getElementById('forecast_comment').innerText = "⚠️ Blisko celu, ale tempo jest trochę za wolne – przyda się kilka dodatkowych szklanek.";
-            } else if(forecast <= goal * 1.2) {
-                document.getElementById('forecast_comment').innerText = "✅ Idealnie – prognoza wskazuje, że osiągniesz dzisiejszy cel.";
+            let comment = '';
+            if(goal <= 0) {
+                comment = 'Brak ustawionego celu – ustaw cel w ustawieniach.';
             } else {
-                document.getElementById('forecast_comment').innerText = "💧 Jesteś przed planem – pijesz więcej niż minimalny cel.";
+                const ratio = forecast / goal;
+                if(forecast === vol && elapsedMs <= 30 * 60 * 1000) {
+                    comment = 'Za wcześnie na wiarygodną prognozę – pij dalej, aby zobaczyć przewidywanie.';
+                } else if (ratio < 0.7) {
+                    comment = 'Przy obecnym tempie prawdopodobnie wypijesz zbyt mało względem celu.';
+                } else if (ratio > 1.2) {
+                    comment = 'Przy obecnym tempie wypijesz sporo powyżej ustawionego celu.';
+                } else {
+                    comment = 'Twoje tempo jest bliskie idealnemu względem dzisiejszego celu.';
+                }
             }
+            document.getElementById('forecast_comment').innerText = comment;
         }
 
         function updateUI() {
-            const total = getTotalVolume();
+            const total = getHydration();
+            const vol = getVolume();
             const goal = getEffectiveGoal();
 
-            document.getElementById('display_total').innerText = total;
-            document.getElementById('display_volume').innerText = total;
+            document.getElementById('display_hydration').innerText = total;
+            document.getElementById('display_volume').innerText = vol;
             document.getElementById('display_goal').innerText = goal;
-
-            const pct = goal > 0 ? Math.round((total / goal) * 100) : 0;
-            document.getElementById('goal_percent').innerText = pct;
-
-            const btnHot = document.getElementById('hot_mode_btn');
-            if(settings.hotMode) btnHot.classList.add('active');
-            else btnHot.classList.remove('active');
+            document.getElementById('streak_val').innerText = settings.streak;
 
             document.getElementById('lbl_water').innerText = settings.presets.water + ' ml';
             document.getElementById('lbl_coffee').innerText = settings.presets.coffee + ' ml';
@@ -1222,21 +1287,27 @@
             const list = document.getElementById('log_list');
             list.innerHTML = '';
             [...state.log].reverse().forEach(item => {
-                const iconColor = (item.type==='water') ? 'var(--color-water-deep)' :
-                                  (item.type==='coffee') ? 'var(--color-coffee-deep)' :
-                                  'var(--color-sweet-deep)';
-                const iconBg = (item.type==='water') ? 'var(--color-water)' :
-                               (item.type==='coffee') ? 'var(--color-coffee)' :
-                               'var(--color-sweet)';
-                const icon = item.type==='water'?'💧':(item.type==='coffee'?'☕':'🥤');
-                const label = item.type==='water'?'Woda':(item.type==='coffee'?'Kawa / herbata':'Napój słodzony');
-                
+                let bg, fg;
+                if(item.type === 'water') { bg = 'var(--color-water)'; fg = 'var(--color-water-deep)'; }
+                else if(item.type === 'coffee') { bg = 'var(--color-coffee)'; fg = 'var(--color-coffee-deep)'; }
+                else { bg = 'var(--color-sweet)'; fg = 'var(--color-sweet-deep)'; }
+
+                const label = translateType(item.type);
+
                 const li = document.createElement('li');
                 li.className = 'log-item';
                 li.innerHTML = `
                     <div class="log-meta"><span class="log-time">${item.time}</span></div>
                     <div class="log-details">
-                        <div class="log-icon" style="background:${iconBg}; color:${iconColor}">${icon}</div>
+                        <div class="log-icon" style="background:${bg}; color:${fg}">
+                            ${
+                                item.type === 'water' 
+                                ? '<svg class="icon-fill" viewBox="0 0 24 24"><path d="M12 2L7 11a5 5 0 1 0 10 0L12 2z"></path></svg>'
+                                : item.type === 'coffee'
+                                ? '<svg class="icon-fill" viewBox="0 0 24 24"><path d="M4 7h13v7a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V7z"></path><path d="M17 9h2a2 2 0 0 1 0 4h-2"></path></svg>'
+                                : '<svg class="icon-fill" viewBox="0 0 24 24"><rect x="7" y="3" width="10" height="7" rx="2"></rect><path d="M8 10v8a2 2 0 0 0 2 2h4a2 2 0 0 0 2-2v-8"></path></svg>'
+                            }
+                        </div>
                         <span style="color:var(--text-main)">${label}</span>
                         <span class="log-val">${item.ml} ml</span>
                     </div>
@@ -1247,10 +1318,10 @@
 
             updateTimer();
             calcStats();
-            drawDayChart();
-            drawWeekChart();
             updateWaterVisual(total, goal);
-            updateForecast();
+            calcForecastAndGoalInfo();
+            drawWeekChart();
+            drawDayChart();
         }
 
         function updateTimer() {
@@ -1270,87 +1341,53 @@
             document.getElementById('last_drink_time').innerText = txt;
         }
 
-        function drawDayChart() {
-            const cvs = document.getElementById('dayChart');
-            if(!cvs) return;
-            const ctx = cvs.getContext('2d');
-            const dpr = window.devicePixelRatio || 1;
-            const rect = cvs.getBoundingClientRect();
-            cvs.width = rect.width * dpr; 
-            cvs.height = rect.height * dpr;
-            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-            const w = rect.width, h = rect.height;
-            ctx.clearRect(0,0,w,h);
+        /* ---------- WYKRES TYGODNIA ---------- */
 
-            const log = [...state.log].sort((a,b) => a.ts - b.ts);
-            if(log.length === 0) return;
-
-            const padding = 12;
-            const maxTotal = getTotalVolume() || 1;
-            const maxY = maxTotal * 1.15;
-
-            const startX = padding;
-            const endX = w - padding;
-            const startY = h - padding;
-            const endY = padding;
-
-            ctx.strokeStyle = 'rgba(148, 163, 184, 0.4)';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(startX, startY);
-            ctx.lineTo(endX, startY);
-            ctx.stroke();
-
-            const firstTs = log[0].ts;
-            const lastTs = log[log.length-1].ts;
-            const span = Math.max(1, lastTs - firstTs);
-
-            let running = 0;
-
-            ctx.beginPath();
-            log.forEach((entry, idx) => {
-                running += entry.ml;
-                const tNorm = (entry.ts - firstTs) / span;
-                const x = startX + tNorm * (endX - startX);
-                const y = startY - (running / maxY) * (startY - endY);
-
-                if(idx === 0) ctx.moveTo(x,y);
-                else ctx.lineTo(x,y);
-            });
-
-            ctx.strokeStyle = getComputedStyle(document.body).getPropertyValue('--color-water-deep') || '#4B9FE1';
-            ctx.lineWidth = 2;
-            ctx.lineCap = 'round';
-            ctx.lineJoin = 'round';
-            ctx.stroke();
+        function getDayShortPl(date) {
+            const dni = ['Nd.', 'Pon.', 'Wt.', 'Śr.', 'Czw.', 'Pt.', 'Sob.'];
+            return dni[date.getDay()];
         }
 
-        function getWeekData() {
-            let hist = JSON.parse(localStorage.getItem(KEYS.HISTORY)) || [];
-            const todayTotal = getTotalVolume();
+        function prepareWeekData() {
+            const hist = JSON.parse(localStorage.getItem(KEYS.HISTORY)) || [];
+            const today = new Date();
+            const days = [];
+            for(let i = 6; i >= 0; i--) {
+                const d = new Date(today);
+                d.setDate(d.getDate() - i);
+                const label = getDayShortPl(d);
+                const dateStr = d.toLocaleDateString('pl-PL');
+                const found = hist.find(h => h.date === dateStr);
 
-            const todayObj = {
-                date: state.date,
-                water: state.water,
-                coffee: state.coffee,
-                sweet: state.sweet,
-                total: todayTotal
-            };
+                let water = 0, coffee = 0, sweet = 0;
+                if(found) {
+                    water = found.water || 0;
+                    coffee = found.coffee || 0;
+                    sweet = found.sweet || 0;
+                }
+                if(i === 0) { // dzisiaj – pokazujemy bieżący stan zamiast historii
+                    water = state.water;
+                    coffee = state.coffee;
+                    sweet = state.sweet;
+                }
 
-            const existingIdx = hist.findIndex(h => h.date === state.date);
-            if(existingIdx >= 0) {
-                hist[existingIdx] = todayObj;
-            } else {
-                hist = [todayObj, ...hist];
+                const total = water + coffee + sweet;
+                days.push({ label, water, coffee, sweet, total });
             }
+            return days;
+        }
 
-            hist = hist.slice(0,7);
-            return hist.reverse();
+        function niceMaxY(val) {
+            if(val <= 1000) return 1000;
+            if(val <= 2000) return 2000;
+            if(val <= 3000) return 3000;
+            if(val <= 4000) return 4000;
+            if(val <= 5000) return 5000;
+            return Math.ceil(val / 1000) * 1000;
         }
 
         function drawWeekChart() {
             const cvs = document.getElementById('weekChart');
-            if(!cvs) return;
             const ctx = cvs.getContext('2d');
             const dpr = window.devicePixelRatio || 1;
             const rect = cvs.getBoundingClientRect();
@@ -1360,78 +1397,232 @@
             const w = rect.width, h = rect.height;
             ctx.clearRect(0,0,w,h);
 
-            const data = getWeekData();
-            if(data.length === 0) return;
+            const paddingLeft = 32;
+            const paddingRight = 12;
+            const paddingTop = 10;
+            const paddingBottom = 26;
 
-            const padding = 14;
-            const startX = padding;
-            const endX = w - padding;
-            const startY = h - padding;
-            const endY = padding;
+            const plotW = w - paddingLeft - paddingRight;
+            const plotH = h - paddingTop - paddingBottom;
 
-            let maxTotal = 0;
-            data.forEach(d => {
-                const t = d.total || (d.water + d.coffee + d.sweet);
-                if(t > maxTotal) maxTotal = t;
-            });
-            if(maxTotal <= 0) maxTotal = 1;
+            const data = prepareWeekData();
+            const totals = data.map(d => d.total);
+            const maxValRaw = Math.max(1000, ...totals, getEffectiveGoal());
+            const maxVal = niceMaxY(maxValRaw);
 
-            const count = 7;
-            const barWidth = (endX - startX) / count * 0.6;
-            const gap = (endX - startX) / count;
+            const style = getComputedStyle(document.body);
+            const gridColor = style.getPropertyValue('--bg-card-soft') || '#E5E7EB';
+            const waterColor = style.getPropertyValue('--color-water').trim() || '#A9D6F5';
+            const coffeeColor = style.getPropertyValue('--color-coffee').trim() || '#D9B89A';
+            const sweetColor = style.getPropertyValue('--color-sweet').trim() || '#F7A8B1';
+            const lineColor = style.getPropertyValue('--color-water-deep').trim() || '#4B9FE1';
+            const textColor = style.getPropertyValue('--text-light').trim() || '#6B7280';
 
-            ctx.strokeStyle = 'rgba(148, 163, 184, 0.4)';
+            /* Siatka pozioma + wartości Y */
+            const steps = 4;
+            ctx.strokeStyle = gridColor;
+            ctx.fillStyle = textColor;
             ctx.lineWidth = 1;
+
+            for(let i = 0; i <= steps; i++) {
+                const yVal = (maxVal / steps) * i;
+                const y = paddingTop + plotH - (yVal / maxVal) * plotH;
+                ctx.beginPath();
+                ctx.moveTo(paddingLeft, y);
+                ctx.lineTo(paddingLeft + plotW, y);
+                ctx.stroke();
+
+                ctx.font = '10px "Outfit", system-ui';
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(yVal.toString(), paddingLeft - 4, y);
+            }
+
+            const colW = plotW / data.length;
+
+            /* Siatka pionowa + etykiety X */
+            data.forEach((d, i) => {
+                const xCenter = paddingLeft + colW * i + colW / 2;
+
+                ctx.beginPath();
+                ctx.moveTo(xCenter, paddingTop);
+                ctx.lineTo(xCenter, paddingTop + plotH);
+                ctx.strokeStyle = gridColor;
+                ctx.stroke();
+
+                ctx.fillStyle = textColor;
+                ctx.font = '10px "Outfit", system-ui';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'top';
+                ctx.fillText(d.label, xCenter, paddingTop + plotH + 4);
+            });
+
+            /* Słupki (stacked) */
+            data.forEach((d, i) => {
+                const x = paddingLeft + colW * i + colW * 0.15;
+                const barW = colW * 0.7;
+
+                let yBase = paddingTop + plotH;
+
+                const drawSegment = (value, color) => {
+                    if(value <= 0) return;
+                    const barH = (value / maxVal) * plotH;
+                    ctx.fillStyle = color;
+                    ctx.beginPath();
+                    const yTop = yBase - barH;
+                    const r = 4;
+                    if(ctx.roundRect) {
+                        ctx.roundRect(x, yTop, barW, barH, r);
+                    } else {
+                        ctx.fillRect(x, yTop, barW, barH);
+                    }
+                    ctx.fill();
+                    yBase = yTop;
+                };
+
+                drawSegment(d.water, waterColor);
+                drawSegment(d.coffee, coffeeColor);
+                drawSegment(d.sweet, sweetColor);
+            });
+
+            /* Linia sumy */
             ctx.beginPath();
-            ctx.moveTo(startX, startY);
-            ctx.lineTo(endX, startY);
+            let first = true;
+            data.forEach((d, i) => {
+                const xCenter = paddingLeft + colW * i + colW / 2;
+                const y = paddingTop + plotH - (d.total / maxVal) * plotH;
+                if(first) {
+                    ctx.moveTo(xCenter, y);
+                    first = false;
+                } else {
+                    ctx.lineTo(xCenter, y);
+                }
+            });
+            ctx.strokeStyle = lineColor;
+            ctx.lineWidth = 2;
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
             ctx.stroke();
 
-            const colorWater = getComputedStyle(document.body).getPropertyValue('--color-water').trim() || '#A9D6F5';
-            const colorCoffee = getComputedStyle(document.body).getPropertyValue('--color-coffee').trim() || '#D9B89A';
-            const colorSweet = getComputedStyle(document.body).getPropertyValue('--color-sweet').trim() || '#F7A8B1';
-            const colorLine = getComputedStyle(document.body).getPropertyValue('--color-water-deep').trim() || '#4B9FE1';
+            /* Punkty */
+            data.forEach((d, i) => {
+                const xCenter = paddingLeft + colW * i + colW / 2;
+                const y = paddingTop + plotH - (d.total / maxVal) * plotH;
+                ctx.beginPath();
+                ctx.arc(xCenter, y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = lineColor;
+                ctx.fill();
+            });
+        }
 
+        /* ---------- WYKRES DNIA ---------- */
+
+        function prepareDayData() {
+            const sorted = [...state.log].sort((a,b) => a.ts - b.ts);
             const points = [];
+            let cum = 0;
+            sorted.forEach(e => {
+                cum += e.ml;
+                const d = new Date(e.ts);
+                const hr = d.getHours() + d.getMinutes() / 60;
+                points.push({ hour: hr, total: cum });
+            });
+            return points;
+        }
 
-            data.forEach((d, idx) => {
-                const total = d.total || (d.water + d.coffee + d.sweet);
-                const xCenter = startX + gap * idx + gap/2;
-                const x = xCenter - barWidth/2;
-                let yBase = startY;
-                
-                const hWater = (d.water / maxTotal) * (startY - endY);
-                const hCoffee = (d.coffee / maxTotal) * (startY - endY);
-                const hSweet = (d.sweet / maxTotal) * (startY - endY);
+        function drawDayChart() {
+            const cvs = document.getElementById('dayChart');
+            const ctx = cvs.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = cvs.getBoundingClientRect();
+            cvs.width = rect.width * dpr; 
+            cvs.height = rect.height * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            const w = rect.width, h = rect.height;
+            ctx.clearRect(0,0,w,h);
 
-                ctx.fillStyle = colorWater;
-                ctx.fillRect(x, yBase - hWater, barWidth, hWater);
-                yBase -= hWater;
+            const paddingLeft = 32;
+            const paddingRight = 12;
+            const paddingTop = 10;
+            const paddingBottom = 26;
 
-                ctx.fillStyle = colorCoffee;
-                ctx.fillRect(x, yBase - hCoffee, barWidth, hCoffee);
-                yBase -= hCoffee;
+            const plotW = w - paddingLeft - paddingRight;
+            const plotH = h - paddingTop - paddingBottom;
 
-                ctx.fillStyle = colorSweet;
-                ctx.fillRect(x, yBase - hSweet, barWidth, hSweet);
+            const data = prepareDayData();
+            const maxValRaw = Math.max(getVolume(), ...data.map(p => p.total), getEffectiveGoal());
+            const maxVal = maxValRaw > 0 ? niceMaxY(maxValRaw) : 1000;
 
-                const yLine = startY - (total / maxTotal) * (startY - endY);
-                points.push({ x: xCenter, y: yLine });
+            const style = getComputedStyle(document.body);
+            const gridColor = style.getPropertyValue('--bg-card-soft') || '#E5E7EB';
+            const lineColor = style.getPropertyValue('--color-water-deep').trim() || '#4B9FE1';
+            const textColor = style.getPropertyValue('--text-light').trim() || '#6B7280';
+
+            /* Siatka pozioma */
+            const steps = 4;
+            ctx.strokeStyle = gridColor;
+            ctx.fillStyle = textColor;
+            ctx.lineWidth = 1;
+
+            for(let i = 0; i <= steps; i++) {
+                const yVal = (maxVal / steps) * i;
+                const y = paddingTop + plotH - (yVal / maxVal) * plotH;
+                ctx.beginPath();
+                ctx.moveTo(paddingLeft, y);
+                ctx.lineTo(paddingLeft + plotW, y);
+                ctx.stroke();
+
+                ctx.font = '10px "Outfit", system-ui';
+                ctx.textAlign = 'right';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(yVal.toString(), paddingLeft - 4, y);
+            }
+
+            /* Siatka pionowa i godziny X */
+            const hourTicks = [0, 6, 12, 18, 24];
+            hourTicks.forEach(hh => {
+                const x = paddingLeft + (hh / 24) * plotW;
+                ctx.beginPath();
+                ctx.moveTo(x, paddingTop);
+                ctx.lineTo(x, paddingTop + plotH);
+                ctx.strokeStyle = gridColor;
+                ctx.stroke();
+
+                ctx.font = '10px "Outfit", system-ui';
+                ctx.fillStyle = textColor;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'top';
+                ctx.fillText(hh.toString(), x, paddingTop + plotH + 4);
             });
 
-            if(points.length > 1) {
+            if(data.length === 0) return;
+
+            /* Linia przebiegu */
+            ctx.beginPath();
+            data.forEach((p, idx) => {
+                const x = paddingLeft + (p.hour / 24) * plotW;
+                const y = paddingTop + plotH - (p.total / maxVal) * plotH;
+                if(idx === 0) ctx.moveTo(x, y);
+                else ctx.lineTo(x, y);
+            });
+            ctx.strokeStyle = lineColor;
+            ctx.lineWidth = 2;
+            ctx.lineJoin = 'round';
+            ctx.lineCap = 'round';
+            ctx.stroke();
+
+            /* Punkty */
+            data.forEach(p => {
+                const x = paddingLeft + (p.hour / 24) * plotW;
+                const y = paddingTop + plotH - (p.total / maxVal) * plotH;
                 ctx.beginPath();
-                points.forEach((p, idx) => {
-                    if(idx === 0) ctx.moveTo(p.x, p.y);
-                    else ctx.lineTo(p.x, p.y);
-                });
-                ctx.strokeStyle = colorLine;
-                ctx.lineWidth = 2;
-                ctx.lineCap = 'round';
-                ctx.lineJoin = 'round';
-                ctx.stroke();
-            }
+                ctx.arc(x, y, 3, 0, Math.PI * 2);
+                ctx.fillStyle = lineColor;
+                ctx.fill();
+            });
         }
+
+        /* ---------- Ustawienia ---------- */
 
         function openSettings() {
             document.getElementById('pset_water').value = settings.presets.water;
@@ -1484,6 +1675,41 @@
 
         function saveData() { 
             localStorage.setItem(KEYS.DATA, JSON.stringify(state)); 
+        }
+        
+        function fireConfetti() {
+            const cvs = document.getElementById('confettiCanvas');
+            const ctx = cvs.getContext('2d');
+            cvs.width = window.innerWidth; 
+            cvs.height = window.innerHeight;
+
+            const style = getComputedStyle(document.body);
+            const c1 = style.getPropertyValue('--color-water-deep').trim() || '#0099FF';
+            const c2 = style.getPropertyValue('--accent').trim() || '#8DB9E3';
+
+            let p = Array.from({length: 120}, () => ({
+                x: cvs.width / 2,
+                y: cvs.height / 2,
+                vx: (Math.random()-0.5) * 18,
+                vy: (Math.random()-0.5) * 18 - 6,
+                c: Math.random() < 0.5 ? c1 : c2
+            }));
+            let f = 0; 
+            (function animate(){
+                ctx.clearRect(0,0,cvs.width,cvs.height);
+                let act=false;
+                p.forEach(pt=>{
+                    pt.x+=pt.vx;
+                    pt.y+=pt.vy;
+                    pt.vy+=0.5;
+                    pt.vx*=0.96;
+                    if(pt.y<cvs.height)act=true;
+                    ctx.fillStyle=pt.c;
+                    ctx.fillRect(pt.x,pt.y,6,6);
+                });
+                if(act && f++<160) requestAnimationFrame(animate);
+                else ctx.clearRect(0,0,cvs.width,cvs.height);
+            })();
         }
     </script>
 </body>
